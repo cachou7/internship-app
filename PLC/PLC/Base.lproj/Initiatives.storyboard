@@ -103,7 +103,7 @@
                                     <outlet property="taskTag" destination="Wx1-ic-qK0" id="T7Z-Fz-7gt"/>
                                     <outlet property="taskTime" destination="yn9-6d-pJG" id="Unv-hg-SfB"/>
                                     <outlet property="taskTitle" destination="8N4-8q-btJ" id="Kpw-az-UFg"/>
-                                    <segue destination="3Pn-29-hrf" kind="show" id="B0t-fQ-o6H"/>
+                                    <segue destination="3Pn-29-hrf" kind="show" identifier="detailTask" id="B0t-fQ-o6H"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

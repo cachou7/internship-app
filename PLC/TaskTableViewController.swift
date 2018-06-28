@@ -8,9 +8,14 @@
 
 import UIKit
 
+var taskTitles = ["Fornite Tournament", "World Cup"]
+var taskLocations = ["Game Room", "Main Kitchen"]
+var taskTimes = ["July 4th 6:00 PM", "July 15th 1:00 PM"]
+var taskTags = ["#lead","#particpate"]
+var taskDescriptions = ["Play some Fortnite!", "Let's watch the World Cup!"]
+var myIndex = 0
+
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
-    
-    let tasks = ["task #1"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,21 +26,35 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return taskTitles.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        cell.taskTitle.text = "Fortnite"
-        cell.taskLocation.text = "Main Kitchen"
-        cell.taskTime.text = "July 4th 6:00 PM"
-        cell.taskTag.text = "#participate"
+        cell.taskTitle.text = taskTitles[indexPath.row]
+        cell.taskLocation.text = taskLocations[indexPath.row]
+        cell.taskTime.text = taskTimes[indexPath.row]
+        cell.taskTag.text = taskTags[indexPath.row]
+        
         return cell
     }
+    
+    // Set myIndex for detailed view
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        myIndex = indexPath.row
+        //performSegue(withIdentifier: "detailTask", sender: self)
+    }
+    
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "detailTask") {
+            let vc = segue.destination as! DetailTaskViewController
+            vc.taskTitle = "TEST"
+        }
+    }*/
     
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
         // get a reference to the view controller for the popover
