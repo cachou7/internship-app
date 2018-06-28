@@ -24,6 +24,7 @@
 		99AB732E20E42E4A00E00A2A /* InitiativeCreate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */; };
 		99AB733020E42E6C00E00A2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732F20E42E6C00E00A2A /* Main.storyboard */; };
 		99AB733220E42E8E00E00A2A /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB733120E42E8E00E00A2A /* Profile.storyboard */; };
+		99AB733820E54FEB00E00A2A /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB733720E54FEB00E00A2A /* Task.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InitiativeCreate.storyboard; sourceTree = "<group>"; };
 		99AB732F20E42E6C00E00A2A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		99AB733120E42E8E00E00A2A /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		99AB733720E54FEB00E00A2A /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				83ADA39820E1547400CD5F30 /* LeaderboardViewController.swift */,
 				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
+				99AB733720E54FEB00E00A2A /* Task.swift */,
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
 				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
@@ -300,6 +303,7 @@
 				83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */,
 				83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */,
 				83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */,
+				99AB733820E54FEB00E00A2A /* Task.swift in Sources */,
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

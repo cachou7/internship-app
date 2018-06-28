@@ -39,7 +39,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
         // get a reference to the view controller for the popover
-        let popController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreate")
+        let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
         
         // set the presentation style
         popController.modalPresentationStyle = UIModalPresentationStyle.popover
