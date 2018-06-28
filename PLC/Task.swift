@@ -13,12 +13,12 @@ class Task{
     var title: String
     var description: String
     var tag: String
-    var time: timeval
+    var time: String
     var location: String
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, time: timeval, location: String) {
+    init?(title: String, description: String, tag: String, time: String, location: String) {
         
         // The title must not be empty
         guard !title.isEmpty else {
