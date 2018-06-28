@@ -8,13 +8,7 @@
 
 import UIKit
 
-protocol InitiativeCreateViewControllerDelegate:class {
-    func myVCDidFinish(_ controller: InitiativeCreateViewController, task: Task)
-}
-
 class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
-    weak var delegate: InitiativeCreateViewControllerDelegate?
-    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var tagTextField: UITextField!
@@ -40,7 +34,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createButton(_ sender: UIBarButtonItem) {
         task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagTextField.text!, time: timeTextField.text!, location: locationTextField.text!)
-        delegate?.myVCDidFinish(self, task: task!) //assuming the delegate is assigned otherwise error
         dismiss()
     }
 

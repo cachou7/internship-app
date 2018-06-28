@@ -8,10 +8,7 @@
 
 import UIKit
 
-class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, InitiativeCreateViewControllerDelegate {
-    func myVCDidFinish(_ controller: InitiativeCreateViewController, task: Task) {
-        print(task.description)
-    }
+class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate{
     
     let tasks = ["task #1"]
     
