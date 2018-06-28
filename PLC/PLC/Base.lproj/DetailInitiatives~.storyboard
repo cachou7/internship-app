@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="o7x-aI-McQ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Initiatives-->
+        <scene sceneID="C9O-NC-PBq">
+            <objects>
+                <navigationController id="o7x-aI-McQ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="d9V-sM-tE6"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Bxb-4b-mdV">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="AMN-zv-t8u" kind="relationship" relationship="rootViewController" id="gcD-hi-lNQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qdS-hT-3oP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="420" y="-1058"/>
+        </scene>
+        <!--Initiatives-->
+        <scene sceneID="eCL-55-mCa">
+            <objects>
+                <tableViewController title="Initiatives" id="AMN-zv-t8u" customClass="TaskTableViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Rvs-4a-8oo" userLabel="Table View">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="90" id="QoY-kJ-wON" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QoY-kJ-wON" id="YkK-vZ-qGV" userLabel="Cell">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fortnite Tournament" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8N4-8q-btJ">
+                                            <rect key="frame" x="16" y="11" width="281" height="24"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#participate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wx1-ic-qK0">
+                                            <rect key="frame" x="262" y="9" width="100" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="0KJ-lY-sUu"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July 4th 6 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yn9-6d-pJG">
+                                            <rect key="frame" x="16" y="52" width="85" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="t3H-Oj-KIC"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z6g-Gm-mBj">
+                                            <rect key="frame" x="16" y="31" width="85" height="20"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16M-dI-3P6">
+                                            <rect key="frame" x="316" y="27" width="39" height="39"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="39" id="i5a-aV-Vx1"/>
+                                            </constraints>
+                                            <state key="normal" image="heartIcon"/>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="16M-dI-3P6" secondAttribute="trailing" constant="4" id="8zt-D1-nld"/>
+                                        <constraint firstItem="8N4-8q-btJ" firstAttribute="top" secondItem="YkK-vZ-qGV" secondAttribute="topMargin" id="Vxs-Jm-pRw"/>
+                                        <constraint firstItem="Z6g-Gm-mBj" firstAttribute="leading" secondItem="yn9-6d-pJG" secondAttribute="leading" id="W5x-aX-zAb"/>
+                                        <constraint firstItem="Z6g-Gm-mBj" firstAttribute="trailing" secondItem="yn9-6d-pJG" secondAttribute="trailing" id="YgF-5k-9yM"/>
+                                        <constraint firstItem="Wx1-ic-qK0" firstAttribute="top" secondItem="YkK-vZ-qGV" secondAttribute="topMargin" constant="-2" id="a4E-ey-oV2"/>
+                                        <constraint firstItem="8N4-8q-btJ" firstAttribute="leading" secondItem="YkK-vZ-qGV" secondAttribute="leadingMargin" id="dYh-ex-lHe"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Wx1-ic-qK0" secondAttribute="trailing" constant="-3" id="hjE-Ag-Pk1"/>
+                                        <constraint firstItem="yn9-6d-pJG" firstAttribute="top" secondItem="Z6g-Gm-mBj" secondAttribute="bottom" constant="1" id="hy3-pl-5Hr"/>
+                                        <constraint firstItem="yn9-6d-pJG" firstAttribute="bottom" secondItem="16M-dI-3P6" secondAttribute="bottom" id="icV-Sd-OFj"/>
+                                        <constraint firstItem="yn9-6d-pJG" firstAttribute="top" secondItem="8N4-8q-btJ" secondAttribute="bottom" constant="17" id="ovi-6P-zTn"/>
+                                        <constraint firstItem="16M-dI-3P6" firstAttribute="leading" secondItem="8N4-8q-btJ" secondAttribute="trailing" constant="19" id="phP-Dq-KM9"/>
+                                        <constraint firstItem="8N4-8q-btJ" firstAttribute="leading" secondItem="Z6g-Gm-mBj" secondAttribute="leading" id="rFf-YN-AYR"/>
+                                        <constraint firstItem="16M-dI-3P6" firstAttribute="top" secondItem="Wx1-ic-qK0" secondAttribute="bottom" constant="2" id="zZu-YZ-VG0"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="taskLocation" destination="Z6g-Gm-mBj" id="6cb-GP-lJF"/>
+                                    <outlet property="taskTag" destination="Wx1-ic-qK0" id="T7Z-Fz-7gt"/>
+                                    <outlet property="taskTime" destination="yn9-6d-pJG" id="Unv-hg-SfB"/>
+                                    <outlet property="taskTitle" destination="8N4-8q-btJ" id="Kpw-az-UFg"/>
+                                    <segue destination="sbj-2x-T3s" kind="show" id="B0t-fQ-o6H"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="AMN-zv-t8u" id="HaO-AG-xpL"/>
+                            <outlet property="delegate" destination="AMN-zv-t8u" id="cQt-ds-OyV"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="0qA-Nk-Zb4"/>
+                    <navigationItem key="navigationItem" title="Initiatives" id="Mys-yE-DkB" userLabel="Task Board">
+                        <barButtonItem key="rightBarButtonItem" title="Create" image="iconCreate" id="B3W-aE-x7s">
+                            <connections>
+                                <action selector="composeButton:" destination="AMN-zv-t8u" id="jDE-vL-y4l"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="45o-w3-xLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1781.5999999999999" y="-1058.3208395802101"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="jho-Xo-nwT">
+            <objects>
+                <viewController id="sbj-2x-T3s" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Y4f-pl-XGR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="lMD-Vx-ZNS"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PFz-BW-E7A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2685" y="-834"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="heartIcon" width="25" height="25"/>
+        <image name="iconCreate" width="25" height="25"/>
+        <image name="iconTask" width="25" height="25"/>
+    </resources>
+</document>

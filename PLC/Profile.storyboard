@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="acc-KK-lwb">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Profile-->
+        <scene sceneID="K6E-6q-4Vr">
+            <objects>
+                <viewController storyboardIdentifier="UIViewController-acc-KK-lwb" id="acc-KK-lwb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jAT-uf-kMV" userLabel="ProfileView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Profile" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="NCR-KX-MJX">
+                                <rect key="frame" x="140" y="276" width="97" height="43"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by ProfileViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fv-DQ-3Ih">
+                                <rect key="frame" x="84" y="327" width="207" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="1Fv-DQ-3Ih" firstAttribute="top" secondItem="NCR-KX-MJX" secondAttribute="bottom" constant="8" symbolic="YES" id="FcF-u2-xoh"/>
+                            <constraint firstItem="NCR-KX-MJX" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" constant="140" id="MjI-o9-gAK"/>
+                            <constraint firstItem="1Fv-DQ-3Ih" firstAttribute="centerX" secondItem="jAT-uf-kMV" secondAttribute="centerX" id="QTK-Xl-ns9"/>
+                            <constraint firstItem="NCR-KX-MJX" firstAttribute="top" secondItem="UUE-Q1-HoN" secondAttribute="top" constant="256" id="gzD-92-EHc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UUE-Q1-HoN"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Profile" image="iconProfile" id="iuF-DG-TzE"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ukq-8I-YsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="844" y="1076"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="iconProfile" width="25" height="25"/>
+    </resources>
+</document>
