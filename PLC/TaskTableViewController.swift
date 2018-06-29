@@ -24,12 +24,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var newItems: [Task] = []
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot,
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String) {
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String) {
                     newItems.append(task)
                 }
             }
             
             items = newItems
+            items.sort(by: {$0.timestamp > $1.timestamp})
             self.tableView.reloadData()
         })
     }

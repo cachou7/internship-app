@@ -15,10 +15,11 @@ class Task{
     var tag: String
     var time: String
     var location: String
+    var timestamp: String
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, time: String, location: String) {
+    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String) {
         
         // The title must not be empty
         guard !title.isEmpty else {
@@ -32,5 +33,6 @@ class Task{
         self.tag = tag
         self.location = location
         self.time = time
+        self.timestamp = timestamp
     }
 }
