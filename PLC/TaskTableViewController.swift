@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 var taskTitles = ["Fornite Tournament", "World Cup"]
 var taskLocations = ["Game Room", "Main Kitchen"]
@@ -14,11 +15,23 @@ var taskTimes = ["July 4th 6:00 PM", "July 15th 1:00 PM"]
 var taskTags = ["#lead","#particpate"]
 var taskDescriptions = ["Play some Fortnite!", "Let's watch the World Cup!"]
 var myIndex = 0
+var items: [Task] = []
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        Constants.refs.databaseTasks.observe(.value, with: { snapshot in
+        var newItems: [Task] = []
+        for child in snapshot.children {
+            if let snapshot = child as? DataSnapshot,
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String) {
+                    newItems.append(task)
+                }
+            }
+            
+            items = newItems
+            self.tableView.reloadData()
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,15 +43,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return taskTitles.count
+        return items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        cell.taskTitle.text = taskTitles[indexPath.row]
-        cell.taskLocation.text = taskLocations[indexPath.row]
-        cell.taskTime.text = taskTimes[indexPath.row]
-        cell.taskTag.text = taskTags[indexPath.row]
+        cell.taskTitle.text = items[indexPath.row].title
+        cell.taskLocation.text = items[indexPath.row].location
+        cell.taskTime.text = items[indexPath.row].time
+        cell.taskTag.text = items[indexPath.row].tag
         
         return cell
     }

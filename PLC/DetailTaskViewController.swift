@@ -19,10 +19,10 @@ class DetailTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        taskTitle.text = taskTitles[myIndex]
-        taskLocation.text = taskLocations[myIndex]
-        taskTime.text = taskTimes[myIndex]
-        taskDescription.text = taskDescriptions[myIndex]
+        taskTitle.text = items[myIndex].title
+        taskLocation.text = items[myIndex].location
+        taskTime.text = items[myIndex].time
+        taskDescription.text = items[myIndex].description
     }
     
     // align description to upper left
