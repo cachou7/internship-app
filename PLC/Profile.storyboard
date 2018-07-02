@@ -13,22 +13,26 @@
         <!--Profile-->
         <scene sceneID="K6E-6q-4Vr">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-acc-KK-lwb" id="acc-KK-lwb" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileViewController" id="acc-KK-lwb" customClass="ProfileViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jAT-uf-kMV" userLabel="ProfileView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="vI0-UL-5Yp">
-                                <rect key="frame" x="16" y="45" width="343" height="197.5"/>
+                                <rect key="frame" x="16" y="45" width="343" height="198.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-ER-sBY">
-                                        <rect key="frame" x="0.0" y="0.0" width="205.5" height="197.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-ER-sBY">
+                                        <rect key="frame" x="0.0" y="0.0" width="165" height="198.5"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lmd-rT-A3j">
-                                                <rect key="frame" x="21" y="0.0" width="164" height="164"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Lmd-rT-A3j">
+                                                <rect key="frame" x="0.0" y="0.0" width="165" height="165"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="165" id="JEN-Pp-f4M"/>
+                                                    <constraint firstAttribute="width" constant="165" id="uzo-Lx-Gqm"/>
+                                                </constraints>
                                             </imageView>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="User Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="NCR-KX-MJX">
-                                                <rect key="frame" x="35.5" y="164" width="134.5" height="33.5"/>
+                                                <rect key="frame" x="0.0" y="165" width="165" height="33.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -36,29 +40,23 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2eY-6x-aJd">
-                                        <rect key="frame" x="205.5" y="0.0" width="137.5" height="112"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2eY-6x-aJd">
+                                        <rect key="frame" x="165" y="0.0" width="178" height="81.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaU-zQ-XGd">
-                                                <rect key="frame" x="0.0" y="0.0" width="137.5" height="20.5"/>
+                                                <rect key="frame" x="56" y="0.0" width="66" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Department" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-Kp-eMf">
-                                                <rect key="frame" x="0.0" y="30.5" width="137.5" height="20.5"/>
+                                                <rect key="frame" x="43" y="30.5" width="92" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Project(s)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OI-7i-B4a">
-                                                <rect key="frame" x="0.0" y="61" width="137.5" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Hobby" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFW-2D-ou0">
-                                                <rect key="frame" x="0.0" y="91.5" width="137.5" height="20.5"/>
+                                                <rect key="frame" x="20.5" y="61" width="137.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -85,6 +83,12 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="iconProfile" id="iuF-DG-TzE"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="currentProjectsLabel" destination="8OI-7i-B4a" id="wAo-Pv-IeS"/>
+                        <outlet property="departmentLabel" destination="dAA-Kp-eMf" id="dhM-d4-Dur"/>
+                        <outlet property="jobTitleLabel" destination="aaU-zQ-XGd" id="kcV-Aj-cxT"/>
+                        <outlet property="nameLabel" destination="NCR-KX-MJX" id="7qf-OJ-pyg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ukq-8I-YsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -92,6 +96,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="defaultPhoto" width="540" height="540"/>
         <image name="iconProfile" width="25" height="25"/>
     </resources>
 </document>

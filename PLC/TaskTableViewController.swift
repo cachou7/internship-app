@@ -13,9 +13,7 @@ var myIndex = 0
 var items: [Task] = []
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
-    
-    // Constants
-    var user: User!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,19 +30,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             items.sort(by: {$0.timestamp > $1.timestamp})
             self.tableView.reloadData()
         })
-        
-        Auth.auth().addStateDidChangeListener { auth, user in
-            guard let user = user else { return }
-            self.user = User(authData: user)
-            print("userid = " + user.uid)
-            let key = self.user.uid
-            Constants.refs.databaseUsers.observe(.value, with: { snapshot in
-                if !snapshot.hasChild(key) {
-                    print("New user added to database")
-                    Constants.refs.databaseUsers.child(key).setValue(["uid": key, "tasks_created": [], "tasks_liked": []])
-                }
-            })
-        }
     }
 
     override func didReceiveMemoryWarning() {
