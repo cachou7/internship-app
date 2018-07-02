@@ -65,16 +65,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskTitle.text = items[indexPath.row].title
         cell.taskLocation.text = items[indexPath.row].location
         cell.taskTime.text = items[indexPath.row].time
-        let tagArray = items[indexPath.row].tag.components(separatedBy: "#")
-        var tagText: String = ""
-        for tagWord in tagArray{
-            print(tagWord)
-            if tagWord != ""{
-                tagText.append("#"+tagWord+" ")
-            }
-        }
-        print(tagText)
-        cell.taskTag.text = tagText
+        print(items[indexPath.row].tag)
+        cell.taskTag.text = items[indexPath.row].tag
         
         return cell
     }
