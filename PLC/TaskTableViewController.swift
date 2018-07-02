@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 
-
 var myIndex = 0
 var items: [Task] = []
 
