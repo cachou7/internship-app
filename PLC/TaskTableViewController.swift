@@ -9,11 +9,7 @@
 import UIKit
 import Firebase
 
-var taskTitles = ["Fornite Tournament", "World Cup"]
-var taskLocations = ["Game Room", "Main Kitchen"]
-var taskTimes = ["July 4th 6:00 PM", "July 15th 1:00 PM"]
-var taskTags = ["#lead","#particpate"]
-var taskDescriptions = ["Play some Fortnite!", "Let's watch the World Cup!"]
+
 var myIndex = 0
 var items: [Task] = []
 
@@ -52,7 +48,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskTitle.text = items[indexPath.row].title
         cell.taskLocation.text = items[indexPath.row].location
         cell.taskTime.text = items[indexPath.row].time
-        cell.taskTag.text = items[indexPath.row].tag
+        let tagArray = items[indexPath.row].tag.components(separatedBy: "#")
+        var tagText: String = ""
+        for tagWord in tagArray{
+            print(tagWord)
+            if tagWord != ""{
+                tagText.append("#"+tagWord+" ")
+            }
+        }
+        print(tagText)
+        cell.taskTag.text = tagText
         
         return cell
     }
