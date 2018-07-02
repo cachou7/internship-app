@@ -52,13 +52,28 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     @IBAction func createButton(_ sender: UIBarButtonItem) {
         var tagResult: String = ""
         if leadCheck.isSelected {
-            tagResult.append("#lead")
+            if tagResult == ""{
+                tagResult.append("#lead")
+            }
+            else{
+                tagResult.append(" #lead")
+            }
         }
         if createCheck.isSelected {
-            tagResult.append("#create")
+            if tagResult == ""{
+                tagResult.append("#create")
+            }
+            else{
+                tagResult.append(" #create")
+            }
         }
         if participateCheck.isSelected {
-            tagResult.append("#participate")
+            if tagResult == ""{
+                tagResult.append("#participate")
+            }
+            else{
+                tagResult.append(" #participate")
+            }
         }
         let interval = NSDate().timeIntervalSince1970
         task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval))
