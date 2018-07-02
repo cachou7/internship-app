@@ -14,15 +14,28 @@ class User{
     let uid: String
     let tasks_liked: [String] = []
     let tasks_created: [String] = []
-    
-    init(authData: Firebase.User) {
-        uid = authData.uid
+    let firstName: String
+    let lastName: String
+    let jobTitle: String
+    let department: String
+    let currentProjects: String
+    init(authData: Firebase.User, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String) {
+        self.uid = authData.uid
+        self.firstName = firstName
+        self.lastName = lastName
+        self.jobTitle = jobTitle
+        self.department = department
+        self.currentProjects = currentProjects
     }
     
     //MARK: Initialization
-    init?(uid: String) {
-        
+    init?(uid: String, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String) {
         // Initialize stored properties.
         self.uid = uid
+        self.firstName = firstName
+        self.lastName = lastName
+        self.jobTitle = jobTitle
+        self.department = department
+        self.currentProjects = currentProjects
     }
 }
