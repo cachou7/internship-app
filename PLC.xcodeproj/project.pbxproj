@@ -11,6 +11,9 @@
 		57960719AAA55B477DB2F328 /* Pods_PLCTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26C0139A8728062BACE8F89E /* Pods_PLCTests.framework */; };
 		830E74B420E547B3005E629D /* DetailInitiatives.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 830E74B220E547B3005E629D /* DetailInitiatives.storyboard */; };
 		83165AF720E5423F005E9092 /* FavInitiatives.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83165AF620E5423F005E9092 /* FavInitiatives.storyboard */; };
+		8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365F91520E6B9C90018BB43 /* UserModel.swift */; };
+		8365F91920E6C1640018BB43 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365F91820E6C1640018BB43 /* LoginViewController.swift */; };
+		8384C5AD20E6D06100E61899 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8384C5AC20E6D06100E61899 /* GoogleService-Info.plist */; };
 		8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8387316C20E55532001E1628 /* DetailTaskViewController.swift */; };
 		83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA39420E1547400CD5F30 /* AppDelegate.swift */; };
 		83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */; };
@@ -21,7 +24,7 @@
 		83ADA3B720E1547900CD5F30 /* PLCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA3B620E1547900CD5F30 /* PLCUITests.swift */; };
 		83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */; };
 		83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */; };
-		998E3FD120E5878A00F64035 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 998E3FD020E5878A00F64035 /* GoogleService-Info.plist */; };
+		83BEBE9020EA8E420055BE16 /* TabBarView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */; };
 		99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */; };
 		99AB732920E42E0000E00A2A /* Initiatives.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732720E42E0000E00A2A /* Initiatives.storyboard */; };
 		99AB732C20E42E2800E00A2A /* Leaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */; };
@@ -59,6 +62,10 @@
 		79048FFE843A5E40691D50E2 /* Pods-PLC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLC.release.xcconfig"; path = "Pods/Target Support Files/Pods-PLC/Pods-PLC.release.xcconfig"; sourceTree = "<group>"; };
 		830E74B320E547B3005E629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/PLC/Base.lproj/DetailInitiatives.storyboard; sourceTree = "<group>"; };
 		83165AF620E5423F005E9092 /* FavInitiatives.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FavInitiatives.storyboard; sourceTree = "<group>"; };
+		8365F91520E6B9C90018BB43 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		8365F91720E6BF0C0018BB43 /* PLC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PLC.entitlements; sourceTree = "<group>"; };
+		8365F91820E6C1640018BB43 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8384C5AC20E6D06100E61899 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8387316C20E55532001E1628 /* DetailTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewController.swift; sourceTree = "<group>"; };
 		83ADA39120E1547400CD5F30 /* PLC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PLC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83ADA39420E1547400CD5F30 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,9 +83,9 @@
 		83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		83BD2FDE20E2C25000260BAC /* PLC-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PLC-Bridging-Header.h"; sourceTree = "<group>"; };
 		83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
+		83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabBarView.storyboard; sourceTree = "<group>"; };
 		895E156B58806FAE17D15096 /* Pods_PLC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PLC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		957CE1D83EEE624D45E57583 /* Pods-PLCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PLCTests/Pods-PLCTests.release.xcconfig"; sourceTree = "<group>"; };
-		998E3FD020E5878A00F64035 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativeCreateViewController.swift; sourceTree = "<group>"; };
 		99AB732820E42E0000E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Initiatives.storyboard; sourceTree = "<group>"; };
 		99AB732B20E42E2800E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Leaderboard.storyboard; sourceTree = "<group>"; };
@@ -156,6 +163,7 @@
 		83ADA39320E1547400CD5F30 /* PLC */ = {
 			isa = PBXGroup;
 			children = (
+				8365F91720E6BF0C0018BB43 /* PLC.entitlements */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
 				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
 				99B367D620E668BE008EBF6F /* Constants.swift */,
@@ -165,9 +173,12 @@
 				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
+				8365F91520E6B9C90018BB43 /* UserModel.swift */,
+				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
 				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
+				83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */,
 				83165AF620E5423F005E9092 /* FavInitiatives.storyboard */,
 				99AB733120E42E8E00E00A2A /* Profile.storyboard */,
 				99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */,
@@ -175,7 +186,7 @@
 				83ADA39D20E1547900CD5F30 /* Assets.xcassets */,
 				83ADA39F20E1547900CD5F30 /* LaunchScreen.storyboard */,
 				83ADA3A220E1547900CD5F30 /* Info.plist */,
-				998E3FD020E5878A00F64035 /* GoogleService-Info.plist */,
+				8384C5AC20E6D06100E61899 /* GoogleService-Info.plist */,
 				83BD2FDE20E2C25000260BAC /* PLC-Bridging-Header.h */,
 			);
 			path = PLC;
@@ -282,6 +293,11 @@
 					83ADA39020E1547400CD5F30 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 0940;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 					83ADA3A620E1547900CD5F30 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -324,8 +340,9 @@
 				99AB733220E42E8E00E00A2A /* Profile.storyboard in Resources */,
 				83ADA3A120E1547900CD5F30 /* LaunchScreen.storyboard in Resources */,
 				83ADA39E20E1547900CD5F30 /* Assets.xcassets in Resources */,
+				83BEBE9020EA8E420055BE16 /* TabBarView.storyboard in Resources */,
 				99AB732920E42E0000E00A2A /* Initiatives.storyboard in Resources */,
-				998E3FD120E5878A00F64035 /* GoogleService-Info.plist in Resources */,
+				8384C5AD20E6D06100E61899 /* GoogleService-Info.plist in Resources */,
 				83165AF720E5423F005E9092 /* FavInitiatives.storyboard in Resources */,
 				99AB732E20E42E4A00E00A2A /* InitiativeCreate.storyboard in Resources */,
 			);
@@ -373,12 +390,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-PLC/Pods-PLC-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -439,7 +458,9 @@
 				99AB733820E54FEB00E00A2A /* Task.swift in Sources */,
 				8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */,
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,
+				8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */,
 				99B367D720E668BE008EBF6F /* Constants.swift in Sources */,
+				8365F91920E6C1640018BB43 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +652,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V9QRYVUZ4D;
 				INFOPLIST_FILE = PLC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,6 +674,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V9QRYVUZ4D;
 				INFOPLIST_FILE = PLC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

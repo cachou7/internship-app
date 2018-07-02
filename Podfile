@@ -7,6 +7,7 @@ platform :ios, '9.0'
   target 'PLC' do
     pod 'Firebase'
     pod 'FirebaseDatabase'
+    pod 'Firebase/Auth'
   end
 
 
