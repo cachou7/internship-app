@@ -48,6 +48,14 @@
             </objects>
             <point key="canvasLocation" x="844" y="0.0"/>
         </scene>
+        <!--LeaderboardPageView-->
+        <scene sceneID="1vA-e6-DMr">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LeaderboardPageViewController" storyboardName="LeaderboardPageView" id="4gq-Vx-aZa" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="thi-eZ-t3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1432" y="19"/>
+        </scene>
     </scenes>
     <resources>
         <image name="iconTrophy" width="25" height="25"/>

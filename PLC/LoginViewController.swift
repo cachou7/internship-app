@@ -58,7 +58,7 @@ class LoginViewController: UIViewController {
                         let uidSnapshot = snapshot.childSnapshot(forPath: user.uid)
                         
                         currentUser = User(authData: user, firstName:
-                            uidSnapshot.childSnapshot(forPath: "firstName").value as! String, lastName: uidSnapshot.childSnapshot(forPath: "lastName").value as! String, jobTitle: uidSnapshot.childSnapshot(forPath: "jobTitle").value as! String, department: uidSnapshot.childSnapshot(forPath: "department").value as! String, currentProjects: uidSnapshot.childSnapshot(forPath: "currentProjects").value as! String)
+                            uidSnapshot.childSnapshot(forPath: "firstName").value as! String, lastName: uidSnapshot.childSnapshot(forPath: "lastName").value as! String, jobTitle: uidSnapshot.childSnapshot(forPath: "jobTitle").value as! String, department: uidSnapshot.childSnapshot(forPath: "department").value as! String, currentProjects: uidSnapshot.childSnapshot(forPath: "currentProjects").value as! String, points: uidSnapshot.childSnapshot(forPath: "points").value as! Int)
                         
                     }
                 })
@@ -88,12 +88,12 @@ class LoginViewController: UIViewController {
             Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { user, error in
                 if error == nil {
                         guard let user = Auth.auth().currentUser else { return }
-                        currentUser = User(authData: user, firstName: firstName!, lastName: lastName!, jobTitle: jobTitle!, department: department!, currentProjects: projects!)
+                    currentUser = User(authData: user, firstName: firstName!, lastName: lastName!, jobTitle: jobTitle!, department: department!, currentProjects: projects!, points: 0)
                         let key = currentUser.uid
                         Constants.refs.databaseUsers.observe(.value, with: { snapshot in
                             if !snapshot.hasChild(key) {
                                 print("New user added to database")
-                                Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": firstName!, "lastName": lastName!, "jobTitle": jobTitle!, "department": department!, "currentProjects": projects!, "tasks_created": [], "tasks_liked": []])
+                                Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": firstName!, "lastName": lastName!, "jobTitle": jobTitle!, "department": department!, "currentProjects": projects!, "points": 0, "tasks_created": [], "tasks_liked": []])
                             }
                         })
                     Auth.auth().signIn(withEmail: self.textFieldLoginEmail.text!,

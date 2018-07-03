@@ -25,6 +25,10 @@
 		83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */; };
 		83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */; };
 		83BEBE9020EA8E420055BE16 /* TabBarView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */; };
+		995285D920EBC12A000E29B4 /* LeaderboardPageView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285D820EBC12A000E29B4 /* LeaderboardPageView.storyboard */; };
+		995285DB20EBC190000E29B4 /* DepartmentLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */; };
+		995285DD20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */; };
+		995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */; };
 		99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */; };
 		99AB732920E42E0000E00A2A /* Initiatives.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732720E42E0000E00A2A /* Initiatives.storyboard */; };
 		99AB732C20E42E2800E00A2A /* Leaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */; };
@@ -86,6 +90,10 @@
 		83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabBarView.storyboard; sourceTree = "<group>"; };
 		895E156B58806FAE17D15096 /* Pods_PLC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PLC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		957CE1D83EEE624D45E57583 /* Pods-PLCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PLCTests/Pods-PLCTests.release.xcconfig"; sourceTree = "<group>"; };
+		995285D820EBC12A000E29B4 /* LeaderboardPageView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LeaderboardPageView.storyboard; sourceTree = "<group>"; };
+		995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DepartmentLeaderboard.storyboard; sourceTree = "<group>"; };
+		995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OfficeLeaderboard.storyboard; sourceTree = "<group>"; };
+		995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardPageViewController.swift; sourceTree = "<group>"; };
 		99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativeCreateViewController.swift; sourceTree = "<group>"; };
 		99AB732820E42E0000E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Initiatives.storyboard; sourceTree = "<group>"; };
 		99AB732B20E42E2800E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Leaderboard.storyboard; sourceTree = "<group>"; };
@@ -173,6 +181,7 @@
 				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
+				995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */,
 				8365F91520E6B9C90018BB43 /* UserModel.swift */,
 				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
@@ -183,6 +192,9 @@
 				99AB733120E42E8E00E00A2A /* Profile.storyboard */,
 				99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */,
 				99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */,
+				995285D820EBC12A000E29B4 /* LeaderboardPageView.storyboard */,
+				995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */,
+				995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */,
 				83ADA39D20E1547900CD5F30 /* Assets.xcassets */,
 				83ADA39F20E1547900CD5F30 /* LaunchScreen.storyboard */,
 				83ADA3A220E1547900CD5F30 /* Info.plist */,
@@ -338,12 +350,15 @@
 				830E74B420E547B3005E629D /* DetailInitiatives.storyboard in Resources */,
 				99AB732C20E42E2800E00A2A /* Leaderboard.storyboard in Resources */,
 				99AB733220E42E8E00E00A2A /* Profile.storyboard in Resources */,
+				995285DB20EBC190000E29B4 /* DepartmentLeaderboard.storyboard in Resources */,
 				83ADA3A120E1547900CD5F30 /* LaunchScreen.storyboard in Resources */,
+				995285D920EBC12A000E29B4 /* LeaderboardPageView.storyboard in Resources */,
 				83ADA39E20E1547900CD5F30 /* Assets.xcassets in Resources */,
 				83BEBE9020EA8E420055BE16 /* TabBarView.storyboard in Resources */,
 				99AB732920E42E0000E00A2A /* Initiatives.storyboard in Resources */,
 				8384C5AD20E6D06100E61899 /* GoogleService-Info.plist in Resources */,
 				83165AF720E5423F005E9092 /* FavInitiatives.storyboard in Resources */,
+				995285DD20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard in Resources */,
 				99AB732E20E42E4A00E00A2A /* InitiativeCreate.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +476,7 @@
 				8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */,
 				99B367D720E668BE008EBF6F /* Constants.swift in Sources */,
 				8365F91920E6C1640018BB43 /* LoginViewController.swift in Sources */,
+				995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
