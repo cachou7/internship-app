@@ -62,6 +62,7 @@ class LoginViewController: UIViewController {
                         
                     }
                 })
+                
                 self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
                 self.textFieldLoginEmail.text = nil
                 self.textFieldLoginPassword.text = nil
