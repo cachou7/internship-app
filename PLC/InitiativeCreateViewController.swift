@@ -78,9 +78,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         let interval = NSDate().timeIntervalSince1970
         let key = Constants.refs.databaseTasks.childByAutoId().key
         
-        task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key)
+        task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid)
         
-        let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp]
+        let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
         let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
         tasksCreated.child("taskId").setValue(key)

@@ -13,23 +13,27 @@ var myIndex = 0
 var items: [Task] = []
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
         var newItems: [Task] = []
+        var createdBy: String
         for child in snapshot.children {
-            if let snapshot = child as? DataSnapshot,
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String) {
-                    newItems.append(task)
+            if let snapshot = child as? DataSnapshot{
+                if ((snapshot.childSnapshot(forPath: "createdBy").value as? String) != nil){
+                    createdBy = snapshot.childSnapshot(forPath: "createdBy").value as! String
                 }
+                else {
+                    createdBy = "DefaultUser"
+                }
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: createdBy)
+                newItems.append(task!)
             }
             
             items = newItems
             items.sort(by: {$0.timestamp > $1.timestamp})
             self.tableView.reloadData()
-        })
+            }})
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,7 +88,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.taskLiked.setImage(unlikedIcon, for: .normal)
             currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
          }
-        self.tableView.reloadData()
     }
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
