@@ -11,6 +11,9 @@ import Firebase
 
 class TaskTableViewCell: UITableViewCell {
     
+    let key = currentUser.uid
+    weak var delegate: TaskTableViewCellDelegate?
+    
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
@@ -23,21 +26,17 @@ class TaskTableViewCell: UITableViewCell {
     }
 
     @IBAction func heartButton(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
         
-        if (sender.isSelected) {
-            let likedIcon = UIImage(named: "redHeart")
-            taskLiked.setImage(likedIcon, for: .normal)
-            
-        }
-        else {
-            let unlikedIcon = UIImage(named: "heartIcon")
-            taskLiked.setImage(unlikedIcon, for: .normal)
-        }
+        delegate?.taskTableViewCellDidTapHeart(self)
     }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
+}
+
+protocol TaskTableViewCellDelegate : class {
+    func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell)
 }

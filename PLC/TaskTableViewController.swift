@@ -12,7 +12,7 @@ import Firebase
 var myIndex = 0
 var items: [Task] = []
 
-class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
 
     
     override func viewDidLoad() {
@@ -21,7 +21,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var newItems: [Task] = []
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot,
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String) {
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String) {
                     newItems.append(task)
                 }
             }
@@ -46,27 +46,50 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
+        let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         cell.taskTitle.text = items[indexPath.row].title
         cell.taskLocation.text = items[indexPath.row].location
         cell.taskTime.text = items[indexPath.row].time
-        print(items[indexPath.row].tag)
         cell.taskTag.text = items[indexPath.row].tag
         
+        //Check if user has liked the task and display correct heart
+        currentTasks.observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.hasChild(items[indexPath.row].id) {
+                let likedIcon = UIImage(named: "redHeart")
+                cell.taskLiked.setImage(likedIcon, for: .normal)
+            }
+        })
+        cell.delegate = self
         return cell
     }
     
+    func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
+        guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
+        //print("Heart", sender, tappedIndexPath.row)
+        
+        sender.isSelected = !sender.isSelected
+         
+        let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
+        
+        // Heart tapped, set image to red heart
+        if (sender.isSelected) {
+            let likedIcon = UIImage(named: "redHeart")
+            sender.taskLiked.setImage(likedIcon, for: .normal)
+            sender.contentView.backgroundColor = UIColor.white
+            currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
+        }
+        // Heart untapped, set image to blank heart
+        else {
+            let unlikedIcon = UIImage(named: "heartIcon")
+            sender.taskLiked.setImage(unlikedIcon, for: .normal)
+            currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
+         }
+    }
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
         //performSegue(withIdentifier: "detailTask", sender: self)
     }
-    
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "detailTask") {
-            let vc = segue.destination as! DetailTaskViewController
-            vc.taskTitle = "TEST"
-        }
-    }*/
     
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
         // get a reference to the view controller for the popover
