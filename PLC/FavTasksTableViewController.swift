@@ -23,7 +23,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             for task in likedTasksDict {
                 Constants.refs.databaseTasks.child(task.key).observe(DataEventType.value, with: { snapshot in
                     let tasksInfo = snapshot.value as? [String : String ] ?? [:]
-                    let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!)
+                    let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["timeMilliseconds"]!)
                     newItems.append(likedTask!)
                     self.tableView.reloadData()
                 })
