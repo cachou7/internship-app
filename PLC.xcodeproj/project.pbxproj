@@ -25,6 +25,7 @@
 		83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */; };
 		83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */; };
 		83BEBE9020EA8E420055BE16 /* TabBarView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */; };
+		83DC45C620EC22780080B6A1 /* FavTasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DC45C520EC22780080B6A1 /* FavTasksTableViewController.swift */; };
 		995285D920EBC12A000E29B4 /* LeaderboardPageView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285D820EBC12A000E29B4 /* LeaderboardPageView.storyboard */; };
 		995285DB20EBC190000E29B4 /* DepartmentLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */; };
 		995285DD20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */; };
@@ -88,6 +89,7 @@
 		83BD2FDE20E2C25000260BAC /* PLC-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PLC-Bridging-Header.h"; sourceTree = "<group>"; };
 		83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabBarView.storyboard; sourceTree = "<group>"; };
+		83DC45C520EC22780080B6A1 /* FavTasksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavTasksTableViewController.swift; sourceTree = "<group>"; };
 		895E156B58806FAE17D15096 /* Pods_PLC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PLC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		957CE1D83EEE624D45E57583 /* Pods-PLCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLCTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PLCTests/Pods-PLCTests.release.xcconfig"; sourceTree = "<group>"; };
 		995285D820EBC12A000E29B4 /* LeaderboardPageView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LeaderboardPageView.storyboard; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				8365F91720E6BF0C0018BB43 /* PLC.entitlements */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
 				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
+				83DC45C520EC22780080B6A1 /* FavTasksTableViewController.swift */,
 				99B367D620E668BE008EBF6F /* Constants.swift */,
 				8387316C20E55532001E1628 /* DetailTaskViewController.swift */,
 				83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */,
@@ -472,6 +475,7 @@
 				83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */,
 				83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */,
 				83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */,
+				83DC45C620EC22780080B6A1 /* FavTasksTableViewController.swift in Sources */,
 				99AB733820E54FEB00E00A2A /* Task.swift in Sources */,
 				8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */,
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,

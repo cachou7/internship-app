@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,84 +13,82 @@
         <!--My Initiatives-->
         <scene sceneID="dYr-Hg-Iyt">
             <objects>
-                <tableViewController id="sHw-mg-HDr" sceneMemberID="viewController">
+                <tableViewController id="sHw-mg-HDr" customClass="FavTasksTableViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="lzD-4W-oCk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="90" id="6nk-PV-27D" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="90" id="L7P-cj-gNg" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6nk-PV-27D" id="4pN-SG-smy" userLabel="Cell">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L7P-cj-gNg" id="6D0-pz-123" userLabel="Cell">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fortnite Tournament" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TNB-bT-bVz">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fortnite Tournament" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTg-4b-5oJ">
                                             <rect key="frame" x="16" y="11" width="281" height="24"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="24" id="FMS-7E-ReO"/>
-                                            </constraints>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Is-SY-ORI">
-                                            <rect key="frame" x="16" y="34" width="217" height="20"/>
+                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#participate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sam-Ht-6w5">
+                                            <rect key="frame" x="262" y="9" width="100" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="gST-xz-qCt"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July 4th 6 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="roE-G2-uH0">
+                                            <rect key="frame" x="16" y="52" width="85" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="3WF-gq-q4S"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#participate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afP-C2-iXg">
-                                            <rect key="frame" x="305" y="8" width="54" height="14"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="14" id="Kbp-it-mQM"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="10"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H6e-27-VyN">
+                                            <rect key="frame" x="16" y="31" width="85" height="20"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gg0-8Z-IeN">
-                                            <rect key="frame" x="320" y="30" width="24" height="25"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4nG-Rn-Sd7">
+                                            <rect key="frame" x="316" y="27" width="39" height="39"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="24" id="CBk-CR-NGj"/>
+                                                <constraint firstAttribute="width" constant="39" id="368-cW-BRQ"/>
                                             </constraints>
-                                            <state key="normal" title="taskLiked" image="heartIcon"/>
+                                            <state key="normal" image="heartIcon"/>
+                                            <connections>
+                                                <action selector="heartButton:" destination="L7P-cj-gNg" eventType="touchUpInside" id="SCE-HO-b8d"/>
+                                            </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July 4th 6 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5k-MB-CSd">
-                                            <rect key="frame" x="16" y="51" width="217" height="14"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="14" id="VHr-gd-NQA"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="TNB-bT-bVz" firstAttribute="leading" secondItem="6Is-SY-ORI" secondAttribute="leading" id="3cu-Fj-FcA"/>
-                                        <constraint firstItem="Gg0-8Z-IeN" firstAttribute="leading" secondItem="TNB-bT-bVz" secondAttribute="trailing" constant="23" id="6Ut-Og-Bec"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Gg0-8Z-IeN" secondAttribute="bottom" constant="24" id="AOL-Kv-TCW"/>
-                                        <constraint firstItem="r5k-MB-CSd" firstAttribute="top" secondItem="TNB-bT-bVz" secondAttribute="bottom" constant="16" id="EUM-FP-B3N"/>
-                                        <constraint firstItem="TNB-bT-bVz" firstAttribute="top" secondItem="4pN-SG-smy" secondAttribute="topMargin" id="Mf8-9O-63E"/>
-                                        <constraint firstItem="afP-C2-iXg" firstAttribute="top" secondItem="4pN-SG-smy" secondAttribute="topMargin" constant="-3" id="Nad-5C-dSe"/>
-                                        <constraint firstItem="6Is-SY-ORI" firstAttribute="leading" secondItem="r5k-MB-CSd" secondAttribute="leading" id="Nru-3k-kwS"/>
-                                        <constraint firstItem="afP-C2-iXg" firstAttribute="leading" secondItem="TNB-bT-bVz" secondAttribute="trailing" constant="8" symbolic="YES" id="Sch-c1-F9k"/>
-                                        <constraint firstItem="6Is-SY-ORI" firstAttribute="centerY" secondItem="4pN-SG-smy" secondAttribute="centerY" id="ayb-lG-4jM"/>
-                                        <constraint firstItem="TNB-bT-bVz" firstAttribute="leading" secondItem="4pN-SG-smy" secondAttribute="leadingMargin" id="bVQ-KS-BJC"/>
-                                        <constraint firstItem="afP-C2-iXg" firstAttribute="trailing" secondItem="4pN-SG-smy" secondAttribute="trailingMargin" id="ea1-wV-iAS"/>
-                                        <constraint firstItem="Gg0-8Z-IeN" firstAttribute="leading" secondItem="6Is-SY-ORI" secondAttribute="trailing" constant="87" id="g9v-zF-oFA"/>
-                                        <constraint firstItem="Gg0-8Z-IeN" firstAttribute="top" secondItem="afP-C2-iXg" secondAttribute="bottom" constant="8" symbolic="YES" id="h9n-my-njz"/>
-                                        <constraint firstItem="6Is-SY-ORI" firstAttribute="trailing" secondItem="r5k-MB-CSd" secondAttribute="trailing" id="n4u-cG-TMx"/>
-                                        <constraint firstItem="afP-C2-iXg" firstAttribute="centerX" secondItem="Gg0-8Z-IeN" secondAttribute="centerX" id="rHx-br-jV8"/>
-                                        <constraint firstItem="r5k-MB-CSd" firstAttribute="baseline" secondItem="Gg0-8Z-IeN" secondAttribute="firstBaseline" id="x1y-5f-Dhr"/>
+                                        <constraint firstItem="4nG-Rn-Sd7" firstAttribute="top" secondItem="Sam-Ht-6w5" secondAttribute="bottom" constant="2" id="AFl-nF-3Zg"/>
+                                        <constraint firstItem="4nG-Rn-Sd7" firstAttribute="leading" secondItem="uTg-4b-5oJ" secondAttribute="trailing" constant="19" id="Dq9-yl-X5L"/>
+                                        <constraint firstItem="uTg-4b-5oJ" firstAttribute="leading" secondItem="H6e-27-VyN" secondAttribute="leading" id="EgT-cW-Las"/>
+                                        <constraint firstItem="uTg-4b-5oJ" firstAttribute="leading" secondItem="6D0-pz-123" secondAttribute="leadingMargin" id="Mqb-7S-bA1"/>
+                                        <constraint firstItem="uTg-4b-5oJ" firstAttribute="top" secondItem="6D0-pz-123" secondAttribute="topMargin" id="SNs-HR-l3r"/>
+                                        <constraint firstItem="roE-G2-uH0" firstAttribute="top" secondItem="uTg-4b-5oJ" secondAttribute="bottom" constant="17" id="Sda-vM-dRg"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="4nG-Rn-Sd7" secondAttribute="trailing" constant="4" id="VIK-iT-WNN"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Sam-Ht-6w5" secondAttribute="trailing" constant="-3" id="VK6-8b-NHT"/>
+                                        <constraint firstItem="H6e-27-VyN" firstAttribute="leading" secondItem="roE-G2-uH0" secondAttribute="leading" id="Z6B-li-lyc"/>
+                                        <constraint firstItem="roE-G2-uH0" firstAttribute="top" secondItem="H6e-27-VyN" secondAttribute="bottom" constant="1" id="aty-cr-p9z"/>
+                                        <constraint firstItem="H6e-27-VyN" firstAttribute="trailing" secondItem="roE-G2-uH0" secondAttribute="trailing" id="bdk-6N-e2W"/>
+                                        <constraint firstItem="Sam-Ht-6w5" firstAttribute="top" secondItem="6D0-pz-123" secondAttribute="topMargin" constant="-2" id="ksc-Me-GT4"/>
+                                        <constraint firstItem="roE-G2-uH0" firstAttribute="bottom" secondItem="4nG-Rn-Sd7" secondAttribute="bottom" id="sDi-HU-dcb"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="taskLocation" destination="6Is-SY-ORI" id="fSy-ZO-aZb"/>
-                                    <outlet property="taskTag" destination="afP-C2-iXg" id="DNS-32-NWA"/>
-                                    <outlet property="taskTime" destination="r5k-MB-CSd" id="y5a-kL-TBm"/>
-                                    <outlet property="taskTitle" destination="TNB-bT-bVz" id="iht-bn-E6H"/>
+                                    <outlet property="taskLiked" destination="4nG-Rn-Sd7" id="mcE-O4-xPl"/>
+                                    <outlet property="taskLocation" destination="H6e-27-VyN" id="JNd-T0-kQv"/>
+                                    <outlet property="taskTag" destination="Sam-Ht-6w5" id="sqp-HZ-qrf"/>
+                                    <outlet property="taskTime" destination="roE-G2-uH0" id="bE4-S3-1gb"/>
+                                    <outlet property="taskTitle" destination="uTg-4b-5oJ" id="d6c-LV-oUg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -106,7 +103,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f2O-QV-vJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="961" y="-142"/>
+            <point key="canvasLocation" x="960.79999999999995" y="-142.57871064467767"/>
         </scene>
         <!--My Initiatives-->
         <scene sceneID="UzO-OK-W74">
