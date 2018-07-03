@@ -84,10 +84,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.taskLiked.setImage(unlikedIcon, for: .normal)
             currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
          }
+        self.tableView.reloadData()
     }
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
+        self.tableView.reloadData()
         //performSegue(withIdentifier: "detailTask", sender: self)
     }
     

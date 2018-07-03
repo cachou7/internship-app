@@ -83,6 +83,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
         print("Task added")
+        self.tableView.reloadData()
         dismiss()
     }
     
