@@ -58,7 +58,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
-            if snapshot.hasChild(items[indexPath.row].id) {
+            if !snapshot.hasChild(items[indexPath.row].id) {
+                let unlikedIcon = UIImage(named: "heartIcon")
+                cell.taskLiked.setImage(unlikedIcon, for: .normal)
+            }
+            else {
                 let likedIcon = UIImage(named: "redHeart")
                 cell.taskLiked.setImage(likedIcon, for: .normal)
             }
@@ -109,6 +113,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
 
         // present the popover
         self.present(popController, animated: true, completion: nil)
+        
+        self.tableView.reloadData()
     }
     
     // UIPopoverPresentationControllerDelegate method
