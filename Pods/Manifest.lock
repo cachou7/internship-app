@@ -34,11 +34,13 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NavigationDropdownMenu (4.0.0)
 
 DEPENDENCIES:
   - Firebase
   - Firebase/Auth
   - FirebaseDatabase
+  - NavigationDropdownMenu (~> 4.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -52,6 +54,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - NavigationDropdownMenu
 
 SPEC CHECKSUMS:
   Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
@@ -64,7 +67,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NavigationDropdownMenu: 0d1b1266322f20d4908578011202fad266301c83
 
-PODFILE CHECKSUM: 6a6a98f04d4fa65c79ff41e341c4dce279541b11
+PODFILE CHECKSUM: 4af8ed6992ce3b878862ffc112be35ddd7dd3d79
 
 COCOAPODS: 1.5.3

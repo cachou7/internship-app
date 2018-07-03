@@ -19,6 +19,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     
     let datePicker = UIDatePicker()
     var task: Task?
+    var eventTime: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,9 +79,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         let interval = NSDate().timeIntervalSince1970
         let key = Constants.refs.databaseTasks.childByAutoId().key
         
-        task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid)
+        task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid, ranking: "0", timeMilliseconds: eventTime!)
         
-        let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy]
+        let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
         let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
         tasksCreated.child("taskId").setValue(key)
@@ -89,8 +90,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func datePickerChanged(datePicker:UIDatePicker) {
-        print("time picker changed for ceremony")
         let dateFormatter = DateFormatter()
+        eventTime = String(self.datePicker.date.timeIntervalSince1970)
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
         let strDate = dateFormatter.string(from:datePicker.date)
