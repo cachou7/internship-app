@@ -50,13 +50,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="taskDescription" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6y6-CG-ceb">
-                                <rect key="frame" x="20" y="237.33333333333334" width="374" height="114.66666666666666"/>
+                                <rect key="frame" x="20" y="237.33333333333334" width="374" height="70.666666666666657"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Rdn-AL-kmB">
-                                <rect key="frame" x="85.666666666666686" y="695.33333333333337" width="244" height="20.333333333333371"/>
+                                <rect key="frame" x="85.666666666666686" y="651.33333333333337" width="244" height="20.333333333333371"/>
                                 <subviews>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0km-Eu-WDK">
                                         <rect key="frame" x="0.0" y="0.0" width="92.666666666666671" height="20.333333333333332"/>
@@ -120,7 +120,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lMD-Vx-ZNS"/>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="cmF-qk-CNd"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="createLabel" destination="K8I-Al-Sir" id="U9H-Lw-FR3"/>
                         <outlet property="leadLabel" destination="eHL-5a-bIy" id="dFC-qS-TI8"/>
