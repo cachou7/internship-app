@@ -12,8 +12,8 @@ import Firebase
 class User{
     //MARK: Properties
     let uid: String
-    let tasks_liked: [String] = []
-    let tasks_created: [String] = []
+    let tasks_liked = [String:Bool]()
+    let tasks_created = [String:Bool]()
     let firstName: String
     let lastName: String
     let jobTitle: String
