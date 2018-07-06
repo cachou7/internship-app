@@ -154,7 +154,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskTag.text = items[indexPath.row].tag
         
         //Check if user has liked the task and display correct heart
-        currentTasks.observeSingleEvent(of: .value, with: { snapshot in
+        currentTasks.observe(.value, with: { snapshot in
             if !snapshot.hasChild(items[indexPath.row].id) {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 cell.taskLiked.setImage(unlikedIcon, for: .normal)
