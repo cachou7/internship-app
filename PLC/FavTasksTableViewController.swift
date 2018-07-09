@@ -16,7 +16,6 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var newItems: [Task] = []
         
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(DataEventType.value, with: { snapshot in
             let likedTasksDict = snapshot.value as? [String : Any ] ?? [:]
@@ -48,58 +47,45 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return likedItems.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        //let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
+        let likedIcon = UIImage(named: "redHeart")
+        
         cell.taskTitle.text = likedItems[indexPath.row].title
         cell.taskLocation.text = likedItems[indexPath.row].location
         cell.taskTime.text = likedItems[indexPath.row].time
         cell.taskTag.text = likedItems[indexPath.row].tag
-        
-        let likedIcon = UIImage(named: "redHeart")
         cell.taskLiked.setImage(likedIcon, for: .normal)
-
         cell.delegate = self
+        
         return cell
     }
     
+    // Remove task from Favs page if user untaps heart on this page
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        //print("Heart", sender, tappedIndexPath.row)
-        
-        sender.isSelected = !sender.isSelected
-        
+        print("Removed task at row " + String(tappedIndexPath.row))
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
+        let unlikedIcon = UIImage(named: "heartIcon")
+        sender.taskLiked.setImage(unlikedIcon, for: .normal)
+        currentTasks.child(self.likedItems[tappedIndexPath.row].id).setValue(nil)
+        self.likedItems.remove(at: tappedIndexPath.row)
         
-        // Heart tapped, set image to red heart
-        if (sender.isSelected) {
-            let likedIcon = UIImage(named: "redHeart")
-            sender.taskLiked.setImage(likedIcon, for: .normal)
-            sender.contentView.backgroundColor = UIColor.white
-            currentTasks.child(likedItems[tappedIndexPath.row].id).setValue(true)
-        }
-            // Heart untapped, set image to blank heart
-        else {
-            let unlikedIcon = UIImage(named: "heartIcon")
-            sender.taskLiked.setImage(unlikedIcon, for: .normal)
-            currentTasks.child(likedItems[tappedIndexPath.row].id).setValue(nil)
-        }
+        tableView.reloadData()
+        //}
     }
+    
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        myIndex = indexPath.row
+        print(items.count)
+        for i in 0..<items.count {
+            if items[i].id == self.likedItems[indexPath.row].id {
+                myIndex = i
+                break
+            }
+        }
+        //performSegue(withIdentifier: "showFavTaskDetails", sender: self)
         self.tableView.reloadData()
-        //performSegue(withIdentifier: "detailTask", sender: self)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
