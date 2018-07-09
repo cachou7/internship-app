@@ -57,21 +57,21 @@
                             </items>
                         </toolbar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="90" id="QoY-kJ-wON" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="90" id="QoY-kJ-wON" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QoY-kJ-wON" id="YkK-vZ-qGV" userLabel="Cell">
-                                    <rect key="frame" x="0.0" y="0.0" width="376" height="89.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="89.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fortnite Tournament" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8N4-8q-btJ">
-                                            <rect key="frame" x="20" y="11" width="286" height="24"/>
+                                            <rect key="frame" x="20" y="11" width="312" height="24"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#participate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wx1-ic-qK0">
-                                            <rect key="frame" x="271" y="9" width="100" height="16"/>
+                                            <rect key="frame" x="297" y="9" width="100" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="100" id="0KJ-lY-sUu"/>
                                             </constraints>
@@ -95,7 +95,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16M-dI-3P6">
-                                            <rect key="frame" x="325" y="27" width="39" height="39"/>
+                                            <rect key="frame" x="351" y="27" width="39" height="39"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="39" id="i5a-aV-Vx1"/>
                                             </constraints>
