@@ -49,8 +49,14 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     //SEARCH BUTTON
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
-        tableView.tableHeaderView = searchController.searchBar
-        
+        if tableView.tableHeaderView != initialToolbar{
+            shouldShowSearchResults = false
+            tableView.tableHeaderView = initialToolbar
+            tableView.reloadData()
+        }
+        else{
+            tableView.tableHeaderView = searchController.searchBar
+        }
     }
     
     //COMPOSE BUTTON
@@ -288,10 +294,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         //print("Heart", sender, tappedIndexPath.row)
-        
         sender.isSelected = !sender.isSelected
          
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
+        
+        let tappedTask = Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id)
+        
         
         // Heart tapped, set image to red heart
         if (sender.isSelected) {
@@ -299,6 +307,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.taskLiked.setImage(likedIcon, for: .normal)
             sender.contentView.backgroundColor = UIColor.white
             currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
+
+            })
+            
         }
         // Heart untapped, set image to blank heart
         else {
