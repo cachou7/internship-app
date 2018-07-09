@@ -20,10 +20,11 @@ class Task{
     var createdBy: String
     var ranking: String
     var timeMilliseconds: String
+    var type: String
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String, id: String, createdBy: String, ranking: String, timeMilliseconds: String) {
+    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String, id: String, createdBy: String, ranking: String, timeMilliseconds: String, type:String) {
         
         // The title must not be empty
         guard !title.isEmpty else {
@@ -42,5 +43,6 @@ class Task{
         self.createdBy = createdBy
         self.ranking = ranking
         self.timeMilliseconds = timeMilliseconds
+        self.type = type
     }
 }

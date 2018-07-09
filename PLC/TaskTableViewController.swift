@@ -12,7 +12,11 @@ import NavigationDropdownMenu
 
 var myIndex = 0
 var items: [Task] = []
+var overallItems: [Task] = []
+var bigIdeaItems: [Task] = []
+var communityItems: [Task] = []
 var menuView: NavigationDropdownMenu!
+var indexDropdown: Int = 0
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
     //MARK: Actions
@@ -76,6 +80,26 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
             print("Did select item at index: \(indexPath)")
+            indexDropdown = indexPath
+            if indexPath == 0{
+                items = overallItems
+            }
+            else if indexPath == 1{
+                items = communityItems
+            }
+            else{
+                items = bigIdeaItems
+            }
+            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
+                items.sort(by: {$0.timestamp > $1.timestamp})
+            }
+            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
+                items.sort(by: {$0.ranking > $1.ranking})
+            }
+            else{
+                items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            }
+            self.tableView.reloadData()
         }
         
         self.navigationItem.titleView = menuView
@@ -83,10 +107,14 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         //Tasks Loaded From DB
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
-        var newItems: [Task] = []
+        var newOverallItems: [Task] = []
+        var newCommunityItems: [Task] = []
+        var newBigIdeaItems: [Task] = []
         var createdBy: String
         var ranking: String
         var timeMilliseconds: String
+        var taskType: String
+            
             
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
@@ -110,14 +138,38 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 else {
                     timeMilliseconds = "0"
                 }
+                if ((snapshot.childSnapshot(forPath: "taskType").value as? String) != nil && (snapshot.childSnapshot(forPath: "taskType").value as? String) != ""){
+                    taskType = snapshot.childSnapshot(forPath: "taskType").value as! String
+                }
+                else {
+                    taskType = "Community"
+                }
                 
                 //Checks for tasks created before "ranking" portion added
                 
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: createdBy, ranking: ranking, timeMilliseconds: timeMilliseconds)
-                newItems.append(task!)
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: createdBy, ranking: ranking, timeMilliseconds: timeMilliseconds, type: taskType)
+                
+                newOverallItems.append(task!)
+                if task?.type == "Community"{
+                    newCommunityItems.append(task!)
+                }
+                else if task?.type == "Big Idea"{
+                    newBigIdeaItems.append(task!)
+                }
             }
+            overallItems = newOverallItems
+            bigIdeaItems = newBigIdeaItems
+            communityItems = newCommunityItems
             
-            items = newItems
+            if indexDropdown == 0{
+                items = overallItems
+            }
+            else if indexDropdown == 1{
+                items = communityItems
+            }
+            else{
+                items = bigIdeaItems
+            }
             if self.segmentedBarOutlet.selectedSegmentIndex == 0{
                 items.sort(by: {$0.timestamp > $1.timestamp})
                 self.tableView.reloadData()
