@@ -12,14 +12,10 @@ import NavigationDropdownMenu
 
 var myIndex = 0
 var items: [Task] = []
-var overallItems: [Task] = []
-var bigIdeaItems: [Task] = []
-var communityItems: [Task] = []
 var menuView: NavigationDropdownMenu!
 var indexDropdown: Int = 0
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
-    
     //MARK: Actions
     
     //SEGMENTED BAR
@@ -71,7 +67,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         // present the popover
         self.present(popController, animated: true, completion: nil)
-        
         self.tableView.reloadData()
     }
     
@@ -87,13 +82,17 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var filteredItems: [Task] = []
     var indexDropdown: Int = 0
     var shouldShowSearchResults = false
+    var initialToolbar: UIView! = nil
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initialToolbar = tableView.tableHeaderView
+        
         //SEARCH BAR
         self.configureSearchBar()
+        
         
         //DROPDOWN MENU
         let menuItems = ["All Initiatives", "Community Initiatives", "Big Idea Initiatives"]
@@ -337,6 +336,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowSearchResults = false
+        tableView.tableHeaderView = initialToolbar
         self.tableView.reloadData()
     }
     
@@ -354,9 +354,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         // Filter the data array and get only those countries that match the search text.
         filteredItems = overallItems.filter({ (task) -> Bool in
-            let taskText: NSString = task.title as NSString
+            let taskTitle: NSString = task.title as NSString
+            let taskTag: NSString = task.tag as NSString
             
-            return (taskText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+            
+            return ((taskTitle.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskTag.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound)
         })
         
         // Reload the tableview.
