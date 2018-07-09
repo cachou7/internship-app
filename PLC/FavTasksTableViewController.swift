@@ -93,13 +93,13 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(items.count)
+        /*print(items.count)
         for i in 0..<items.count {
             if items[i].id == self.likedItems[indexPath.row].id {
                 myIndex = i
                 break
             }
-        }
+        }*/
         //performSegue(withIdentifier: "showFavTaskDetails", sender: self)
         self.tableView.reloadData()
     }

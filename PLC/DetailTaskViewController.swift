@@ -10,6 +10,7 @@ import UIKit
 
 class DetailTaskViewController: UIViewController {
     
+    var task_in:Task!
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
@@ -22,11 +23,11 @@ class DetailTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        taskTitle.text = items[myIndex].title
-        taskLocation.text = items[myIndex].location
-        taskTime.text = items[myIndex].time
-        taskDescription.text = items[myIndex].description
-        let tags = items[myIndex].tag
+        taskTitle.text = task_in.title
+        taskLocation.text = task_in.location
+        taskTime.text = task_in.time
+        taskDescription.text = task_in.description
+        let tags = task_in.tag
         let tagArray = tags.components(separatedBy: " ")
         for tag in tagArray{
             print(tag)

@@ -10,10 +10,10 @@ import UIKit
 import Firebase
 import NavigationDropdownMenu
 
-var myIndex = 0
+/*var myIndex = 0
 var items: [Task] = []
 var menuView: NavigationDropdownMenu!
-var indexDropdown: Int = 0
+var indexDropdown: Int = 0*/
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Actions
@@ -81,9 +81,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var communityItems: [Task] = []
     var filteredItems: [Task] = []
     var indexDropdown: Int = 0
+    var passedTask:Task!
     var shouldShowSearchResults = false
     var initialToolbar: UIView! = nil
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -311,11 +311,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
-        if self.indexDropdown == 0 {
-            
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "detailTask", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
+            destinationVC.task_in = self.items[myIndex]
         }
-        self.tableView.reloadData()
-        //performSegue(withIdentifier: "detailTask", sender: self)
     }
     
     func configureSearchBar(){
