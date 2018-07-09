@@ -56,7 +56,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var menuView: NavigationDropdownMenu!
     let searchController = UISearchController(searchResultsController: nil)
-    
+    var myIndex = 0
+    var items: [Task] = []
+    var overallItems: [Task] = []
+    var bigIdeaItems: [Task] = []
+    var communityItems: [Task] = []
+    var indexDropdown: Int = 0
     
     
     override func viewDidLoad() {
@@ -91,24 +96,24 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
             print("Did select item at index: \(indexPath)")
-            indexDropdown = indexPath
+            self.indexDropdown = indexPath
             if indexPath == 0{
-                items = overallItems
+                self.items = self.overallItems
             }
             else if indexPath == 1{
-                items = communityItems
+                self.items = self.communityItems
             }
             else{
-                items = bigIdeaItems
+                self.items = self.bigIdeaItems
             }
             if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                items.sort(by: {$0.timestamp > $1.timestamp})
+                self.items.sort(by: {$0.timestamp > $1.timestamp})
             }
             else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                items.sort(by: {$0.ranking > $1.ranking})
+                self.items.sort(by: {$0.ranking > $1.ranking})
             }
             else{
-                items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                self.items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
             self.tableView.reloadData()
         }
@@ -168,29 +173,29 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                     newBigIdeaItems.append(task!)
                 }
             }
-            overallItems = newOverallItems
-            bigIdeaItems = newBigIdeaItems
-            communityItems = newCommunityItems
+            self.overallItems = newOverallItems
+            self.bigIdeaItems = newBigIdeaItems
+            self.communityItems = newCommunityItems
             
-            if indexDropdown == 0{
-                items = overallItems
+            if self.indexDropdown == 0{
+                self.items = self.overallItems
             }
-            else if indexDropdown == 1{
-                items = communityItems
+            else if self.indexDropdown == 1{
+                self.items = self.communityItems
             }
             else{
-                items = bigIdeaItems
+                self.items = self.bigIdeaItems
             }
             if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                items.sort(by: {$0.timestamp > $1.timestamp})
+                self.items.sort(by: {$0.timestamp > $1.timestamp})
                 self.tableView.reloadData()
             }
             else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                items.sort(by: {$0.ranking > $1.ranking})
+                self.items.sort(by: {$0.ranking > $1.ranking})
                 self.tableView.reloadData()
             }
             else{
-                items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                self.items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
                 self.tableView.reloadData()
             }
             }})
@@ -218,7 +223,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         //Check if user has liked the task and display correct heart
         currentTasks.observe(.value, with: { snapshot in
-            if !snapshot.hasChild(items[indexPath.row].id) {
+            if !snapshot.hasChild(self.items[indexPath.row].id) {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 cell.taskLiked.setImage(unlikedIcon, for: .normal)
             }
@@ -256,6 +261,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
+        if self.indexDropdown == 0 {
+            
+        }
         self.tableView.reloadData()
         //performSegue(withIdentifier: "detailTask", sender: self)
     }
