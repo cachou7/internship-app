@@ -18,8 +18,11 @@ var communityItems: [Task] = []
 var menuView: NavigationDropdownMenu!
 var indexDropdown: Int = 0
 
-class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
+class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+    
     //MARK: Actions
+    
+    //SEGMENTED BAR
     @IBAction func segmentedBar(_ sender: UISegmentedControl) {
         print("CHANGE")
         if segmentedBarOutlet.selectedSegmentIndex == 0{
@@ -47,30 +50,50 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             self.tableView.reloadData()
         }
     }
+    
+    //SEARCH BUTTON
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
         tableView.tableHeaderView = searchController.searchBar
         
     }
     
+    //COMPOSE BUTTON
+    @IBAction func composeButton(_ sender: UIBarButtonItem) {
+        // get a reference to the view controller for the popover
+        let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
+        
+        // set the presentation style
+        popController.modalPresentationStyle = UIModalPresentationStyle.popover
+        
+        // set up the popover presentation controller
+        popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
+        
+        // present the popover
+        self.present(popController, animated: true, completion: nil)
+        
+        self.tableView.reloadData()
+    }
+    
     // Variables
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var menuView: NavigationDropdownMenu!
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController!
     var myIndex = 0
     var items: [Task] = []
     var overallItems: [Task] = []
     var bigIdeaItems: [Task] = []
     var communityItems: [Task] = []
+    var filteredItems: [Task] = []
     var indexDropdown: Int = 0
+    var shouldShowSearchResults = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //SEARCH BAR
-        searchController.searchResultsUpdater = self as? UISearchResultsUpdating
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = true
+        self.configureSearchBar()
         
         //DROPDOWN MENU
         let menuItems = ["All Initiatives", "Community Initiatives", "Big Idea Initiatives"]
@@ -210,28 +233,55 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        if shouldShowSearchResults{
+            return filteredItems.count
+        }
+        else{
+            return items.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        cell.taskTitle.text = items[indexPath.row].title
-        cell.taskLocation.text = items[indexPath.row].location
-        cell.taskTime.text = items[indexPath.row].time
-        cell.taskTag.text = items[indexPath.row].tag
         
-        //Check if user has liked the task and display correct heart
-        currentTasks.observe(.value, with: { snapshot in
-            if !snapshot.hasChild(self.items[indexPath.row].id) {
-                let unlikedIcon = UIImage(named: "heartIcon")
-                cell.taskLiked.setImage(unlikedIcon, for: .normal)
-            }
-            else {
-                let likedIcon = UIImage(named: "redHeart")
-                cell.taskLiked.setImage(likedIcon, for: .normal)
-            }
-        })
+        if shouldShowSearchResults{
+            cell.taskTitle.text = filteredItems[indexPath.row].title
+            cell.taskLocation.text = filteredItems[indexPath.row].location
+            cell.taskTime.text = filteredItems[indexPath.row].time
+            cell.taskTag.text = filteredItems[indexPath.row].tag
+            
+            //Check if user has liked the task and display correct heart
+            currentTasks.observe(.value, with: { snapshot in
+                if !snapshot.hasChild(self.filteredItems[indexPath.row].id) {
+                    let unlikedIcon = UIImage(named: "heartIcon")
+                    cell.taskLiked.setImage(unlikedIcon, for: .normal)
+                }
+                else {
+                    let likedIcon = UIImage(named: "redHeart")
+                    cell.taskLiked.setImage(likedIcon, for: .normal)
+                }
+            })
+        }
+        else{
+            cell.taskTitle.text = items[indexPath.row].title
+            cell.taskLocation.text = items[indexPath.row].location
+            cell.taskTime.text = items[indexPath.row].time
+            cell.taskTag.text = items[indexPath.row].tag
+            
+            //Check if user has liked the task and display correct heart
+            currentTasks.observe(.value, with: { snapshot in
+                if !snapshot.hasChild(self.items[indexPath.row].id) {
+                    let unlikedIcon = UIImage(named: "heartIcon")
+                    cell.taskLiked.setImage(unlikedIcon, for: .normal)
+                }
+                else {
+                    let likedIcon = UIImage(named: "redHeart")
+                    cell.taskLiked.setImage(likedIcon, for: .normal)
+                }
+            })
+        }
+
         cell.delegate = self
         return cell
     }
@@ -258,6 +308,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
          }
     }
+
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
@@ -268,20 +319,47 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         //performSegue(withIdentifier: "detailTask", sender: self)
     }
     
-    @IBAction func composeButton(_ sender: UIBarButtonItem) {
-        // get a reference to the view controller for the popover
-        let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
+    func configureSearchBar(){
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self as? UISearchResultsUpdating
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search here..."
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        self.tableView.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        self.tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            self.tableView.reloadData()
+        }
         
-        // set the presentation style
-        popController.modalPresentationStyle = UIModalPresentationStyle.popover
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
         
-        // set up the popover presentation controller
-        popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
-        popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
-
-        // present the popover
-        self.present(popController, animated: true, completion: nil)
+        // Filter the data array and get only those countries that match the search text.
+        filteredItems = overallItems.filter({ (task) -> Bool in
+            let taskText: NSString = task.title as NSString
+            
+            return (taskText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
         
+        // Reload the tableview.
         self.tableView.reloadData()
     }
     
