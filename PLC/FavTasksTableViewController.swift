@@ -16,21 +16,36 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set up listener to get liked tasks and detect when tasks are liked
+        Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
+            print("Fetching fav tasks...")
+            // Get specific information for each liked task and add it to LikedItems, then reload data
+            Constants.refs.databaseTasks.child(taskId.key).observe(DataEventType.value, with: { snapshot in
+                let tasksInfo = snapshot.value as? [String : String ] ?? [:]
+                let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
+                                     type: tasksInfo["taskType"]!)
+                
+                self.likedItems.append(likedTask!)
+                print("Added task named: " + tasksInfo["taskTitle"]!)
+                self.likedItems.sort(by: {$0.timestamp > $1.timestamp})
+                self.tableView.rowHeight = 90.0
+                //print("Reloaded data")
+                self.tableView.reloadData()
+            })
+        })
         
-        Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(DataEventType.value, with: { snapshot in
-            let likedTasksDict = snapshot.value as? [String : Any ] ?? [:]
-            for task in likedTasksDict {
-                Constants.refs.databaseTasks.child(task.key).observe(DataEventType.value, with: { snapshot in
-                    let tasksInfo = snapshot.value as? [String : String ] ?? [:]
-                    let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!, type: tasksInfo["taskType"]!)
-                    newItems.append(likedTask!)
-                    self.tableView.reloadData()
-                })
+        // Set up listener to detect when tasks are unliked from main Initiatives view and delete from likeItems
+        Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
+            print("Deleting item from fav tasks...")
+            //if self.likedItems.count > 0 {
+            for i in 0..<self.likedItems.count {
+                if self.likedItems[i].id == taskId.key {
+                    self.likedItems.remove(at: i)
+                    break
+                }
             }
-            self.likedItems = newItems
-            print(self.likedItems)
-            self.likedItems.sort(by: {$0.timestamp > $1.timestamp})
-            self.tableView.rowHeight = 90.0
+            //}
+    
             self.tableView.reloadData()
         })
     }
