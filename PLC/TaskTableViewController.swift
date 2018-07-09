@@ -298,8 +298,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
          
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
-        let tappedTask = Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id)
-        
         
         // Heart tapped, set image to red heart
         if (sender.isSelected) {
@@ -307,8 +305,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.taskLiked.setImage(likedIcon, for: .normal)
             sender.contentView.backgroundColor = UIColor.white
             currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
-
-            })
             
         }
         // Heart untapped, set image to blank heart
