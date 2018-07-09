@@ -47,14 +47,25 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             self.tableView.reloadData()
         }
     }
+    @IBAction func searchButton(_ sender: UIBarButtonItem) {
+        tableView.tableHeaderView = searchController.searchBar
+        
+    }
+    
     // Variables
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var menuView: NavigationDropdownMenu!
+    let searchController = UISearchController(searchResultsController: nil)
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //SEARCH BAR
+        searchController.searchResultsUpdater = self as? UISearchResultsUpdating
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
         
         //DROPDOWN MENU
         let menuItems = ["All Initiatives", "Community Initiatives", "Big Idea Initiatives"]
@@ -270,6 +281,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         // Force popover style
         return UIModalPresentationStyle.popover
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.dismiss(animated: false, completion: nil)
     }
         
 }

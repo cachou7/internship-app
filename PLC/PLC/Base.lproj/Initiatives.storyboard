@@ -138,7 +138,11 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="0qA-Nk-Zb4"/>
                     <navigationItem key="navigationItem" title="Initiatives" id="Mys-yE-DkB" userLabel="Task Board">
-                        <barButtonItem key="leftBarButtonItem" systemItem="search" id="dFE-vo-OKL"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="search" id="dFE-vo-OKL">
+                            <connections>
+                                <action selector="searchButton:" destination="AMN-zv-t8u" id="jtk-uA-0kx"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Create" image="iconCreate" id="B3W-aE-x7s">
                             <connections>
                                 <action selector="composeButton:" destination="AMN-zv-t8u" id="jDE-vL-y4l"/>
@@ -151,6 +155,14 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="45o-w3-xLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="uJb-KY-ReW">
+                    <connections>
+                        <outlet property="delegate" destination="AMN-zv-t8u" id="qCt-Di-PKA"/>
+                        <outlet property="searchContentsController" destination="AMN-zv-t8u" id="5V2-nC-29O"/>
+                        <outlet property="searchResultsDataSource" destination="AMN-zv-t8u" id="XHp-iU-vzb"/>
+                        <outlet property="searchResultsDelegate" destination="AMN-zv-t8u" id="cp7-gv-bpP"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1781.5999999999999" y="-1058.3208395802101"/>
         </scene>
