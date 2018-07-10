@@ -67,6 +67,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         // set the presentation style
         popController.modalPresentationStyle = UIModalPresentationStyle.popover
         
+        popController.popoverPresentationController?.barButtonItem = sender
+        
         // set up the popover presentation controller
         popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
         popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
@@ -154,46 +156,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var newOverallItems: [Task] = []
         var newCommunityItems: [Task] = []
         var newBigIdeaItems: [Task] = []
-        var createdBy: String
-        var ranking: String
-        var timeMilliseconds: String
         var taskType: String
             
             
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
-                
-                //Checks for tasks created before "createdBy" portion added
-                if ((snapshot.childSnapshot(forPath: "createdBy").value as? String) != nil){
-                    createdBy = snapshot.childSnapshot(forPath: "createdBy").value as! String
-                }
-                else {
-                    createdBy = "DefaultUser"
-                }
-                if ((snapshot.childSnapshot(forPath: "ranking").value as? String) != nil){
-                    ranking = snapshot.childSnapshot(forPath: "ranking").value as! String
-                }
-                else {
-                    ranking = "0"
-                }
-                if ((snapshot.childSnapshot(forPath: "taskTimeMilliseconds").value as? String) != nil){
-                    timeMilliseconds = snapshot.childSnapshot(forPath: "taskTimeMilliseconds").value as! String
-                }
-                else {
-                    timeMilliseconds = "0"
-                }
-                if ((snapshot.childSnapshot(forPath: "taskType").value as? String) != nil && (snapshot.childSnapshot(forPath: "taskType").value as? String) != ""){
-                    taskType = snapshot.childSnapshot(forPath: "taskType").value as! String
-                }
-                else {
-                    taskType = "Community"
-                }
-                
-                //Checks for tasks created before "ranking" portion added
-                
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: createdBy, ranking: ranking, timeMilliseconds: timeMilliseconds, type: taskType)
+
+                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: snapshot.childSnapshot(forPath: "createdBy").value! as! String, ranking: snapshot.childSnapshot(forPath: "ranking").value! as! String, timeMilliseconds: snapshot.childSnapshot(forPath: "taskTimeMilliseconds").value! as! String, type: snapshot.childSnapshot(forPath: "taskType").value! as! String)
                 
                 newOverallItems.append(task!)
+                
                 if task?.type == "Community"{
                     newCommunityItems.append(task!)
                 }
@@ -328,7 +300,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     func configureSearchBar(){
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self as? UISearchResultsUpdating
+        searchController.searchResultsUpdater = self as UISearchResultsUpdating
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search here..."
@@ -364,9 +336,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         filteredItems = overallItems.filter({ (task) -> Bool in
             let taskTitle: NSString = task.title as NSString
             let taskTag: NSString = task.tag as NSString
+            let taskDescription: NSString = task.description as NSString
             
             
-            return ((taskTitle.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskTag.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound)
+            return ((taskTitle.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskTag.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskDescription.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound)
         })
         
         // Reload the tableview.
