@@ -116,12 +116,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var newOverallItems: [Task] = []
         var newCommunityItems: [Task] = []
         var newBigIdeaItems: [Task] = []
-        var taskType: String
         
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
-
-                let task = Task(title: snapshot.childSnapshot(forPath: "taskTitle").value! as! String, description: snapshot.childSnapshot(forPath: "taskDescription").value! as! String, tag: snapshot.childSnapshot(forPath: "taskTag").value! as! String, time: snapshot.childSnapshot(forPath: "taskTime").value! as! String, location: snapshot.childSnapshot(forPath: "taskLocation").value! as! String, timestamp: snapshot.childSnapshot(forPath: "timestamp").value! as! String, id: snapshot.childSnapshot(forPath: "taskId").value! as! String, createdBy: snapshot.childSnapshot(forPath: "createdBy").value! as! String, ranking: snapshot.childSnapshot(forPath: "ranking").value! as! String, timeMilliseconds: snapshot.childSnapshot(forPath: "taskTimeMilliseconds").value! as! String, type: snapshot.childSnapshot(forPath: "taskType").value! as! String)
+                let tasksInfo = snapshot.value as? [String : String ] ?? [:]
+                var amounts = Dictionary<String, Int>()
+                if tasksInfo["participantAmount"]! != "0"{
+                    amounts["participants"] = Int(tasksInfo["participantAmount"]!)
+                }
+                if tasksInfo["leaderAmount"]! != "0"{
+                    amounts["leaders"] = Int(tasksInfo["leaderAmount"]!)
+                }
+                let task = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
+                                     type: tasksInfo["taskType"]!, amounts: amounts)
                 
                 newOverallItems.append(task!)
                 
@@ -256,7 +263,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         //print("Heart", sender, tappedIndexPath.row)
         sender.isSelected = !sender.isSelected
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        
+
         
         // Heart tapped, set image to red heart
         if (sender.isSelected) {
@@ -265,12 +272,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.contentView.backgroundColor = UIColor.white
             if self.currentDB == "All" {
                 currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(true)
+                let currentRanking = Int(self.overallItems[tappedIndexPath.row].ranking)
+                print(String(currentRanking!+1))
+            Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
             }
             else if self.currentDB == "Community" {
                 currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(true)
+                let currentRanking = Int(self.communityItems[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(self.communityItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
             }
             else {
                 currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(true)
+                let currentRanking = Int(self.bigIdeaItems[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
             }
         }
         // Heart untapped, set image to blank heart
@@ -279,12 +293,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             sender.taskLiked.setImage(unlikedIcon, for: .normal)
             if self.currentDB == "All" {
                 currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(nil)
+                let currentRanking = Int(self.overallItems[tappedIndexPath.row].ranking)
+                print(String(currentRanking!-1))
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
             }
             else if self.currentDB == "Community" {
                 currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(nil)
+                let currentRanking = Int(self.communityItems[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(self.communityItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
             }
             else {
                 currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(nil)
+                let currentRanking = Int(self.bigIdeaItems[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
             }
          }
     }

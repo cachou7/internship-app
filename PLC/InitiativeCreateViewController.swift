@@ -9,6 +9,7 @@
 import UIKit
 
 class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
+    //MARK: Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
@@ -19,10 +20,10 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var communityButton: UIButton!
     @IBOutlet weak var leadAmountTextField: UITextField!
     @IBOutlet weak var participateAmountTextField: UITextField!
-    
     @IBOutlet weak var validationButtonLabel: UILabel!
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
     
+    //MARK: Variables
     let datePicker = UIDatePicker()
     var task: Task?
     var eventTime: String?
@@ -49,6 +50,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: Actions
     @IBAction func bigIdeaAction(_ sender: UIButton) {
         communityButton.isSelected = false
         bigIdeaButton.isSelected = true
@@ -61,8 +63,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         communityButton.backgroundColor = UIColor.white
         bigIdeaButton.backgroundColor = UIColor.lightGray
     }
-    
-    
     @IBAction func leadCheckBox(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if (sender.isSelected){
@@ -72,7 +72,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             leadAmountTextField.isEnabled = false
         }
     }
-    
     @IBAction func participateCheckBox(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if (sender.isSelected){
@@ -82,32 +81,36 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             participateAmountTextField.isEnabled = false
         }
     }
-    
-    
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
         dismiss()
     }
-    
     @IBAction func createButton(_ sender: UIBarButtonItem) {
         let valid = validate()
         if (valid){
+            var amounts = Dictionary<String, Int>()
             var tagResult: String = ""
             var type: String = ""
+            var participantAmount = "0"
+            var leaderAmount = "0"
             if leadCheck.isSelected {
+                leaderAmount = leadAmountTextField.text!
                 if tagResult == ""{
                     tagResult.append("#lead")
                 }
                 else{
                     tagResult.append(" #lead")
                 }
+                amounts["leaders"] = Int(leaderAmount)
             }
             if participateCheck.isSelected {
+                participantAmount = participateAmountTextField.text!
                 if tagResult == ""{
                     tagResult.append("#participate")
                 }
                 else{
                     tagResult.append(" #participate")
                 }
+                amounts["participants"] = Int(participantAmount)
             }
             if bigIdeaButton.isSelected {
                 type = "Big Idea"
@@ -115,23 +118,23 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             else{
                 type = "Community"
             }
+            
             let interval = NSDate().timeIntervalSince1970
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid, ranking: "0", timeMilliseconds: eventTime!, type: type)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid, ranking: "0", timeMilliseconds: eventTime!, type: type, amounts: amounts)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds, "taskType": task?.type]
-            Constants.refs.databaseTasks.child(key).setValue(taskDB)
+            let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds, "taskType": task?.type, "participantAmount": participantAmount, "leaderAmount": leaderAmount]
+        Constants.refs.databaseTasks.child(key).setValue(taskDB)
+            
             let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
             tasksCreated.child("taskId").setValue(key)
             print("Task added")
             dismiss()
         }
-        else{
-            
-        }
     }
     
+    //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
         let dateFormatter = DateFormatter()
         eventTime = String(self.datePicker.date.timeIntervalSince1970)
