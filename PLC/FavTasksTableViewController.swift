@@ -8,19 +8,29 @@
 
 import UIKit
 import Firebase
+import FSCalendar
 
-class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate {
+class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate, FSCalendarDelegate, FSCalendarDataSource {
     
+    /*fileprivate let gregorian = Calendar(identifier: .gregorian)
+    fileprivate let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()*/
+
+    //fileprivate weak var calendar: FSCalendar!
     let user = Auth.auth().currentUser!
     var likedItems: [Task] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Set up listener to get liked tasks and detect when tasks are liked
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
             print("Fetching fav tasks...")
             // Get specific information for each liked task and add it to LikedItems, then reload data
-            Constants.refs.databaseTasks.child(taskId.key).observe(DataEventType.value, with: { snapshot in
+            Constants.refs.databaseTasks.child(taskId.key).observe(.value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : String ] ?? [:]
                 let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
                                      type: tasksInfo["taskType"]!)
@@ -90,19 +100,6 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         tableView.reloadData()
         //}
     }
-    
-    // Set myIndex for detailed view
-    //override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*print(items.count)
-        for i in 0..<items.count {
-            if items[i].id == self.likedItems[indexPath.row].id {
-                myIndex = i
-                break
-            }
-        }*/
-        //performSegue(withIdentifier: "showFavTaskDetails", sender: self)
-        //self.tableView.reloadData()
-    //}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
