@@ -92,7 +92,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     }
     
     // Set myIndex for detailed view
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         /*print(items.count)
         for i in 0..<items.count {
             if items[i].id == self.likedItems[indexPath.row].id {
@@ -101,6 +101,12 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             }
         }*/
         //performSegue(withIdentifier: "showFavTaskDetails", sender: self)
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
+    //}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
+                destinationVC.task_in = self.likedItems[myIndex]
+        }
     }
 }

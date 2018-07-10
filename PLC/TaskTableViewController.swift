@@ -21,30 +21,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     //SEGMENTED BAR
     @IBAction func segmentedBar(_ sender: UISegmentedControl) {
         print("CHANGE")
-        if segmentedBarOutlet.selectedSegmentIndex == 0{
-            items.sort(by: {$0.timestamp > $1.timestamp})
-            print("0")
-            for item in items{
-                print(item.timestamp)
-            }
-            self.tableView.reloadData()
-        }
-        else if segmentedBarOutlet.selectedSegmentIndex == 1{
-            items.sort(by: {$0.ranking > $1.ranking})
-            print("1")
-            for item in items{
-                print(item.ranking)
-            }
-            self.tableView.reloadData()
-        }
-        else{
-            items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            print("2")
-            for item in items{
-                print(item.timeMilliseconds)
-            }
-            self.tableView.reloadData()
-        }
+        self.sortTasks()
     }
     
     //SEARCH BUTTON
@@ -75,7 +52,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var menuView: NavigationDropdownMenu!
     var searchController: UISearchController!
     var myIndex = 0
-    var items: [Task] = []
+    var currentDB: String = ""
+    //var items: [Task] = []
     var overallItems: [Task] = []
     var bigIdeaItems: [Task] = []
     var communityItems: [Task] = []
@@ -119,25 +97,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
             print("Did select item at index: \(indexPath)")
             self.indexDropdown = indexPath
-            if indexPath == 0{
-                self.items = self.overallItems
-            }
-            else if indexPath == 1{
-                self.items = self.communityItems
-            }
-            else{
-                self.items = self.bigIdeaItems
-            }
-            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                self.items.sort(by: {$0.timestamp > $1.timestamp})
-            }
-            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                self.items.sort(by: {$0.ranking > $1.ranking})
-            }
-            else{
-                self.items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            }
-            self.tableView.reloadData()
+            self.sortTasks()
         }
         
         self.navigationItem.titleView = menuView
@@ -152,8 +112,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var ranking: String
         var timeMilliseconds: String
         var taskType: String
-            
-            
+        
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
                 
@@ -199,30 +158,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             self.bigIdeaItems = newBigIdeaItems
             self.communityItems = newCommunityItems
             
-            if self.indexDropdown == 0{
-                self.items = self.overallItems
-            }
-            else if self.indexDropdown == 1{
-                self.items = self.communityItems
-            }
-            else{
-                self.items = self.bigIdeaItems
-            }
-            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                self.items.sort(by: {$0.timestamp > $1.timestamp})
-                self.tableView.reloadData()
-            }
-            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                self.items.sort(by: {$0.ranking > $1.ranking})
-                self.tableView.reloadData()
-            }
-            else{
-                self.items.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-                self.tableView.reloadData()
-            }
+            self.sortTasks()
             }})
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -236,7 +175,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             return filteredItems.count
         }
         else{
-            return items.count
+            if self.currentDB == "All" {
+                return self.overallItems.count
+            }
+            else if self.currentDB == "Community" {
+                return self.communityItems.count
+            }
+            else {
+                return self.bigIdeaItems.count
+            }
         }
     }
     
@@ -263,22 +210,63 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             })
         }
         else{
-            cell.taskTitle.text = items[indexPath.row].title
-            cell.taskLocation.text = items[indexPath.row].location
-            cell.taskTime.text = items[indexPath.row].time
-            cell.taskTag.text = items[indexPath.row].tag
             
-            //Check if user has liked the task and display correct heart
-            currentTasks.observe(.value, with: { snapshot in
-                if !snapshot.hasChild(self.items[indexPath.row].id) {
-                    let unlikedIcon = UIImage(named: "heartIcon")
-                    cell.taskLiked.setImage(unlikedIcon, for: .normal)
-                }
-                else {
-                    let likedIcon = UIImage(named: "redHeart")
-                    cell.taskLiked.setImage(likedIcon, for: .normal)
-                }
-            })
+            if self.indexDropdown == 0 {
+                cell.taskTitle.text = self.overallItems[indexPath.row].title
+                cell.taskLocation.text = self.overallItems[indexPath.row].location
+                cell.taskTime.text = self.overallItems[indexPath.row].time
+                cell.taskTag.text = self.overallItems[indexPath.row].tag
+                
+                //Check if user has liked the task and display correct heart
+                currentTasks.observe(.value, with: { snapshot in
+                    if !snapshot.hasChild(self.overallItems[indexPath.row].id) {
+                        let unlikedIcon = UIImage(named: "heartIcon")
+                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
+                    }
+                    else {
+                        let likedIcon = UIImage(named: "redHeart")
+                        cell.taskLiked.setImage(likedIcon, for: .normal)
+                    }
+                })
+            }
+            
+            else if self.indexDropdown == 1 {
+                cell.taskTitle.text = self.communityItems[indexPath.row].title
+                cell.taskLocation.text = self.communityItems[indexPath.row].location
+                cell.taskTime.text = self.communityItems[indexPath.row].time
+                cell.taskTag.text = self.communityItems[indexPath.row].tag
+                
+                //Check if user has liked the task and display correct heart
+                currentTasks.observe(.value, with: { snapshot in
+                    if !snapshot.hasChild(self.communityItems[indexPath.row].id) {
+                        let unlikedIcon = UIImage(named: "heartIcon")
+                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
+                    }
+                    else {
+                        let likedIcon = UIImage(named: "redHeart")
+                        cell.taskLiked.setImage(likedIcon, for: .normal)
+                    }
+                })
+            }
+            
+            else {
+                cell.taskTitle.text = self.bigIdeaItems[indexPath.row].title
+                cell.taskLocation.text = self.bigIdeaItems[indexPath.row].location
+                cell.taskTime.text = self.bigIdeaItems[indexPath.row].time
+                cell.taskTag.text = self.bigIdeaItems[indexPath.row].tag
+                
+                //Check if user has liked the task and display correct heart
+                currentTasks.observe(.value, with: { snapshot in
+                    if !snapshot.hasChild(self.bigIdeaItems[indexPath.row].id) {
+                        let unlikedIcon = UIImage(named: "heartIcon")
+                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
+                    }
+                    else {
+                        let likedIcon = UIImage(named: "redHeart")
+                        cell.taskLiked.setImage(likedIcon, for: .normal)
+                    }
+                })
+            }
         }
 
         cell.delegate = self
@@ -290,7 +278,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         //print("Heart", sender, tappedIndexPath.row)
         
         sender.isSelected = !sender.isSelected
-         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
         // Heart tapped, set image to red heart
@@ -298,13 +285,29 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             let likedIcon = UIImage(named: "redHeart")
             sender.taskLiked.setImage(likedIcon, for: .normal)
             sender.contentView.backgroundColor = UIColor.white
-            currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
+            if self.currentDB == "All" {
+                currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(true)
+            }
+            else if self.currentDB == "Community" {
+                currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(true)
+            }
+            else {
+                currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(true)
+            }
         }
         // Heart untapped, set image to blank heart
         else {
             let unlikedIcon = UIImage(named: "heartIcon")
             sender.taskLiked.setImage(unlikedIcon, for: .normal)
-            currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
+            if self.currentDB == "All" {
+                currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(nil)
+            }
+            else if self.currentDB == "Community" {
+                currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(nil)
+            }
+            else {
+                currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(nil)
+            }
          }
     }
 
@@ -315,7 +318,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailTask", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
-            destinationVC.task_in = self.items[myIndex]
+            if self.currentDB == "All" {
+                destinationVC.task_in = self.overallItems[myIndex]
+            }
+            else if self.currentDB == "Community" {
+                destinationVC.task_in = self.communityItems[myIndex]
+            }
+            else {
+                destinationVC.task_in = self.bigIdeaItems[myIndex]
+            }
         }
     }
     
@@ -376,6 +387,49 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         super.viewWillDisappear(animated)
         searchController.dismiss(animated: false, completion: nil)
     }
-        
+    
+    // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
+    func sortTasks() -> Void {
+        // Overall
+        if self.indexDropdown == 0{
+            self.currentDB = "All"
+            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
+                self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
+            }
+            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
+                self.overallItems.sort(by: {$0.ranking > $1.ranking})
+            }
+            else{
+                self.overallItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            }
+        }
+        else if self.indexDropdown == 1{
+            //self.items = self.communityItems
+            self.currentDB = "Community"
+            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
+                self.communityItems.sort(by: {$0.timestamp > $1.timestamp})
+            }
+            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
+                self.communityItems.sort(by: {$0.ranking > $1.ranking})
+            }
+            else{
+                self.communityItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            }
+        }
+        else{
+            //self.items = self.bigIdeaItems
+            self.currentDB = "Big Ideas"
+            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
+                self.bigIdeaItems.sort(by: {$0.timestamp > $1.timestamp})
+            }
+            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
+                self.bigIdeaItems.sort(by: {$0.ranking > $1.ranking})
+            }
+            else{
+                self.bigIdeaItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            }
+        }
+        self.tableView.reloadData()
+    }
 }
 
