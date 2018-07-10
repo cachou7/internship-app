@@ -21,10 +21,11 @@ class Task{
     var ranking: String
     var timeMilliseconds: String
     var type: String
+    var amounts: Dictionary<String, Int>
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String, id: String, createdBy: String, ranking: String, timeMilliseconds: String, type:String) {
+    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String, id: String, createdBy: String, ranking: String, timeMilliseconds: String, type:String, amounts: Dictionary<String, Int>) {
         
         // The title must not be empty
         guard !title.isEmpty else {
@@ -44,5 +45,6 @@ class Task{
         self.ranking = ranking
         self.timeMilliseconds = timeMilliseconds
         self.type = type
+        self.amounts = amounts
     }
 }

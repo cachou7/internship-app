@@ -32,8 +32,15 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observe(.value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : String ] ?? [:]
+                var amounts = Dictionary<String, Int>()
+                if tasksInfo["participantAmount"]! != "0"{
+                    amounts["participants"] = Int(tasksInfo["participantAmount"]!)
+                }
+                if tasksInfo["leaderAmount"]! != "0"{
+                    amounts["leaders"] = Int(tasksInfo["leaderAmount"]!)
+                }
                 let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
-                                     type: tasksInfo["taskType"]!)
+                                     type: tasksInfo["taskType"]!, amounts: amounts)
                 
                 self.likedItems.append(likedTask!)
                 print("Added task named: " + tasksInfo["taskTitle"]!)
@@ -94,6 +101,9 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
         let unlikedIcon = UIImage(named: "heartIcon")
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
+        let currentRanking = Int(self.likedItems[tappedIndexPath.row].ranking)
+        print(String(currentRanking!-1))
+        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
         currentTasks.child(self.likedItems[tappedIndexPath.row].id).setValue(nil)
         self.likedItems.remove(at: tappedIndexPath.row)
         
