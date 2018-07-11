@@ -286,43 +286,17 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 let likedIcon = UIImage(named: "redHeart")
                 sender.taskLiked.setImage(likedIcon, for: .normal)
                 sender.contentView.backgroundColor = UIColor.white
-                if self.currentDB == "All" {
-                    currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(true)
-                    let currentRanking = Int(self.overallItems[tappedIndexPath.row].ranking)
-                    print(String(currentRanking!+1))
-                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
-                }
-                else if self.currentDB == "Community" {
-                    currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(true)
-                    let currentRanking = Int(self.communityItems[tappedIndexPath.row].ranking)
-                    Constants.refs.databaseTasks.child(self.communityItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
-                }
-                else {
-                    currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(true)
-                    let currentRanking = Int(self.bigIdeaItems[tappedIndexPath.row].ranking)
-                    Constants.refs.databaseTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
-                }
+                currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
+                let currentRanking = Int(items[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
             }
             // Heart untapped, set image to blank heart
             else {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 sender.taskLiked.setImage(unlikedIcon, for: .normal)
-                if self.currentDB == "All" {
-                    currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(nil)
-                    let currentRanking = Int(self.overallItems[tappedIndexPath.row].ranking)
-                    print(String(currentRanking!-1))
-                    Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
-                }
-                else if self.currentDB == "Community" {
-                    currentTasks.child(self.communityItems[tappedIndexPath.row].id).setValue(nil)
-                    let currentRanking = Int(self.communityItems[tappedIndexPath.row].ranking)
-                    Constants.refs.databaseTasks.child(self.communityItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
-                }
-                else {
-                    currentTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).setValue(nil)
-                    let currentRanking = Int(self.bigIdeaItems[tappedIndexPath.row].ranking)
-                    Constants.refs.databaseTasks.child(self.bigIdeaItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
-                }
+                currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
+                let currentRanking = Int(items[tappedIndexPath.row].ranking)
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
              }
         })
         
