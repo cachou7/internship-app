@@ -89,7 +89,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             var amounts = Dictionary<String, Int>()
             var tagResult: String = ""
-            var type: String = ""
+            var type: String
             var participantAmount = "0"
             var leaderAmount = "0"
             if leadCheck.isSelected {

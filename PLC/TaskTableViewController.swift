@@ -281,7 +281,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         // Heart tapped, set image to red heart
         currentTasks.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            
+        
             if !(snapshot.hasChild(items[tappedIndexPath.row].id)){
                 let likedIcon = UIImage(named: "redHeart")
                 sender.taskLiked.setImage(likedIcon, for: .normal)
