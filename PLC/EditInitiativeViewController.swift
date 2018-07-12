@@ -24,7 +24,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Variables
     let datePicker = UIDatePicker()
-    var eventTime: String?
+    var eventTime: TimeInterval = 0.0
     var task_in:Task!
     var task_out:Task!
     var titleChanged = false
@@ -156,7 +156,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     @objc func datePickerChanged(datePicker:UIDatePicker) {
         timeChanged = true
         let dateFormatter = DateFormatter()
-        eventTime = String(self.datePicker.date.timeIntervalSince1970)
+        eventTime = self.datePicker.date.timeIntervalSince1970
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
         let strDate = dateFormatter.string(from:datePicker.date)
@@ -243,6 +243,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                 }
                 if (timeChanged){
                     currentTask.child("taskTime").setValue(timeTextField.text!)
+                    currentTask.child("taskTimeMilliseconds").setValue(eventTime)
                 }
                 if (locationChanged){
                     currentTask.child("taskLocation").setValue(locationTextField.text!)
@@ -250,27 +251,27 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                 if (tagsChanged){
                     var amounts = Dictionary<String, Int>()
                     var tagResult: String = ""
-                    var participantAmount = "0"
-                    var leaderAmount = "0"
+                    var participantAmount = 0
+                    var leaderAmount = 0
                     if leadCheckBox.isSelected {
-                        leaderAmount = leadAmountTextField.text!
+                        leaderAmount = Int(leadAmountTextField.text!)!
                         if tagResult == ""{
                             tagResult.append("#lead")
                         }
                         else{
                             tagResult.append(" #lead")
                         }
-                        amounts["leaders"] = Int(leaderAmount)
+                        amounts["leaders"] = leaderAmount
                     }
                     if participateCheckBox.isSelected {
-                        participantAmount = participateAmountTextField.text!
+                        participantAmount = Int(participateAmountTextField.text!)!
                         if tagResult == ""{
                             tagResult.append("#participate")
                         }
                         else{
                             tagResult.append(" #participate")
                         }
-                        amounts["participants"] = Int(participantAmount)
+                        amounts["participants"] = participantAmount
                     }
                     currentTask.child("taskTag").setValue(tagResult)
                     currentTask.child("participantAmount").setValue(participantAmount)

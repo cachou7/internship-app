@@ -119,16 +119,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
-                let tasksInfo = snapshot.value as? [String : String ] ?? [:]
+                let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
-                if tasksInfo["participantAmount"]! != "0"{
-                    amounts["participants"] = Int(tasksInfo["participantAmount"]!)
+                if tasksInfo["participantAmount"]! as! Int != 0{
+                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                 }
-                if tasksInfo["leaderAmount"]! != "0"{
-                    amounts["leaders"] = Int(tasksInfo["leaderAmount"]!)
+                if tasksInfo["leaderAmount"]! as! Int != 0{
+                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let task = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
-                                     type: tasksInfo["taskType"]!, amounts: amounts)
+                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, time: tasksInfo["taskTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
                 
                 newOverallItems.append(task!)
                 
@@ -260,8 +259,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        print("Heart", sender, tappedIndexPath.row)
-        print(sender.isSelected)
+        //print("Heart", sender, tappedIndexPath.row)
         sender.isSelected = !sender.isSelected
 
         let items: [Task]
@@ -287,20 +285,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 sender.taskLiked.setImage(likedIcon, for: .normal)
                 sender.contentView.backgroundColor = UIColor.white
                 currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
-                let currentRanking = Int(items[tappedIndexPath.row].ranking)
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!+1))
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).setValue(true)
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking + 1)
             }
             // Heart untapped, set image to blank heart
             else {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 sender.taskLiked.setImage(unlikedIcon, for: .normal)
-                currentTasks.child(items[tappedIndexPath.row].id).setValue(nil)
-                let currentRanking = Int(items[tappedIndexPath.row].ranking)
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
+                currentTasks.child(items[tappedIndexPath.row].id).removeValue()
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).removeValue()
+                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking - 1)
              }
         })
-        
-        print(sender.isSelected)
+
     }
 
     // Set myIndex for detailed view
@@ -423,6 +420,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }
         }
         self.tableView.reloadData()
+    }
+    
+    @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
+        if segue.source is DetailTaskViewController{
+            self.viewDidLoad()
+        }
     }
 }
 

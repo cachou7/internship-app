@@ -14,7 +14,7 @@
         <!--Detail Task View Controller-->
         <scene sceneID="jho-Xo-nwT">
             <objects>
-                <viewController id="sbj-2x-T3s" customClass="DetailTaskViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailTaskViewController" id="sbj-2x-T3s" customClass="DetailTaskViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Y4f-pl-XGR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,6 +101,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem id="pfC-Iy-z38">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="oXG-EZ-kSe">
+                                            <connections>
+                                                <action selector="deleteButton:" destination="sbj-2x-T3s" id="oWm-0Z-CzD"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="rx3-xB-HG9">
                                             <connections>
                                                 <action selector="editButton:" destination="sbj-2x-T3s" id="v6V-A5-D66"/>
@@ -139,6 +144,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="createLabel" destination="K8I-Al-Sir" id="U9H-Lw-FR3"/>
+                        <outlet property="deleteButton" destination="oXG-EZ-kSe" id="zwB-R9-4An"/>
                         <outlet property="editButton" destination="rx3-xB-HG9" id="YWa-26-0c3"/>
                         <outlet property="leadLabel" destination="eHL-5a-bIy" id="dFC-qS-TI8"/>
                         <outlet property="participateLabel" destination="0km-Eu-WDK" id="8mk-cH-URg"/>
@@ -146,9 +152,11 @@
                         <outlet property="taskLocation" destination="aCC-Lk-zC1" id="hhi-1G-d4t"/>
                         <outlet property="taskTime" destination="MTD-Mq-WwM" id="Th0-fc-dyT"/>
                         <outlet property="taskTitle" destination="QNe-YU-6Qn" id="9fS-WV-so1"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToInitiatives" unwindAction="unwindToInitiativesWithSegue:" id="mWp-GE-qLW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PFz-BW-E7A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="4pC-DU-pgK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3218.4000000000001" y="-759.67016491754134"/>
         </scene>
