@@ -437,7 +437,18 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
-        if segue.source is DetailTaskViewController{
+        if segue.identifier == "unwindToInitiatives" {
+            let selectedIndex = tableView.indexPathForSelectedRow?.row
+            if self.currentDB == "All" {
+                self.overallItems.remove(at: selectedIndex!)
+            }
+            else if self.currentDB == "Community" {
+                self.communityItems.remove(at: selectedIndex!)
+            }
+            else {
+                self.bigIdeaItems.remove(at: selectedIndex!)
+            }
+            tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
         }
     }
