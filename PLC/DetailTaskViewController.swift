@@ -12,6 +12,7 @@ import Firebase
 class DetailTaskViewController: UIViewController {
     
     var task_in:Task!
+    var taskIndex: Int!
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!

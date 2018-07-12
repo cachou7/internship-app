@@ -319,6 +319,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             else {
                 destinationVC.task_in = self.bigIdeaItems[myIndex]
             }
+            destinationVC.taskIndex = myIndex
         }
     }
     
@@ -437,7 +438,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
         if segue.source is DetailTaskViewController{
-            self.viewDidLoad()
+            self.tableView.reloadData()
         }
     }
 }
