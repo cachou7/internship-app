@@ -10,11 +10,6 @@ import UIKit
 import Firebase
 import NavigationDropdownMenu
 
-/*var myIndex = 0
-var items: [Task] = []
-var menuView: NavigationDropdownMenu!
-var indexDropdown: Int = 0*/
-
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Actions
     
@@ -23,6 +18,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         print("CHANGE")
         self.sortTasks()
     }
+    //END SEGMENTED BAR
     
     //SEARCH BUTTON
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
@@ -35,6 +31,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             tableView.tableHeaderView = searchController.searchBar
         }
     }
+    //END SEARCH BUTTON
     
     //COMPOSE BUTTON
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
@@ -54,8 +51,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         self.present(popController, animated: true, completion: nil)
         self.tableView.reloadData()
     }
+    //END COMPOSE BUTTON
     
-    // Variables
+    //MARK: Variables
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var menuView: NavigationDropdownMenu!
     var searchController: UISearchController!
@@ -76,7 +74,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         initialToolbar = tableView.tableHeaderView
         
-        //SEARCH BAR
+        //SEARCH BAR FUNCTION
         self.configureSearchBar()
         
         
@@ -257,6 +255,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         return cell
     }
     
+    //LIKING TASKS
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         //print("Heart", sender, tappedIndexPath.row)
@@ -276,10 +275,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
         
-        // Heart tapped, set image to red heart
+
         currentTasks.observeSingleEvent(of: .value, with: { (snapshot) in
             
-        
+            //HEART TAPPED
             if !(snapshot.hasChild(items[tappedIndexPath.row].id)){
                 let likedIcon = UIImage(named: "redHeart")
                 sender.taskLiked.setImage(likedIcon, for: .normal)
@@ -288,7 +287,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).setValue(true)
                 Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking + 1)
             }
-            // Heart untapped, set image to blank heart
+            //END HEART TAPPED
+                
+            //HEART UNTAPPED
             else {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 sender.taskLiked.setImage(unlikedIcon, for: .normal)
@@ -296,9 +297,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).removeValue()
                 Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking - 1)
              }
+            //END HEART UNTAPPED
         })
 
     }
+    //END LIKING TASKS
 
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -319,6 +322,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
     }
     
+    
+    //SEARCH FUNCTION
     func configureSearchBar(){
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self as UISearchResultsUpdating
@@ -333,7 +338,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         shouldShowSearchResults = true
         self.tableView.reloadData()
     }
-    
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowSearchResults = false
@@ -367,6 +371,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         self.tableView.reloadData()
     }
     
+    //END SEARCH FUNCTION
+    
     // UIPopoverPresentationControllerDelegate method
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         // Force popover style
@@ -380,7 +386,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
     func sortTasks() -> Void {
-        // Overall
+        //OVERALL
         if self.indexDropdown == 0{
             self.currentDB = "All"
             if self.segmentedBarOutlet.selectedSegmentIndex == 0{
@@ -393,6 +399,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 self.overallItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
         }
+        //END OVERALL
+            
+        //COMMUNITY
         else if self.indexDropdown == 1{
             //self.items = self.communityItems
             self.currentDB = "Community"
@@ -406,6 +415,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 self.communityItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
         }
+        //END COMMUNITY
+            
+        //BIG IDEA
         else{
             //self.items = self.bigIdeaItems
             self.currentDB = "Big Ideas"
@@ -419,6 +431,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 self.bigIdeaItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
         }
+        //END BIG IDEA
         self.tableView.reloadData()
     }
     
