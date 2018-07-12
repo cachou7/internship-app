@@ -15,17 +15,18 @@ class Task{
     var tag: String
     var time: String
     var location: String
-    var timestamp: String
+    var timestamp: TimeInterval
     var id: String
     var createdBy: String
-    var ranking: String
-    var timeMilliseconds: String
+    var ranking: Int
+    var timeMilliseconds: TimeInterval
     var type: String
     var amounts: Dictionary<String, Int>
+    var users_liked = [String:Bool]()
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: String, id: String, createdBy: String, ranking: String, timeMilliseconds: String, type:String, amounts: Dictionary<String, Int>) {
+    init?(title: String, description: String, tag: String, time: String, location: String, timestamp: TimeInterval, id: String, createdBy: String, ranking: Int, timeMilliseconds: TimeInterval, type:String, amounts: Dictionary<String, Int>) {
         
         // The title must not be empty
         guard !title.isEmpty else {

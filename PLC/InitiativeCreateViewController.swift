@@ -26,7 +26,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     //MARK: Variables
     let datePicker = UIDatePicker()
     var task: Task?
-    var eventTime: String?
+    var eventTime: TimeInterval = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,28 +89,28 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             var amounts = Dictionary<String, Int>()
             var tagResult: String = ""
-            var type: String = ""
-            var participantAmount = "0"
-            var leaderAmount = "0"
+            var type: String
+            var participantAmount = 0
+            var leaderAmount = 0
             if leadCheck.isSelected {
-                leaderAmount = leadAmountTextField.text!
+                leaderAmount = Int(leadAmountTextField.text!)!
                 if tagResult == ""{
                     tagResult.append("#lead")
                 }
                 else{
                     tagResult.append(" #lead")
                 }
-                amounts["leaders"] = Int(leaderAmount)
+                amounts["leaders"] = leaderAmount
             }
             if participateCheck.isSelected {
-                participantAmount = participateAmountTextField.text!
+                participantAmount = Int(participateAmountTextField.text!)!
                 if tagResult == ""{
                     tagResult.append("#participate")
                 }
                 else{
                     tagResult.append(" #participate")
                 }
-                amounts["participants"] = Int(participantAmount)
+                amounts["participants"] = participantAmount
             }
             if bigIdeaButton.isSelected {
                 type = "Big Idea"
@@ -119,17 +119,16 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
                 type = "Community"
             }
             
-            let interval = NSDate().timeIntervalSince1970
+            
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: String(interval), id: key, createdBy: currentUser.uid, ranking: "0", timeMilliseconds: eventTime!, type: type, amounts: amounts)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, type: type, amounts: amounts)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds, "taskType": task?.type, "participantAmount": participantAmount, "leaderAmount": leaderAmount]
+            let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds, "taskType": task?.type, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
-            tasksCreated.child("taskId").setValue(key)
-            print("Task added")
+            tasksCreated.child(key).setValue(true)
             dismiss()
         }
     }
@@ -137,7 +136,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
         let dateFormatter = DateFormatter()
-        eventTime = String(self.datePicker.date.timeIntervalSince1970)
+        eventTime = self.datePicker.date.timeIntervalSince1970
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
         let strDate = dateFormatter.string(from:datePicker.date)

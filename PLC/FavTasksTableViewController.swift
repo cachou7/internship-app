@@ -29,22 +29,20 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             print("Fetching fav tasks...")
             // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
-                let tasksInfo = snapshot.value as? [String : String ] ?? [:]
+                let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
-                if tasksInfo["participantAmount"]! != "0"{
-                    amounts["participants"] = Int(tasksInfo["participantAmount"]!)
+                if tasksInfo["participantAmount"]! as! Int != 0{
+                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                 }
-                if tasksInfo["leaderAmount"]! != "0"{
-                    amounts["leaders"] = Int(tasksInfo["leaderAmount"]!)
+                if tasksInfo["leaderAmount"]! as! Int != 0{
+                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let likedTask = Task(title: tasksInfo["taskTitle"]!, description: tasksInfo["taskDescription"]!, tag: tasksInfo["taskTag"]!, time: tasksInfo["taskTime"]!, location: tasksInfo["taskLocation"]!, timestamp: tasksInfo["timestamp"]!, id: tasksInfo["taskId"]!, createdBy: tasksInfo["createdBy"]!, ranking: tasksInfo["ranking"]!, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]!,
-                                     type: tasksInfo["taskType"]!, amounts: amounts)
+                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, time: tasksInfo["taskTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
                 
                 self.likedItems.append(likedTask!)
-                print("Added task named: " + tasksInfo["taskTitle"]!)
+                print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
                 self.likedItems.sort(by: {$0.timestamp > $1.timestamp})
                 self.tableView.rowHeight = 90.0
-                //print("Reloaded data")
                 self.tableView.reloadData()
             })
         })
@@ -99,10 +97,10 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
         let unlikedIcon = UIImage(named: "heartIcon")
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
-        let currentRanking = Int(self.likedItems[tappedIndexPath.row].ranking)
-        print(String(currentRanking!-1))
-        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("ranking").setValue(String(currentRanking!-1))
-        currentTasks.child(self.likedItems[tappedIndexPath.row].id).setValue(nil)
+        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("ranking").setValue(self.likedItems[tappedIndexPath.row].ranking - 1)
+        
+        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("users_liked").child(user.uid).removeValue()
+        currentTasks.child(self.likedItems[tappedIndexPath.row].id).removeValue()
         self.likedItems.remove(at: tappedIndexPath.row)
         
         tableView.reloadData()
