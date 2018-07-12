@@ -5,20 +5,18 @@
 //  Created by Chris on 7/3/18.
 //  Copyright © 2018 Chris Chou. All rights reserved.
 //
-
 import UIKit
 import Firebase
-import FSCalendar
 
-class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate, FSCalendarDelegate, FSCalendarDataSource {
+class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate {
     
     /*fileprivate let gregorian = Calendar(identifier: .gregorian)
-    fileprivate let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()*/
-
+     fileprivate let formatter: DateFormatter = {
+     let formatter = DateFormatter()
+     formatter.dateFormat = "yyyy-MM-dd"
+     return formatter
+     }()*/
+    
     //fileprivate weak var calendar: FSCalendar!
     let user = Auth.auth().currentUser!
     var likedItems: [Task] = []
@@ -60,11 +58,11 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 }
             }
             //}
-    
+            
             self.tableView.reloadData()
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -111,7 +109,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
-                destinationVC.task_in = self.likedItems[myIndex]
+            destinationVC.task_in = self.likedItems[myIndex]
         }
     }
 }
