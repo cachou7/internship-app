@@ -55,13 +55,13 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         communityButton.isSelected = false
         bigIdeaButton.isSelected = true
         bigIdeaButton.backgroundColor = UIColor.white
-        communityButton.backgroundColor = UIColor.lightGray
+        communityButton.backgroundColor = UIColor.black
     }
     @IBAction func communityAction(_ sender: UIButton) {
         bigIdeaButton.isSelected = false
         communityButton.isSelected = true
         communityButton.backgroundColor = UIColor.white
-        bigIdeaButton.backgroundColor = UIColor.lightGray
+        bigIdeaButton.backgroundColor = UIColor.black
     }
     @IBAction func leadCheckBox(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -124,8 +124,12 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             
             task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, type: type, amounts: amounts)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title, "taskDescription": task?.description, "taskTag": task?.tag, "taskTime": task?.time, "taskLocation": task?.location, "timestamp": task?.timestamp, "createdBy" : task?.createdBy, "ranking": task?.ranking, "taskTimeMilliseconds": task?.timeMilliseconds, "taskType": task?.type, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.time as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskType": task?.type as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
+            
+            Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
+            
+            Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any])
             
             let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
             tasksCreated.child(key).setValue(true)

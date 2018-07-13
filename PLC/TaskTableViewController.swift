@@ -15,7 +15,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     //SEGMENTED BAR
     @IBAction func segmentedBar(_ sender: UISegmentedControl) {
-        print("CHANGE")
         self.sortTasks()
     }
     //END SEGMENTED BAR
@@ -81,16 +80,18 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         //DROPDOWN MENU
         let menuItems = ["All Initiatives", "Community Initiatives", "Big Idea Initiatives"]
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.barTintColor = UIColor.black
+            //UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 
         menuView = NavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: Title.index(0), items: menuItems)
 
         menuView.cellHeight = 50
-        menuView.cellBackgroundColor = UIColor.white
-        menuView.cellSelectionColor = UIColor(red: 0.0/255.0, green:160.0/255.0, blue:195.0/255.0, alpha: 1.0)
+        menuView.cellBackgroundColor = UIColor.black
+        menuView.cellSelectionColor = UIColor.darkGray
+            //UIColor(red: 0.0/255.0, green:160.0/255.0, blue:195.0/255.0, alpha: 1.0)
         menuView.shouldKeepSelectedCellColor = true
-        menuView.cellTextLabelColor = UIColor.black
+        menuView.cellTextLabelColor = UIColor.white
         menuView.cellTextLabelFont = UIFont(name: "Avenir-Heavy", size: 17)
         menuView.cellTextLabelAlignment = .left // .Center // .Right // .Left
         menuView.arrowPadding = 15
@@ -171,6 +172,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
+        cell.layer.borderColor = UIColor.white.cgColor
+        cell.layer.borderWidth = 5
+        cell.layer.cornerRadius = 20
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
         if shouldShowSearchResults{

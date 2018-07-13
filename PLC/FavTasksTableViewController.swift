@@ -80,6 +80,9 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         let likedIcon = UIImage(named: "redHeart")
         
+        cell.layer.borderColor = UIColor.white.cgColor
+        cell.layer.borderWidth = 5
+        cell.layer.cornerRadius = 20
         cell.taskTitle.text = likedItems[indexPath.row].title
         cell.taskLocation.text = likedItems[indexPath.row].location
         cell.taskTime.text = likedItems[indexPath.row].time

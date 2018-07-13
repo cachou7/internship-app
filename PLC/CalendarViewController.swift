@@ -17,10 +17,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func loadView() {
         
         let view = UIView(frame: UIScreen.main.bounds)
-        view.backgroundColor = UIColor.groupTableViewBackground
+        view.backgroundColor = UIColor.black
         self.view = view
         
         let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
+        //self.navigationController!.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 0)
         let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: self.view.bounds.width, height: height))
         calendar.dataSource = self
         calendar.delegate = self
@@ -33,7 +34,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "My Initiatives"
+        //self.navigationController?.isNavigationBarHidden = true
+        //self.title = "My Initiatives"
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {

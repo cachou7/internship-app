@@ -17,6 +17,7 @@ class FavTasksViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController!.navigationItem.titleView?.backgroundColor = UIColor.black
         topStackView.axis = axisForSize(view.bounds.size)
     }
     

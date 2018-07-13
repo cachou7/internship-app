@@ -48,11 +48,11 @@ class DetailTaskViewController: UIViewController {
         for tag in tagArray{
             if tag == "#lead"{
                 leadLabel.isEnabled = true
-                leadLabel.textColor = UIColor.blue
+                leadLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
             if tag == "#participate"{
                 participateLabel.isEnabled = true
-                participateLabel.textColor = UIColor.blue
+                participateLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
         }
     }
