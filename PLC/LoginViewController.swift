@@ -22,6 +22,45 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        textFieldLoginEmail.borderStyle = UITextBorderStyle.none
+        textFieldLoginPassword.borderStyle = UITextBorderStyle.none
+        textFieldLoginEmail.layer.borderWidth = 0
+        textFieldLoginPassword.layer.borderWidth = 0
+        textFieldLoginEmail.layer.cornerRadius = 15.0
+        textFieldLoginEmail.layer.borderWidth = 2.0
+        textFieldLoginPassword.layer.cornerRadius = 15.0
+        textFieldLoginPassword.layer.borderWidth = 2.0
+        
+        let iconWidth = 25
+        let iconHeight = 25
+        
+        let imageView = UIImageView()
+        let imageEmail = UIImage(named: "iconEmail")
+        imageView.image = imageEmail
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.frame = CGRect(x: 10, y: 9, width: iconWidth, height: iconHeight)
+        textFieldLoginEmail.leftViewMode = UITextFieldViewMode.always
+        textFieldLoginEmail.addSubview(imageView)
+        
+        let imageViewPassword = UIImageView();
+        let imagePassword = UIImage(named: "iconLock");
+        
+        // set frame on image before adding it to the uitextfield
+        imageViewPassword.image = imagePassword;
+        imageViewPassword.frame = CGRect(x: 10, y: 9, width: iconWidth, height: iconHeight)
+        textFieldLoginPassword.leftViewMode = UITextFieldViewMode.always
+        textFieldLoginPassword.addSubview(imageViewPassword)
+        
+        //set Padding
+        let paddingView = UIView(frame: CGRect(x: 5, y: 5, width: 45, height: 45))
+        textFieldLoginEmail.leftView = paddingView
+        
+        let emailPaddingView = UIView(frame: CGRect(x: 25, y: 25, width: 40, height: self.textFieldLoginPassword.frame.height))
+        textFieldLoginPassword.leftView = emailPaddingView
+        
+        
         // Create authentication observer if user authentication is successful
         Auth.auth().addStateDidChangeListener { auth, user in
             if user != nil {
