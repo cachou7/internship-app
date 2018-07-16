@@ -126,7 +126,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, time: tasksInfo["taskTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
+                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
                 
                 newOverallItems.append(task!)
                 
@@ -180,7 +180,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         if shouldShowSearchResults{
             cell.taskTitle.text = filteredItems[indexPath.row].title
             cell.taskLocation.text = filteredItems[indexPath.row].location
-            cell.taskTime.text = filteredItems[indexPath.row].time
+            cell.taskTime.text = filteredItems[indexPath.row].startTime
             cell.taskTag.text = filteredItems[indexPath.row].tag
             
             //Check if user has liked the task and display correct heart
@@ -200,7 +200,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             if self.indexDropdown == 0 {
                 cell.taskTitle.text = self.overallItems[indexPath.row].title
                 cell.taskLocation.text = self.overallItems[indexPath.row].location
-                cell.taskTime.text = self.overallItems[indexPath.row].time
+                cell.taskTime.text = self.overallItems[indexPath.row].startTime
                 cell.taskTag.text = self.overallItems[indexPath.row].tag
                 
                 //Check if user has liked the task and display correct heart
@@ -219,7 +219,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             else if self.indexDropdown == 1 {
                 cell.taskTitle.text = self.communityItems[indexPath.row].title
                 cell.taskLocation.text = self.communityItems[indexPath.row].location
-                cell.taskTime.text = self.communityItems[indexPath.row].time
+                cell.taskTime.text = self.communityItems[indexPath.row].startTime
                 cell.taskTag.text = self.communityItems[indexPath.row].tag
                 
                 //Check if user has liked the task and display correct heart
@@ -238,7 +238,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             else {
                 cell.taskTitle.text = self.bigIdeaItems[indexPath.row].title
                 cell.taskLocation.text = self.bigIdeaItems[indexPath.row].location
-                cell.taskTime.text = self.bigIdeaItems[indexPath.row].time
+                cell.taskTime.text = self.bigIdeaItems[indexPath.row].startTime
                 cell.taskTag.text = self.bigIdeaItems[indexPath.row].tag
                 
                 //Check if user has liked the task and display correct heart

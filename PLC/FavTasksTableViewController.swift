@@ -37,7 +37,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, time: tasksInfo["taskTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
+                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
                 
                 self.likedItems.append(likedTask!)
                 print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
@@ -85,7 +85,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         cell.layer.cornerRadius = 20
         cell.taskTitle.text = likedItems[indexPath.row].title
         cell.taskLocation.text = likedItems[indexPath.row].location
-        cell.taskTime.text = likedItems[indexPath.row].time
+        cell.taskTime.text = likedItems[indexPath.row].startTime
         cell.taskTag.text = likedItems[indexPath.row].tag
         cell.taskLiked.setImage(likedIcon, for: .normal)
         cell.delegate = self
