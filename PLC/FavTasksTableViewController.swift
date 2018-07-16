@@ -20,6 +20,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     //fileprivate weak var calendar: FSCalendar!
     let user = Auth.auth().currentUser!
     var likedItems: [Task] = []
+    var sections: [String:[Task]] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +42,13 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 
                 self.likedItems.append(likedTask!)
                 print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
-                self.likedItems.sort(by: {$0.timestamp > $1.timestamp})
+                self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
                 self.tableView.rowHeight = 90.0
+                
+                for task in self.likedItems {
+                    //var taskTimeArr = task.time.split(separator: " ")
+                    
+                }
                 self.tableView.reloadData()
             })
         })
