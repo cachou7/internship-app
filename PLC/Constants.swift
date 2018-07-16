@@ -16,6 +16,7 @@ struct Constants
         static let databaseRoot = Database.database().reference()
         static let databaseTasks = databaseRoot.child("tasks")
         static let databaseUsers = databaseRoot.child("users")
-        static let databaseUpcomingTasks = databaseRoot.child("upcomingTasks") 
+        static let databaseUpcomingTasks = databaseRoot.child("upcomingTasks")
+        static let storage = Storage.storage().reference()
     }
 }

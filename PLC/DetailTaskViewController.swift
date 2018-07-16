@@ -16,14 +16,21 @@ class DetailTaskViewController: UIViewController {
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
+    @IBOutlet weak var taskEndTime: UILabel!
+    @IBOutlet weak var taskCreatedBy: UILabel!
     @IBOutlet weak var taskDescription: UILabel!
+    @IBOutlet weak var taskLeaderAmount: UILabel!
+    @IBOutlet weak var taskParticipantAmount: UILabel!
     //var titleViaSegue:String?
     @IBOutlet weak var participateLabel: UILabel!
     
+    @IBOutlet weak var leaderStack: UIStackView!
+    @IBOutlet weak var participateStack: UIStackView!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var leadLabel: UILabel!
     @IBOutlet weak var createLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,8 +39,13 @@ class DetailTaskViewController: UIViewController {
         taskTitle.text = task_in.title
         taskLocation.text = task_in.location
         taskTime.text = task_in.startTime
+        taskEndTime.text = task_in.endTime
         taskDescription.text = task_in.description
-        
+        //Setting the label for the user who created event
+        Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
+            self.taskCreatedBy.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
+            })
+
         if task_in.createdBy == currentUser.uid{
             editButton.isEnabled = true
             deleteButton.isEnabled = true
@@ -47,12 +59,20 @@ class DetailTaskViewController: UIViewController {
         let tagArray = tags.components(separatedBy: " ")
         for tag in tagArray{
             if tag == "#lead"{
+                taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
                 leadLabel.isEnabled = true
                 leadLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
+            else{
+                leaderStack.isHidden = true
+            }
             if tag == "#participate"{
+                taskLeaderAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
                 participateLabel.isEnabled = true
                 participateLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
+            }
+            else{
+                participateStack.isHidden = true
             }
         }
     }
@@ -113,7 +133,7 @@ class DetailTaskViewController: UIViewController {
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
                 
-                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
+                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
                 self.task_in = updatedTask
                 self.viewDidLoad()
             })

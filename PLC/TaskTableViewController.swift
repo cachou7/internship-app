@@ -60,8 +60,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var currentDB: String = ""
     //var items: [Task] = []
     var overallItems: [Task] = []
-    var bigIdeaItems: [Task] = []
-    var communityItems: [Task] = []
     var filteredItems: [Task] = []
     var indexDropdown: Int = 0
     var passedTask:Task!
@@ -76,46 +74,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         //SEARCH BAR FUNCTION
         self.configureSearchBar()
         
-        
-        //DROPDOWN MENU
-        let menuItems = ["All Initiatives", "Community Initiatives", "Big Idea Initiatives"]
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor.black
-            //UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-
-        menuView = NavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: Title.index(0), items: menuItems)
-
-        menuView.cellHeight = 50
-        menuView.cellBackgroundColor = UIColor.black
-        menuView.cellSelectionColor = UIColor.darkGray
-            //UIColor(red: 0.0/255.0, green:160.0/255.0, blue:195.0/255.0, alpha: 1.0)
-        menuView.shouldKeepSelectedCellColor = true
-        menuView.cellTextLabelColor = UIColor.white
-        menuView.cellTextLabelFont = UIFont(name: "Avenir-Heavy", size: 17)
-        menuView.cellTextLabelAlignment = .left // .Center // .Right // .Left
-        menuView.arrowPadding = 15
-        menuView.animationDuration = 0.5
-        menuView.maskBackgroundColor = UIColor.black
-        menuView.maskBackgroundOpacity = 0.3
-        
-        menuView.showRightLine = true
-        
-        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
-            print("Did select item at index: \(indexPath)")
-            self.indexDropdown = indexPath
-            self.sortTasks()
-        }
-        
-        self.navigationItem.titleView = menuView
-        //END OF DROPDOWN MENU
-        
         //Tasks Loaded From DB
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
         var newOverallItems: [Task] = []
-        var newCommunityItems: [Task] = []
-        var newBigIdeaItems: [Task] = []
-        
+            
         for child in snapshot.children {
             if let snapshot = child as? DataSnapshot{
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
@@ -126,20 +88,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
+                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
                 
                 newOverallItems.append(task!)
-                
-                if task?.type == "Community"{
-                    newCommunityItems.append(task!)
-                }
-                else if task?.type == "Big Idea"{
-                    newBigIdeaItems.append(task!)
-                }
             }
             self.overallItems = newOverallItems
-            self.bigIdeaItems = newBigIdeaItems
-            self.communityItems = newCommunityItems
             
             self.sortTasks()
             }})
@@ -158,15 +111,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             return filteredItems.count
         }
         else{
-            if self.currentDB == "All" {
-                return self.overallItems.count
-            }
-            else if self.currentDB == "Community" {
-                return self.communityItems.count
-            }
-            else {
-                return self.bigIdeaItems.count
-            }
+            return self.overallItems.count
         }
     }
     
@@ -196,13 +141,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             })
         }
         else{
-            
-            if self.indexDropdown == 0 {
-                cell.taskTitle.text = self.overallItems[indexPath.row].title
-                cell.taskLocation.text = self.overallItems[indexPath.row].location
-                cell.taskTime.text = self.overallItems[indexPath.row].startTime
-                cell.taskTag.text = self.overallItems[indexPath.row].tag
-                
+                    cell.taskTitle.text = self.overallItems[indexPath.row].title
+                    cell.taskLocation.text = self.overallItems[indexPath.row].location
+                    cell.taskTime.text = self.overallItems[indexPath.row].startTime
+                    cell.taskTag.text = self.overallItems[indexPath.row].tag
+                    
                 //Check if user has liked the task and display correct heart
                 currentTasks.observe(.value, with: { snapshot in
                     if !snapshot.hasChild(self.overallItems[indexPath.row].id) {
@@ -214,45 +157,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                         cell.taskLiked.setImage(likedIcon, for: .normal)
                     }
                 })
-            }
-            
-            else if self.indexDropdown == 1 {
-                cell.taskTitle.text = self.communityItems[indexPath.row].title
-                cell.taskLocation.text = self.communityItems[indexPath.row].location
-                cell.taskTime.text = self.communityItems[indexPath.row].startTime
-                cell.taskTag.text = self.communityItems[indexPath.row].tag
-                
-                //Check if user has liked the task and display correct heart
-                currentTasks.observe(.value, with: { snapshot in
-                    if !snapshot.hasChild(self.communityItems[indexPath.row].id) {
-                        let unlikedIcon = UIImage(named: "heartIcon")
-                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
-                    }
-                    else {
-                        let likedIcon = UIImage(named: "redHeart")
-                        cell.taskLiked.setImage(likedIcon, for: .normal)
-                    }
-                })
-            }
-            
-            else {
-                cell.taskTitle.text = self.bigIdeaItems[indexPath.row].title
-                cell.taskLocation.text = self.bigIdeaItems[indexPath.row].location
-                cell.taskTime.text = self.bigIdeaItems[indexPath.row].startTime
-                cell.taskTag.text = self.bigIdeaItems[indexPath.row].tag
-                
-                //Check if user has liked the task and display correct heart
-                currentTasks.observe(.value, with: { snapshot in
-                    if !snapshot.hasChild(self.bigIdeaItems[indexPath.row].id) {
-                        let unlikedIcon = UIImage(named: "heartIcon")
-                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
-                    }
-                    else {
-                        let likedIcon = UIImage(named: "redHeart")
-                        cell.taskLiked.setImage(likedIcon, for: .normal)
-                    }
-                })
-            }
         }
 
         cell.delegate = self
@@ -264,17 +168,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         //print("Heart", sender, tappedIndexPath.row)
         sender.isSelected = !sender.isSelected
-
-        let items: [Task]
-        if self.currentDB == "All" {
-            items = overallItems
-        }
-        else if self.currentDB == "Community"{
-            items = communityItems
-        }
-        else{
-            items = bigIdeaItems
-        }
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
@@ -283,13 +176,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         currentTasks.observeSingleEvent(of: .value, with: { (snapshot) in
             
             //HEART TAPPED
-            if !(snapshot.hasChild(items[tappedIndexPath.row].id)){
+            if !(snapshot.hasChild(self.overallItems[tappedIndexPath.row].id)){
                 let likedIcon = UIImage(named: "redHeart")
                 sender.taskLiked.setImage(likedIcon, for: .normal)
                 sender.contentView.backgroundColor = UIColor.white
-                currentTasks.child(items[tappedIndexPath.row].id).setValue(true)
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).setValue(true)
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking + 1)
+                currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(true)
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).setValue(true)
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(self.overallItems[tappedIndexPath.row].ranking + 1)
             }
             //END HEART TAPPED
                 
@@ -297,9 +190,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             else {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 sender.taskLiked.setImage(unlikedIcon, for: .normal)
-                currentTasks.child(items[tappedIndexPath.row].id).removeValue()
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).removeValue()
-                Constants.refs.databaseTasks.child(items[tappedIndexPath.row].id).child("ranking").setValue(items[tappedIndexPath.row].ranking - 1)
+                currentTasks.child(self.overallItems[tappedIndexPath.row].id).removeValue()
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).removeValue()
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(self.overallItems[tappedIndexPath.row].ranking - 1)
              }
             //END HEART UNTAPPED
         })
@@ -314,15 +207,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailTask", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
-            if self.currentDB == "All" {
-                destinationVC.task_in = self.overallItems[myIndex]
-            }
-            else if self.currentDB == "Community" {
-                destinationVC.task_in = self.communityItems[myIndex]
-            }
-            else {
-                destinationVC.task_in = self.bigIdeaItems[myIndex]
-            }
+
+            destinationVC.task_in = self.overallItems[myIndex]
             destinationVC.taskIndex = myIndex
         }
     }
@@ -392,8 +278,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
     func sortTasks() -> Void {
         //OVERALL
-        if self.indexDropdown == 0{
-            self.currentDB = "All"
             if self.segmentedBarOutlet.selectedSegmentIndex == 0{
                 self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
             }
@@ -403,55 +287,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             else{
                 self.overallItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
-        }
         //END OVERALL
-            
-        //COMMUNITY
-        else if self.indexDropdown == 1{
-            //self.items = self.communityItems
-            self.currentDB = "Community"
-            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                self.communityItems.sort(by: {$0.timestamp > $1.timestamp})
-            }
-            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                self.communityItems.sort(by: {$0.ranking > $1.ranking})
-            }
-            else{
-                self.communityItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            }
-        }
-        //END COMMUNITY
-            
-        //BIG IDEA
-        else{
-            //self.items = self.bigIdeaItems
-            self.currentDB = "Big Ideas"
-            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
-                self.bigIdeaItems.sort(by: {$0.timestamp > $1.timestamp})
-            }
-            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
-                self.bigIdeaItems.sort(by: {$0.ranking > $1.ranking})
-            }
-            else{
-                self.bigIdeaItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            }
-        }
-        //END BIG IDEA
         self.tableView.reloadData()
     }
     
     @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
         if segue.identifier == "unwindToInitiatives" {
             let selectedIndex = tableView.indexPathForSelectedRow?.row
-            if self.currentDB == "All" {
-                self.overallItems.remove(at: selectedIndex!)
-            }
-            else if self.currentDB == "Community" {
-                self.communityItems.remove(at: selectedIndex!)
-            }
-            else {
-                self.bigIdeaItems.remove(at: selectedIndex!)
-            }
+            self.overallItems.remove(at: selectedIndex!)
+
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
         }

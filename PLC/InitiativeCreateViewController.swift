@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import FirebaseStorage
+import PhotosUI
 
-class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
+class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     //MARK: Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -17,12 +19,11 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var leadCheck: UIButton!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
-    @IBOutlet weak var bigIdeaButton: UIButton!
-    @IBOutlet weak var communityButton: UIButton!
+    @IBOutlet weak var addImageLabel: UILabel!
     @IBOutlet weak var leadAmountTextField: UITextField!
     @IBOutlet weak var participateAmountTextField: UITextField!
-    @IBOutlet weak var validationButtonLabel: UILabel!
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
+    @IBOutlet weak var taskPhotoImageView: UIImageView!
     
     //MARK: Variables
     let startDatePicker = UIDatePicker()
@@ -30,14 +31,13 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     var task: Task?
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
+    var taskPhoto: UIImage = UIImage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        validationCheckBoxLabel.isEnabled = false
-        validationButtonLabel.isEnabled = false
-        bigIdeaButton.isSelected = false
-        communityButton.isSelected = false
+        taskPhotoImageView.isHidden = true
+        validationCheckBoxLabel.isHidden = true
         leadAmountTextField.isEnabled = false
         participateAmountTextField.isEnabled = false
         
@@ -50,6 +50,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         
     }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -57,17 +58,13 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     }
     
     //MARK: Actions
-    @IBAction func bigIdeaAction(_ sender: UIButton) {
-        communityButton.isSelected = false
-        bigIdeaButton.isSelected = true
-        bigIdeaButton.backgroundColor = UIColor.white
-        communityButton.backgroundColor = UIColor.black
-    }
-    @IBAction func communityAction(_ sender: UIButton) {
-        bigIdeaButton.isSelected = false
-        communityButton.isSelected = true
-        communityButton.backgroundColor = UIColor.white
-        bigIdeaButton.backgroundColor = UIColor.black
+    @IBAction func addImageButton(_ sender: UIButton) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true)
     }
     @IBAction func leadCheckBox(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -95,7 +92,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             var amounts = Dictionary<String, Int>()
             var tagResult: String = ""
-            var type: String
             var participantAmount = 0
             var leaderAmount = 0
             if leadCheck.isSelected {
@@ -118,19 +114,11 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
                 }
                 amounts["participants"] = participantAmount
             }
-            if bigIdeaButton.isSelected {
-                type = "Big Idea"
-            }
-            else{
-                type = "Community"
-            }
-            
-            
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, type: type, amounts: amounts)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "taskType": task?.type as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
@@ -139,7 +127,35 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             
             let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
             tasksCreated.child(key).setValue(true)
+            
+            if (addImageLabel.text != "Add Image"){
+                let imageName:String = String("\(key).png")
+                
+                let storageRef = Constants.refs.storage.child(imageName)
+                //let compressImage = HelperFunction.helper.resizeImage(image: taskPhoto)
+                if let uploadData = UIImagePNGRepresentation(taskPhoto){
+                    storageRef.putData(uploadData, metadata: nil
+                        , completion: { (metadata, error) in
+                            if error != nil {
+                                print("error")
+                                return
+                            }
+                            storageRef.downloadURL(completion: { (url, error) in
+                                if error != nil {
+                                    print(error!.localizedDescription)
+                                    return
+                                }
+                                if let taskImageUrl = url?.absoluteString {
+                                    Constants.refs.databaseTasks.child(key).child("taskPhotoURL").setValue(taskImageUrl)
+                                }
+                            })
+                    })
+                    
+                }
+            }
             dismiss()
+            
+            
         }
     }
     
@@ -161,6 +177,24 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
         return dateFormatter.string(from:datePicker.date)
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerController(_ _picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        taskPhoto = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
+        taskPhotoImageView.isHidden = false
+        taskPhotoImageView.image = taskPhoto
+        let url = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let imageName = url.lastPathComponent
+        addImageLabel.text = imageName
+        
+        //print(imageName)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 
     
@@ -194,7 +228,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         }
         if (endTimeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
@@ -203,25 +237,16 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             valid = false
         }
         if !(leadCheck.isSelected) && !(participateCheck.isSelected){
-            validationCheckBoxLabel.isEnabled = true
-            validationCheckBoxLabel.attributedText = NSAttributedString(string: "Please select '#lead' and/or '#participate'", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
-            valid = false
-        }
-        if !(bigIdeaButton.isSelected) && !(communityButton.isSelected){
-            validationButtonLabel.isEnabled = true
-            validationButtonLabel.attributedText = NSAttributedString(string: "Please select 'Big Idea' or 'Community'", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            validationCheckBoxLabel.isHidden = false
             valid = false
         }
         else{
-            validationButtonLabel.text?.removeAll()
-            validationButtonLabel.isEnabled = false
-        }
-        if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-            validationCheckBoxLabel.attributedText = NSAttributedString(string: "Please enter amount of task leaders/participants", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
-        }
-        else{
-            validationCheckBoxLabel.text?.removeAll()
-            validationCheckBoxLabel.isEnabled = false
+            if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
+                validationCheckBoxLabel.isHidden = false
+            }
+            else{
+                validationCheckBoxLabel.isHidden = true
+            }
         }
         return valid
     }

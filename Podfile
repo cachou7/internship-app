@@ -8,6 +8,7 @@ platform :ios, '9.0'
     pod 'Firebase'
     pod 'FirebaseDatabase'
     pod 'Firebase/Auth'
+    pod 'Firebase/Storage'
     pod 'NavigationDropdownMenu', '~> 4.0.0'
     pod 'FSCalendar'
   end
