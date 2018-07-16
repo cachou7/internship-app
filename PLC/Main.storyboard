@@ -45,7 +45,7 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TPN-6I-emv">
                                 <rect key="frame" x="106" y="383" width="163" height="36"/>
-                                <color key="backgroundColor" red="0.46306887910728134" green="0.19007690553167278" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="1" green="0.65317008201036941" blue="0.53435099867358438" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="zH1-d3-ve5"/>
                                 </constraints>
@@ -78,11 +78,18 @@
                                     <constraint firstAttribute="height" constant="38" id="avg-FG-bLg"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="gKF-Kd-JMh"/>
+                                <color key="tintColor" red="1" green="0.59178658579474552" blue="0.49330415981945552" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Sign up"/>
                                 <connections>
                                     <action selector="signUpDidTouch:" destination="hOv-9g-aEn" eventType="touchUpInside" id="beM-Fe-Ftb"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sapientlogo" translatesAutoresizingMaskIntoConstraints="NO" id="KuV-VN-Oqw">
+                                <rect key="frame" x="167" y="579" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ijc-nq-pBX"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -93,6 +100,7 @@
                             <constraint firstItem="AK1-m2-FMy" firstAttribute="centerX" secondItem="uh8-vc-DKx" secondAttribute="centerX" id="Fkk-LH-2a0"/>
                             <constraint firstItem="TmJ-me-AXp" firstAttribute="bottom" secondItem="Uqp-jp-FYz" secondAttribute="bottom" constant="202" id="GPU-Bo-Pqa"/>
                             <constraint firstItem="sbr-KJ-n0m" firstAttribute="top" secondItem="uh8-vc-DKx" secondAttribute="bottom" constant="23" id="GZs-KP-xrX"/>
+                            <constraint firstItem="TmJ-me-AXp" firstAttribute="bottom" secondItem="KuV-VN-Oqw" secondAttribute="bottom" constant="48" id="IBX-df-YAS"/>
                             <constraint firstItem="SRh-Kp-H3s" firstAttribute="centerX" secondItem="TPN-6I-emv" secondAttribute="centerX" id="Ndi-mL-5Dy"/>
                             <constraint firstItem="AK1-m2-FMy" firstAttribute="top" secondItem="4Xc-hX-eQ5" secondAttribute="top" id="PJz-Gd-RRH"/>
                             <constraint firstItem="AK1-m2-FMy" firstAttribute="leading" secondItem="4Xc-hX-eQ5" secondAttribute="leading" id="SsB-l9-kVn"/>
@@ -100,7 +108,9 @@
                             <constraint firstItem="TPN-6I-emv" firstAttribute="top" secondItem="SRh-Kp-H3s" secondAttribute="bottom" constant="27" id="Wq0-re-wlA"/>
                             <constraint firstItem="sbr-KJ-n0m" firstAttribute="leading" secondItem="SRh-Kp-H3s" secondAttribute="leading" id="a4e-Hd-6o4"/>
                             <constraint firstItem="TPN-6I-emv" firstAttribute="centerX" secondItem="Uqp-jp-FYz" secondAttribute="centerX" id="awq-GP-YeW"/>
+                            <constraint firstItem="KuV-VN-Oqw" firstAttribute="leading" secondItem="TmJ-me-AXp" secondAttribute="leading" constant="167" id="dTX-hU-XBx"/>
                             <constraint firstItem="sbr-KJ-n0m" firstAttribute="leading" secondItem="TmJ-me-AXp" secondAttribute="leading" constant="63" id="dbj-Bu-6mO"/>
+                            <constraint firstItem="KuV-VN-Oqw" firstAttribute="centerX" secondItem="Uqp-jp-FYz" secondAttribute="centerX" id="hP0-z5-PG3"/>
                             <constraint firstItem="uh8-vc-DKx" firstAttribute="top" secondItem="AK1-m2-FMy" secondAttribute="bottom" constant="8" symbolic="YES" id="il6-nW-foU"/>
                             <constraint firstAttribute="trailing" secondItem="AK1-m2-FMy" secondAttribute="trailing" id="m2M-7q-Jcu"/>
                             <constraint firstItem="uh8-vc-DKx" firstAttribute="centerX" secondItem="sbr-KJ-n0m" secondAttribute="centerX" id="sBp-1A-y3A"/>
@@ -128,5 +138,6 @@
     </scenes>
     <resources>
         <image name="loginHeader" width="379" height="222"/>
+        <image name="sapientlogo" width="200" height="200"/>
     </resources>
 </document>

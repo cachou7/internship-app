@@ -148,13 +148,13 @@
                     <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="0qA-Nk-Zb4"/>
                     <navigationItem key="navigationItem" title="Initiatives" id="Mys-yE-DkB" userLabel="Task Board">
                         <barButtonItem key="leftBarButtonItem" systemItem="search" id="dFE-vo-OKL">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="searchButton:" destination="AMN-zv-t8u" id="jtk-uA-0kx"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Create" image="iconCreate" id="B3W-aE-x7s">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="composeButton:" destination="AMN-zv-t8u" id="jDE-vL-y4l"/>
                             </connections>

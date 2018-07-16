@@ -22,13 +22,12 @@ class Task{
     var ranking: Int
     var timeMilliseconds: TimeInterval
     var endTimeMilliseconds: TimeInterval
-    var type: String
     var amounts: Dictionary<String, Int>
     //var users_liked = [String:Bool]()
     
     //MARK: Initialization
     
-    init?(title: String, description: String, tag: String, startTime: String, endTime: String, location: String, timestamp: TimeInterval, id: String, createdBy: String, ranking: Int, timeMilliseconds: TimeInterval, endTimeMilliseconds: TimeInterval, type:String, amounts: Dictionary<String, Int>) {
+    init?(title: String, description: String, tag: String, startTime: String, endTime: String, location: String, timestamp: TimeInterval, id: String, createdBy: String, ranking: Int, timeMilliseconds: TimeInterval, endTimeMilliseconds: TimeInterval, amounts: Dictionary<String, Int>) {
         
         // The title must not be empty
         guard !title.isEmpty else {
@@ -49,7 +48,6 @@ class Task{
         self.ranking = ranking
         self.timeMilliseconds = timeMilliseconds
         self.endTimeMilliseconds = endTimeMilliseconds
-        self.type = type
         self.amounts = amounts
     }
 }

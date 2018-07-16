@@ -9,7 +9,6 @@
 import UIKit
 
 class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var validationButtonLabel: UILabel!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
@@ -20,8 +19,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var participateCheckBox: UIButton!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
-    @IBOutlet weak var bigIdeaButton: UIButton!
-    @IBOutlet weak var communityButton: UIButton!
     
     //MARK: Variables
     let startDatePicker = UIDatePicker()
@@ -36,14 +33,12 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     var endTimeChanged = false
     var locationChanged = false
     var tagsChanged = false
-    var typeChanged = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTask()
         
-        validationCheckBoxLabel.isEnabled = false
-        validationButtonLabel.isEnabled = false
+        validationCheckBoxLabel.isHidden = true
         
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
@@ -85,26 +80,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         }
         //END TAGS
         
-        //TYPE BUTTONS
-        switch(task_in.type){
-            case "Big Idea" :
-                bigIdeaButton.isSelected = true;
-                communityButton.isSelected = false;
-                bigIdeaButton.backgroundColor = UIColor.white
-                break;
-            case "Community" :
-                communityButton.isSelected = true;
-                bigIdeaButton.isSelected = false;
-                communityButton.backgroundColor = UIColor.white
-                break;
-            default:
-                bigIdeaButton.isSelected = false
-                communityButton.isSelected = false
-        }
-        //END TYPE BUTTONS
-        
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -132,20 +107,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         else{
             participateAmountTextField.isEnabled = false
         }
-    }
-    @IBAction func bigIdeaButton(_ sender: UIButton) {
-        typeChanged = true
-        communityButton.isSelected = false
-        bigIdeaButton.isSelected = true
-        bigIdeaButton.backgroundColor = UIColor.white
-        communityButton.backgroundColor = UIColor.lightGray
-    }
-    @IBAction func communityButton(_ sender: UIButton) {
-        typeChanged = true
-        bigIdeaButton.isSelected = false
-        communityButton.isSelected = true
-        communityButton.backgroundColor = UIColor.white
-        bigIdeaButton.backgroundColor = UIColor.lightGray
     }
     @IBAction func titleChanged(_ sender: UITextField) {
         titleChanged = true
@@ -211,7 +172,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         }
         if (endTimeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
@@ -220,25 +181,16 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
             valid = false
         }
         if !(leadCheckBox.isSelected) && !(participateCheckBox.isSelected){
-            validationCheckBoxLabel.isEnabled = true
-            validationCheckBoxLabel.attributedText = NSAttributedString(string: "Please select '#lead' and/or '#participate'", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
-            valid = false
-        }
-        if !(bigIdeaButton.isSelected) && !(communityButton.isSelected){
-            validationButtonLabel.isEnabled = true
-            validationButtonLabel.attributedText = NSAttributedString(string: "Please select 'Big Idea' or 'Community'", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            validationCheckBoxLabel.isHidden = false
             valid = false
         }
         else{
-            validationButtonLabel.text?.removeAll()
-            validationButtonLabel.isEnabled = false
-        }
-        if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-            validationCheckBoxLabel.attributedText = NSAttributedString(string: "Please enter amount of task leaders/participants", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
-        }
-        else{
-            validationCheckBoxLabel.text?.removeAll()
-            validationCheckBoxLabel.isEnabled = false
+            if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
+                validationCheckBoxLabel.isHidden = false
+            }
+            else{
+                validationCheckBoxLabel.isHidden = true
+            }
         }
         return valid
     }
@@ -254,7 +206,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             
             
-            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || typeChanged){
+            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged){
                 let currentTask = Constants.refs.databaseTasks.child(task_in.id)
                 if (titleChanged){
                     currentTask.child("taskTitle").setValue(titleTextField.text!)
@@ -302,16 +254,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                     currentTask.child("taskTag").setValue(tagResult)
                     currentTask.child("participantAmount").setValue(participantAmount)
                     currentTask.child("leaderAmount").setValue(leaderAmount)
-                }
-                if (typeChanged){
-                    var type: String
-                    if bigIdeaButton.isSelected {
-                        type = "Big Idea"
-                    }
-                    else{
-                        type = "Community"
-                    }
-                    currentTask.child("taskType").setValue(type)
                 }
             }
         }
