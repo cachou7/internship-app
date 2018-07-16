@@ -16,6 +16,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var participateCheck: UIButton!
     @IBOutlet weak var leadCheck: UIButton!
     @IBOutlet weak var timeTextField: UITextField!
+    @IBOutlet weak var endTimeTextField: UITextField!
     @IBOutlet weak var bigIdeaButton: UIButton!
     @IBOutlet weak var communityButton: UIButton!
     @IBOutlet weak var leadAmountTextField: UITextField!
@@ -24,9 +25,11 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
     
     //MARK: Variables
-    let datePicker = UIDatePicker()
+    let startDatePicker = UIDatePicker()
+    let endDatePicker = UIDatePicker()
     var task: Task?
     var eventTime: TimeInterval = 0.0
+    var eventEndTime: TimeInterval = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +42,12 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         participateAmountTextField.isEnabled = false
         
         
-        datePicker.datePickerMode = UIDatePickerMode.dateAndTime
-        timeTextField.inputView = datePicker
-        datePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
+        startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
+        endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
+        timeTextField.inputView = startDatePicker
+        endTimeTextField.inputView = endDatePicker
+        startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
+        endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         
     }
     
@@ -122,9 +128,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
             
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, time: timeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, type: type, amounts: amounts)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, type: type, amounts: amounts)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.time as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskType": task?.type as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "taskType": task?.type as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
@@ -139,12 +145,22 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
+        if datePicker == startDatePicker{
+            eventTime = datePicker.date.timeIntervalSince1970
+            timeTextField.text = format(datePicker: datePicker)
+        }
+        else{
+            eventEndTime = datePicker.date.timeIntervalSince1970
+            endTimeTextField.text = format(datePicker: datePicker)
+        }
+    }
+    
+    //Helper Function for Date Picker
+    private func format(datePicker:UIDatePicker) -> String{
         let dateFormatter = DateFormatter()
-        eventTime = self.datePicker.date.timeIntervalSince1970
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        let strDate = dateFormatter.string(from:datePicker.date)
-        timeTextField.text = strDate
+        return dateFormatter.string(from:datePicker.date)
     }
 
     
@@ -173,7 +189,12 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate {
         }
         if (timeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            valid = false
+        }
+        if (endTimeTextField.text?.isEmpty)!{
+            // Change the placeholder color to red for textfield passWord
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{

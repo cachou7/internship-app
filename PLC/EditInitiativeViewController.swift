@@ -12,6 +12,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var validationButtonLabel: UILabel!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
+    @IBOutlet weak var endTimeTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var leadAmountTextField: UITextField!
     @IBOutlet weak var leadCheckBox: UIButton!
@@ -23,13 +24,16 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var communityButton: UIButton!
     
     //MARK: Variables
-    let datePicker = UIDatePicker()
+    let startDatePicker = UIDatePicker()
+    let endDatePicker = UIDatePicker()
     var eventTime: TimeInterval = 0.0
+    var eventEndTime: TimeInterval = 0.0
     var task_in:Task!
     var task_out:Task!
     var titleChanged = false
     var descriptionChanged = false
     var timeChanged = false
+    var endTimeChanged = false
     var locationChanged = false
     var tagsChanged = false
     var typeChanged = false
@@ -42,9 +46,12 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         validationButtonLabel.isEnabled = false
         
         
-        datePicker.datePickerMode = UIDatePickerMode.dateAndTime
-        timeTextField.inputView = datePicker
-        datePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
+        startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
+        endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
+        timeTextField.inputView = startDatePicker
+        endTimeTextField.inputView = endDatePicker
+        startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
+        endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
 
         // Do any additional setup after loading the view.
     }
@@ -52,7 +59,8 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     private func configureTask(){
         titleTextField.text = task_in.title
         descriptionTextField.text = task_in.description
-        timeTextField.text = task_in.time
+        timeTextField.text = task_in.startTime
+        endTimeTextField.text = task_in.endTime
         locationTextField.text = task_in.location
         
         //TAGS
@@ -154,13 +162,22 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
-        timeChanged = true
+        if datePicker == startDatePicker{
+            eventTime = datePicker.date.timeIntervalSince1970
+            timeTextField.text = format(datePicker: datePicker)
+        }
+        else{
+            eventEndTime = datePicker.date.timeIntervalSince1970
+            endTimeTextField.text = format(datePicker: datePicker)
+        }
+    }
+    
+    //Helper Function for Date Picker
+    private func format(datePicker:UIDatePicker) -> String{
         let dateFormatter = DateFormatter()
-        eventTime = self.datePicker.date.timeIntervalSince1970
         dateFormatter.timeStyle = DateFormatter.Style.short
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        let strDate = dateFormatter.string(from:datePicker.date)
-        timeTextField.text = strDate
+        return dateFormatter.string(from:datePicker.date)
     }
     
     
@@ -189,7 +206,12 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         }
         if (timeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            valid = false
+        }
+        if (endTimeTextField.text?.isEmpty)!{
+            // Change the placeholder color to red for textfield passWord
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
@@ -232,7 +254,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             
             
-            if (titleChanged || descriptionChanged || timeChanged || locationChanged || tagsChanged || typeChanged){
+            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || typeChanged){
                 let currentTask = Constants.refs.databaseTasks.child(task_in.id)
                 if (titleChanged){
                     currentTask.child("taskTitle").setValue(titleTextField.text!)
@@ -244,6 +266,10 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                 if (timeChanged){
                     currentTask.child("taskTime").setValue(timeTextField.text!)
                     currentTask.child("taskTimeMilliseconds").setValue(eventTime)
+                }
+                if (endTimeChanged){
+                    currentTask.child("taskEndTime").setValue(endTimeTextField.text!)
+                    currentTask.child("taskEndTimeMilliseconds").setValue(eventEndTime)
                 }
                 if (locationChanged){
                     currentTask.child("taskLocation").setValue(locationTextField.text!)
