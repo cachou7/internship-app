@@ -49,7 +49,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
         // Load the image using SDWebImage
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if let error = error {
-                self.taskPhoto.isHidden = true
+                self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
                 print("Error loading image: \(error)")
             }
 

@@ -140,10 +140,20 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                 //let metadata = StorageMetadata()
                // metadata.contentType = "image/jpeg"
                 // Upload the file to the path "images/rivers.jpg"
-                let uploadTask = storageRef.putFile(from: taskPhotoURL as URL, metadata: nil) { metadata, error in
-                    guard let metadata = metadata else {
-                        return
-                    }
+                //storageRef.putFile(from: taskPhotoURL as URL, metadata: nil) { metadata, error in
+                    //guard let metadata = metadata else {
+                       // return
+                    //}
+                //}
+                if let uploadData = UIImageJPEGRepresentation(taskPhoto, CGFloat(0.50)){
+                    storageRef.putData(uploadData, metadata: nil
+                        , completion: { (metadata, error) in
+                            if error != nil {
+                                print("error")
+                                return
+                            }
+                    })
+                    
                 }
             }
             dismiss()
@@ -178,7 +188,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         taskPhoto = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
         taskPhotoImageView.isHidden = false
         taskPhotoImageView.image = taskPhoto
-        let taskPhotoURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        taskPhotoURL = info[UIImagePickerControllerReferenceURL] as! NSURL
         let imageName = taskPhotoURL.lastPathComponent
         addImageLabel.text = imageName
         
