@@ -10,17 +10,16 @@ import Firebase
 
 class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate {
     
-    /*fileprivate let gregorian = Calendar(identifier: .gregorian)
-     fileprivate let formatter: DateFormatter = {
-     let formatter = DateFormatter()
-     formatter.dateFormat = "yyyy-MM-dd"
-     return formatter
-     }()*/
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
-    //fileprivate weak var calendar: FSCalendar!
     let user = Auth.auth().currentUser!
     var likedItems: [Task] = []
-    var sections: [String:[Task]] = [:]
+    var dateInfo: [String:[Task]] = [:]
+    var datesList: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,26 +31,43 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
-                if tasksInfo["participantAmount"]! as! Int != 0{
+                if tasksInfo["participantAmount"]! as! Int != 0 {
                     amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                 }
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
+                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, type: tasksInfo["taskType"]! as! String, amounts: amounts)
                 
                 self.likedItems.append(likedTask!)
                 print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
                 self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
                 self.tableView.rowHeight = 90.0
                 
-                for task in self.likedItems {
-                    //var taskTimeArr = task.time.split(separator: " ")
-                    
+                let date = NSDate(timeIntervalSince1970: tasksInfo["taskTimeMilliseconds"] as! TimeInterval)
+                let dateString = self.dateFormatter.string(from: date as Date)
+                let keyExists = self.dateInfo[dateString] != nil
+                if !keyExists {
+                    self.dateInfo[dateString] = ([likedTask] as! [Task])
                 }
+                else {
+                    var currTasks = self.dateInfo[dateString] as! [Task]
+                    currTasks.append(likedTask!)
+                    currTasks.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                    self.dateInfo[dateString] = currTasks
+                }
+                
+                for key in self.dateInfo.keys {
+                    self.datesList.append(key)
+                }
+                
+                
+                
                 self.tableView.reloadData()
             })
+            self.tableView.reloadData()
         })
+        
         
         // Set up listener to detect when tasks are unliked from main Initiatives view and delete from likeItems
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
