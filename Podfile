@@ -9,8 +9,10 @@ platform :ios, '9.0'
     pod 'FirebaseDatabase'
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
+    pod 'FirebaseUI/Storage'
     pod 'NavigationDropdownMenu', '~> 4.0.0'
     pod 'FSCalendar'
+    pod 'Presentr'
   end
 
   post_install do |installer|
