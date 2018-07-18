@@ -32,6 +32,7 @@
 		995285DB20EBC190000E29B4 /* DepartmentLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */; };
 		995285DD20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */; };
 		995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */; };
+		99919A7F20FFA39D008ED134 /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99919A7E20FFA39D008ED134 /* CheckInViewController.swift */; };
 		99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */; };
 		99AB732920E42E0000E00A2A /* Initiatives.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732720E42E0000E00A2A /* Initiatives.storyboard */; };
 		99AB732C20E42E2800E00A2A /* Leaderboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */; };
@@ -103,6 +104,7 @@
 		995285DA20EBC190000E29B4 /* DepartmentLeaderboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DepartmentLeaderboard.storyboard; sourceTree = "<group>"; };
 		995285DC20EBC1B0000E29B4 /* OfficeLeaderboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OfficeLeaderboard.storyboard; sourceTree = "<group>"; };
 		995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardPageViewController.swift; sourceTree = "<group>"; };
+		99919A7E20FFA39D008ED134 /* CheckInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInViewController.swift; sourceTree = "<group>"; };
 		99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativeCreateViewController.swift; sourceTree = "<group>"; };
 		99AB732820E42E0000E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Initiatives.storyboard; sourceTree = "<group>"; };
 		99AB732B20E42E2800E00A2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = PLC/Base.lproj/Leaderboard.storyboard; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
 				99C9148820FD664300B8EEE5 /* RSVPViewController.swift */,
+				99919A7E20FFA39D008ED134 /* CheckInViewController.swift */,
 				995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */,
 				8365F91520E6B9C90018BB43 /* UserModel.swift */,
 				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
@@ -496,6 +499,7 @@
 				99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */,
 				83ADA39920E1547400CD5F30 /* LeaderboardViewController.swift in Sources */,
 				83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */,
+				99919A7F20FFA39D008ED134 /* CheckInViewController.swift in Sources */,
 				83BD2FE020E2C7D400260BAC /* TaskTableViewCell.swift in Sources */,
 				83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */,
 				83DC45C620EC22780080B6A1 /* FavTasksViewController.swift in Sources */,

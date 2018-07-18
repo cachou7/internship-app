@@ -11,7 +11,7 @@ import Firebase
 
 protocol RSVPViewControllerDelegate
 {
-    func setCurrentTask()
+    func setRSVPCurrentTask()
     
 }
 

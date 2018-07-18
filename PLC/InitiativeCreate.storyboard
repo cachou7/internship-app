@@ -78,7 +78,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="vaC-PW-RDO">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wa2-yj-PNg">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wa2-yj-PNg">
                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="50" id="EcT-QT-wDx"/>
@@ -268,6 +268,35 @@
                         <outlet property="validationCheckBoxLabel" destination="EOZ-9V-mXg" id="lwL-TO-NUU"/>
                     </connections>
                 </viewController>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="10" id="pFE-8v-4ic">
+                    <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ghz-yS-gwc">
+                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="ZNC-Rf-jZX"/>
+                                <constraint firstAttribute="width" constant="50" id="jv7-el-TCY"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fKV-iY-V7V">
+                            <rect key="frame" x="60" y="0.0" width="243" height="50"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zsc-5l-PSn">
+                            <rect key="frame" x="313" y="0.0" width="30" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="Skf-6s-Pel"/>
+                            </constraints>
+                            <connections>
+                                <action selector="addImageButton:" destination="Enx-Ap-6vX" eventType="touchUpInside" id="KfS-wN-dNx"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="UQh-xw-8Fd"/>
+                </stackView>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z63-lI-BbY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2583" y="-1057"/>

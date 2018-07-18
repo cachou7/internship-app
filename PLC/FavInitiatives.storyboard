@@ -82,15 +82,6 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#participate" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaJ-dE-eT4">
-                                            <rect key="frame" x="262" y="9" width="100" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="100" id="QRY-8H-6sr"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July 4th 6 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uuu-0R-PQ7">
                                             <rect key="frame" x="16" y="52" width="85" height="14"/>
                                             <constraints>
@@ -107,7 +98,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kjd-Jl-iL2">
-                                            <rect key="frame" x="316" y="27" width="39" height="39"/>
+                                            <rect key="frame" x="316" y="41" width="39" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="39" id="QMw-Ym-fty"/>
                                             </constraints>
@@ -118,11 +109,8 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="aaJ-dE-eT4" firstAttribute="top" secondItem="XpC-nQ-8PP" secondAttribute="topMargin" constant="-2" id="6kI-t8-Ynb"/>
                                         <constraint firstItem="g3c-nG-hUe" firstAttribute="trailing" secondItem="uuu-0R-PQ7" secondAttribute="trailing" id="7WZ-GA-MSQ"/>
                                         <constraint firstItem="chJ-qU-LuC" firstAttribute="leading" secondItem="g3c-nG-hUe" secondAttribute="leading" id="8gi-oe-Qbb"/>
-                                        <constraint firstItem="kjd-Jl-iL2" firstAttribute="top" secondItem="aaJ-dE-eT4" secondAttribute="bottom" constant="2" id="DaN-IA-NuM"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="aaJ-dE-eT4" secondAttribute="trailing" constant="-3" id="IBg-S2-jbD"/>
                                         <constraint firstItem="g3c-nG-hUe" firstAttribute="leading" secondItem="uuu-0R-PQ7" secondAttribute="leading" id="Vm6-Oy-nqB"/>
                                         <constraint firstItem="chJ-qU-LuC" firstAttribute="top" secondItem="XpC-nQ-8PP" secondAttribute="topMargin" id="bYl-yg-28P"/>
                                         <constraint firstItem="uuu-0R-PQ7" firstAttribute="top" secondItem="chJ-qU-LuC" secondAttribute="bottom" constant="17" id="fS0-aK-DMk"/>
@@ -136,7 +124,6 @@
                                 <connections>
                                     <outlet property="taskLiked" destination="kjd-Jl-iL2" id="uHk-8N-7lT"/>
                                     <outlet property="taskLocation" destination="g3c-nG-hUe" id="tVs-qs-R4Q"/>
-                                    <outlet property="taskTag" destination="aaJ-dE-eT4" id="hnv-fV-PmC"/>
                                     <outlet property="taskTime" destination="uuu-0R-PQ7" id="gxR-oB-zeQ"/>
                                     <outlet property="taskTitle" destination="chJ-qU-LuC" id="KBp-0H-vlc"/>
                                     <segue destination="xvB-Tx-WaU" kind="show" identifier="showFavTaskDetails" id="cuP-J0-SsG"/>

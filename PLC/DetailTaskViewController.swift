@@ -11,12 +11,14 @@ import Firebase
 import FirebaseUI
 import Presentr
 
-class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
+class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate{
     
     
     var task_in:Task!
     var taskIndex: Int!
-    var controller : RSVPViewController?
+    var RSVPController : RSVPViewController?
+    var CheckInController : CheckInViewController?
+    
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
@@ -32,9 +34,48 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
     @IBOutlet weak var editButton: UIBarButtonItem!
     var presenter = Presentr(presentationType: .bottomHalf)
 
+    @IBOutlet weak var RSVPButton: UIButton!
+    @IBOutlet weak var checkInButton: UIButton!
+    @IBOutlet weak var whoIsGoingButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.dismissOnSwipe = true
+        presenter.dismissOnSwipeDirection = .bottom
+        presenter.dismissAnimated = true
+        presenter.roundCorners = true
+        
+        checkInButton.isHidden = true
+        
+        if task_in.createdBy == currentUser.uid{
+            editButton.isEnabled = true
+            deleteButton.isEnabled = true
+            RSVPButton.isHidden = true
+            whoIsGoingButton.isHidden = false
+        }
+        else{
+            whoIsGoingButton.isHidden = true
+            editButton.isEnabled = false
+            deleteButton.isEnabled = false
+        }
+        
+        Constants.refs.databaseCurrentTasks.observe(.value, with: { snapshot in
+            if snapshot.hasChild(self.task_in.id){
+                self.RSVPButton.isHidden = true
+                if !(self.task_in.createdBy == currentUser.uid){
+                     self.checkInButton.isHidden = false
+                }
+            }
+        })
+        
+        Constants.refs.databasePastTasks.observe(.value, with: { snapshot in
+            if snapshot.hasChild(self.task_in.id){
+                self.RSVPButton.isHidden = true
+                self.checkInButton.isHidden = true
+                self.whoIsGoingButton.setTitle("Who Went ⇡", for: UIControlState.normal)
+            }
+        })
         
         // Do any additional setup after loading the view.
         taskTitle.text = task_in.title
@@ -52,6 +93,9 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
                 self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
                 print("Error loading image: \(error)")
             }
+            else{
+                print("Successfuly loaded image")
+            }
 
         }
         
@@ -59,15 +103,6 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
         Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
             self.taskCreatedBy.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
             })
-
-        if task_in.createdBy == currentUser.uid{
-            editButton.isEnabled = true
-            deleteButton.isEnabled = true
-        }
-        else{
-            editButton.isEnabled = false
-            deleteButton.isEnabled = false
-        }
         
         let tags = task_in.tag
         let tagArray = tags.components(separatedBy: " ")
@@ -75,14 +110,10 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
             if tag == "#lead"{
                 leaderStack.isHidden = false
                 taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
-                //leadLabel.isEnabled = true
-                //leadLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
             if tag == "#participate"{
                 participateStack.isHidden = false
                 taskParticipantAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
-                //participateLabel.isEnabled = true
-                //participateLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
         }
     }
@@ -97,20 +128,19 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
         // Dispose of any resources that can be recreated.
     }
     @IBAction func RSVPButton(_ sender: UIButton) {
-        presenter.dismissOnSwipe = true
-        presenter.dismissOnSwipeDirection = .bottom
-        //presenter.dismissOnTap = true
-        //presenter.transitionType = .coverHorizontalFromLeft
-        //presenter.transitionType = .crossDissolve
-        presenter.dismissAnimated = true
-        presenter.roundCorners = true
-        controller = (storyboard?.instantiateViewController(withIdentifier: "RSVPViewController") as! RSVPViewController)
-        controller?.delegate = self
-        setCurrentTask()
-        customPresentViewController(presenter, viewController: controller!, animated: true, completion: nil)
+        RSVPController = (storyboard?.instantiateViewController(withIdentifier: "RSVPViewController") as! RSVPViewController)
+        RSVPController?.delegate = self
+        setRSVPCurrentTask()
+        customPresentViewController(presenter, viewController: RSVPController!, animated: true, completion: nil)
         
     }
     
+    @IBAction func checkInButton(_ sender: UIButton) {
+        CheckInController = (storyboard?.instantiateViewController(withIdentifier: "CheckInViewController") as! CheckInViewController)
+        CheckInController?.delegate = self
+        setCheckInCurrentTask()
+        customPresentViewController(presenter, viewController: CheckInController!, animated: true, completion: nil)
+    }
     @IBAction func deleteButton(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Delete Task", message: "Are you sure you want to delete this task?", preferredStyle: .alert)
 
@@ -165,8 +195,15 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
     }
     
     //RSVPViewControllerDelegate method
-    func setCurrentTask() {
-        controller?.task = task_in
+    func setRSVPCurrentTask() {
+        RSVPController?.task = task_in
+        
+    }
+    
+    //CheckInViewControllerDelegate method
+    func setCheckInCurrentTask() {
+        CheckInController?.task = task_in
+        
     }
 
     
