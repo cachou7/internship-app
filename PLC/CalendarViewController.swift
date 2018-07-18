@@ -16,6 +16,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     let user = Auth.auth().currentUser!
     fileprivate weak var calendar: FSCalendar!
     var datesWithEvents: [String:Int] = [:]
+    var taskIdDate: [String:String] = [:]
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -60,6 +61,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 let startTime = timeInfo["taskTimeMilliseconds"] as! TimeInterval
                 let date = NSDate(timeIntervalSince1970: startTime)
                 let dateString = self.dateFormatter.string(from: date as Date)
+                self.taskIdDate[timeInfo["taskId"] as! String] = dateString
                 let keyExists = self.datesWithEvents[dateString] != nil
                 if !keyExists {
                     self.datesWithEvents[dateString] = 1
@@ -75,27 +77,18 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
             print("Deleting event from calendar...")
-            //if self.likedItems.count > 0 {
-            Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
-                let timeInfo = snapshot.value as? [String : Any ] ?? [:]
-                let startTime = timeInfo["taskTimeMilliseconds"] as! TimeInterval
-                let date = NSDate(timeIntervalSince1970: startTime)
-                let dateString = self.dateFormatter.string(from: date as Date)
-                
-                var currEventsOnDate = self.datesWithEvents[dateString]
-                if self.datesWithEvents[dateString] == 1 {
-                    self.datesWithEvents[dateString] = nil
-                }
-                else {
-                    currEventsOnDate = currEventsOnDate! - 1
-                    self.datesWithEvents[dateString] = currEventsOnDate
-                }
-                self.calendar.reloadData()
-            })
-            //self.calendar.reloadData()
+            let dateString = self.taskIdDate[taskId.key] as! String
+            var currEventsOnDate = self.datesWithEvents[dateString]
+            if self.datesWithEvents[dateString] == 1 {
+                self.datesWithEvents[dateString] = nil
+            }
+            else {
+                currEventsOnDate = currEventsOnDate! - 1
+                self.datesWithEvents[dateString] = currEventsOnDate
+            }
+            self.taskIdDate.removeValue(forKey: taskId.key)
+            self.calendar.reloadData()
         })
-        //self.navigationController?.isNavigationBarHidden = true
-        //self.title = "My Initiatives"
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
