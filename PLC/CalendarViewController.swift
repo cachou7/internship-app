@@ -12,14 +12,20 @@ import Firebase
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UIGestureRecognizerDelegate {
     
+    var selectedDate = Date()
     let user = Auth.auth().currentUser!
     fileprivate weak var calendar: FSCalendar!
-    fileprivate weak var eventLabel: UILabel!
     var datesWithEvents: [String:Int] = [:]
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+    
+    fileprivate lazy var dateFormatter2: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
         return formatter
     }()
     
@@ -36,6 +42,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.delegate = self
         calendar.swipeToChooseGesture.isEnabled = true
         calendar.backgroundColor = UIColor.white
+        //calendar.placeholderType = .none
         self.view.addSubview(calendar)
         
         self.calendar = calendar
@@ -46,7 +53,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         super.viewDidLoad()
         
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
-            print("Fetching fav tasks...")
+            print("Fetching event for calendar...")
             // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let timeInfo = snapshot.value as? [String : Any ] ?? [:]
@@ -67,7 +74,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         })
         
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
-            print("Deleting item from fav tasks...")
+            print("Deleting event from calendar...")
             //if self.likedItems.count > 0 {
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let timeInfo = snapshot.value as? [String : Any ] ?? [:]
@@ -91,19 +98,14 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         //self.title = "My Initiatives"
     }
     
-    
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        /*if (calendar.scope == FSCalendarScope.month) {
-            calendar.setScope(FSCalendarScope.week, animated: true)
-            calendar.select(date, scrollToDate: true)
-        }
-        else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }*/
+        
+        let dateString = self.dateFormatter2.string(from: date as Date)
+        Constants.refs.databaseUserSelectedDate.child(user.uid).setValue(dateString)
+        
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
-        
         self.calendar.reloadData()
     }
     
@@ -123,5 +125,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             cell.eventIndicator.isHidden = false
             cell.eventIndicator.color = UIColor.black
         }
+    }
+    
+    func getselectedDate() -> Date {
+        return selectedDate
     }
 }

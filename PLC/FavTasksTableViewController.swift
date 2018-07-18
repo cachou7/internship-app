@@ -16,10 +16,17 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         return formatter
     }()
     
+    fileprivate lazy var dateFormatter2: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+    
     let user = Auth.auth().currentUser!
-    var likedItems: [Task] = []
+    //var likedItems: [Task] = []
     var dateInfo: [String:[Task]] = [:]
     var datesList: [String] = []
+    //var sortedDateArr: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +46,9 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 }
                 let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
                 
-                self.likedItems.append(likedTask!)
+                //self.likedItems.append(likedTask!)
                 print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
-                self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                //self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
                 self.tableView.rowHeight = 90.0
                 
                 let date = NSDate(timeIntervalSince1970: tasksInfo["taskTimeMilliseconds"] as! TimeInterval)
@@ -58,13 +65,15 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 }
                 
                 for key in self.dateInfo.keys {
-                    self.datesList.append(key)
+                    if !self.datesList.contains(key) {
+                        self.datesList.append(key)
+                    }
                 }
                 
-                
-                
+                self.datesList = self.datesList.sorted(by: { $0.compare($1) == .orderedAscending })
                 self.tableView.reloadData()
             })
+            
             self.tableView.reloadData()
         })
         
@@ -73,16 +82,65 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
             print("Deleting item from fav tasks...")
             //if self.likedItems.count > 0 {
-            for i in 0..<self.likedItems.count {
-                if self.likedItems[i].id == taskId.key {
-                    self.likedItems.remove(at: i)
-                    break
+            var newArr = self.datesList
+            for date in self.datesList {
+                for i in 0..<self.dateInfo[date]!.count {
+                    if self.dateInfo[date]![i].id == taskId.key {
+                        if self.dateInfo[date]!.count == 1 {
+                            newArr = self.datesList.filter( {$0 != date })
+                            self.dateInfo.removeValue(forKey: date)
+                            break
+                        }
+                        else {
+                            self.dateInfo[date]!.remove(at: i)
+                            break
+                        }
+                    }
                 }
             }
             //}
-            
+            self.datesList = newArr
             self.tableView.reloadData()
         })
+        
+        Constants.refs.databaseUserSelectedDate.child(user.uid).observe(.value, with : { snapshot in
+            if snapshot.exists() {
+                let selectedDate = snapshot.value as! String
+                
+                var index = 0
+                var found = false
+            
+                if self.datesList.count != 0 {
+                    for i in 0..<self.datesList.count {
+                        if self.datesList[i] == selectedDate && !found {
+                            index = i
+                            found = true
+                        }
+                    }
+            
+                    if !found {
+                        if self.datesList.count == 0 {
+                            index = 0
+                        }
+                        else {
+                            index = self.datesList.count - 1
+                        }
+                    }
+            
+                    let indexPath = IndexPath(row: 0, section: index)
+                
+                    let deadlineTime = DispatchTime.now() + .seconds(1)
+                    DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    }
+                }
+                //self.tableView.reloadData()
+                //self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                //self.tableView.reloadData()
+            }
+        })
+        
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -91,11 +149,19 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return datesList.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+        var date = ""
+        date = self.dateInfo[datesList[section]]![0].startTime
+        let monthDay = date.words
+        return monthDay[0] + " " + monthDay[1]
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return likedItems.count
+
+        return self.dateInfo[datesList[section]]!.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,19 +187,30 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
         let unlikedIcon = UIImage(named: "heartIcon")
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
-        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("ranking").setValue(self.likedItems[tappedIndexPath.row].ranking - 1)
+        Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("ranking").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].ranking - 1)
         
-        Constants.refs.databaseTasks.child(self.likedItems[tappedIndexPath.row].id).child("users_liked").child(user.uid).removeValue()
-        currentTasks.child(self.likedItems[tappedIndexPath.row].id).removeValue()
-        self.likedItems.remove(at: tappedIndexPath.row)
+        Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("users_liked").child(user.uid).removeValue()
+        currentTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).removeValue()
+        
+        
+        //self.likedItems.remove(at: tappedIndexPath.row)
         
         tableView.reloadData()
         //}
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
-            destinationVC.task_in = self.likedItems[myIndex]
+        if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow {
+            destinationVC.task_in = self.dateInfo[datesList[myIndex.section]]![myIndex.row]
         }
+    }
+}
+
+extension String {
+    var words: [String] {
+        return components(separatedBy: .punctuationCharacters)
+            .joined()
+            .components(separatedBy: .whitespaces)
+            .filter{!$0.isEmpty}
     }
 }
