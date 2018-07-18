@@ -32,6 +32,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
     var taskPhoto: UIImage = UIImage()
+    var taskPhotoURL: NSURL = NSURL()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +50,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         endTimeTextField.inputView = endDatePicker
         startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
+
         
     }
 
@@ -131,24 +134,24 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             if (addImageLabel.text != "Add Image"){
                 let imageName:String = String("\(key).png")
                 
-                let storageRef = Constants.refs.storage.child(imageName)
+                let storageRef = Constants.refs.storage.child("taskPhotos/\(imageName)")
+                print(storageRef)
                 //let compressImage = HelperFunction.helper.resizeImage(image: taskPhoto)
-                if let uploadData = UIImagePNGRepresentation(taskPhoto){
+                //let metadata = StorageMetadata()
+               // metadata.contentType = "image/jpeg"
+                // Upload the file to the path "images/rivers.jpg"
+                //storageRef.putFile(from: taskPhotoURL as URL, metadata: nil) { metadata, error in
+                    //guard let metadata = metadata else {
+                       // return
+                    //}
+                //}
+                if let uploadData = UIImageJPEGRepresentation(taskPhoto, CGFloat(0.50)){
                     storageRef.putData(uploadData, metadata: nil
                         , completion: { (metadata, error) in
                             if error != nil {
                                 print("error")
                                 return
                             }
-                            storageRef.downloadURL(completion: { (url, error) in
-                                if error != nil {
-                                    print(error!.localizedDescription)
-                                    return
-                                }
-                                if let taskImageUrl = url?.absoluteString {
-                                    Constants.refs.databaseTasks.child(key).child("taskPhotoURL").setValue(taskImageUrl)
-                                }
-                            })
                     })
                     
                 }
@@ -185,8 +188,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         taskPhoto = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
         taskPhotoImageView.isHidden = false
         taskPhotoImageView.image = taskPhoto
-        let url = info[UIImagePickerControllerReferenceURL] as! NSURL
-        let imageName = url.lastPathComponent
+        taskPhotoURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let imageName = taskPhotoURL.lastPathComponent
         addImageLabel.text = imageName
         
         //print(imageName)

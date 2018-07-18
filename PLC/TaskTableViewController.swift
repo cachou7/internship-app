@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import NavigationDropdownMenu
+import Presentr
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Actions
@@ -68,6 +69,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         
         initialToolbar = tableView.tableHeaderView
         

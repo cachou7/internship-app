@@ -40,6 +40,7 @@
 		99AB733220E42E8E00E00A2A /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB733120E42E8E00E00A2A /* Profile.storyboard */; };
 		99AB733820E54FEB00E00A2A /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB733720E54FEB00E00A2A /* Task.swift */; };
 		99B367D720E668BE008EBF6F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B367D620E668BE008EBF6F /* Constants.swift */; };
+		99C9148920FD664300B8EEE5 /* RSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C9148820FD664300B8EEE5 /* RSVPViewController.swift */; };
 		99DFD1F420F64F4100129EEA /* EditInitiative.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */; };
 		99DFD1F620F64FB000129EEA /* EditInitiativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */; };
 		FF68A459AA8A35490CDACE98 /* Pods_PLC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E156B58806FAE17D15096 /* Pods_PLC.framework */; };
@@ -110,6 +111,7 @@
 		99AB733120E42E8E00E00A2A /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		99AB733720E54FEB00E00A2A /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		99B367D620E668BE008EBF6F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		99C9148820FD664300B8EEE5 /* RSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPViewController.swift; sourceTree = "<group>"; };
 		99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditInitiative.storyboard; sourceTree = "<group>"; };
 		99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInitiativeViewController.swift; sourceTree = "<group>"; };
 		A39E332087E068BEECDDDE60 /* Pods-PLC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PLC/Pods-PLC.debug.xcconfig"; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
+				99C9148820FD664300B8EEE5 /* RSVPViewController.swift */,
 				995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */,
 				8365F91520E6B9C90018BB43 /* UserModel.swift */,
 				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
@@ -425,6 +428,8 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/NavigationDropdownMenu/NavigationDropdownMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/Presentr/Presentr.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -434,6 +439,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NavigationDropdownMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Presentr.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -498,6 +505,7 @@
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,
 				8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */,
 				83D351E020F67978006480F4 /* FavTasksTableViewController.swift in Sources */,
+				99C9148920FD664300B8EEE5 /* RSVPViewController.swift in Sources */,
 				99B367D720E668BE008EBF6F /* Constants.swift in Sources */,
 				8365F91920E6C1640018BB43 /* LoginViewController.swift in Sources */,
 				995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */,

@@ -8,11 +8,15 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
+import Presentr
 
-class DetailTaskViewController: UIViewController {
+class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
+    
     
     var task_in:Task!
     var taskIndex: Int!
+    var controller : RSVPViewController?
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
@@ -21,19 +25,16 @@ class DetailTaskViewController: UIViewController {
     @IBOutlet weak var taskDescription: UILabel!
     @IBOutlet weak var taskLeaderAmount: UILabel!
     @IBOutlet weak var taskParticipantAmount: UILabel!
-    //var titleViaSegue:String?
-    @IBOutlet weak var participateLabel: UILabel!
-    
+    @IBOutlet weak var taskPhoto: UIImageView!
     @IBOutlet weak var leaderStack: UIStackView!
     @IBOutlet weak var participateStack: UIStackView!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
-    @IBOutlet weak var leadLabel: UILabel!
-    @IBOutlet weak var createLabel: UILabel!
+    var presenter = Presentr(presentationType: .bottomHalf)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Do any additional setup after loading the view.
         taskTitle.text = task_in.title
@@ -41,6 +42,19 @@ class DetailTaskViewController: UIViewController {
         taskTime.text = task_in.startTime
         taskEndTime.text = task_in.endTime
         taskDescription.text = task_in.description
+        leaderStack.isHidden = true
+        participateStack.isHidden = true
+        
+        let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
+        // Load the image using SDWebImage
+        taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+            if let error = error {
+                self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
+                print("Error loading image: \(error)")
+            }
+
+        }
+        
         //Setting the label for the user who created event
         Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
             self.taskCreatedBy.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
@@ -59,20 +73,16 @@ class DetailTaskViewController: UIViewController {
         let tagArray = tags.components(separatedBy: " ")
         for tag in tagArray{
             if tag == "#lead"{
+                leaderStack.isHidden = false
                 taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
-                leadLabel.isEnabled = true
-                leadLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
-            }
-            else{
-                leaderStack.isHidden = true
+                //leadLabel.isEnabled = true
+                //leadLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
             if tag == "#participate"{
-                taskLeaderAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
-                participateLabel.isEnabled = true
-                participateLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
-            }
-            else{
-                participateStack.isHidden = true
+                participateStack.isHidden = false
+                taskParticipantAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
+                //participateLabel.isEnabled = true
+                //participateLabel.textColor = UIColor(red: 118.0/255.0, green:48.0/255.0, blue:255.0/255.0, alpha: 1.0)
             }
         }
     }
@@ -86,7 +96,21 @@ class DetailTaskViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    @IBAction func RSVPButton(_ sender: UIButton) {
+        presenter.dismissOnSwipe = true
+        presenter.dismissOnSwipeDirection = .bottom
+        //presenter.dismissOnTap = true
+        //presenter.transitionType = .coverHorizontalFromLeft
+        //presenter.transitionType = .crossDissolve
+        presenter.dismissAnimated = true
+        presenter.roundCorners = true
+        controller = (storyboard?.instantiateViewController(withIdentifier: "RSVPViewController") as! RSVPViewController)
+        controller?.delegate = self
+        setCurrentTask()
+        customPresentViewController(presenter, viewController: controller!, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func deleteButton(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Delete Task", message: "Are you sure you want to delete this task?", preferredStyle: .alert)
 
@@ -139,5 +163,11 @@ class DetailTaskViewController: UIViewController {
             })
         }
     }
+    
+    //RSVPViewControllerDelegate method
+    func setCurrentTask() {
+        controller?.task = task_in
+    }
+
     
 }
