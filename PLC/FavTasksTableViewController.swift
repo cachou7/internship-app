@@ -108,7 +108,6 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         cell.taskTitle.text = likedItems[indexPath.row].title
         cell.taskLocation.text = likedItems[indexPath.row].location
         cell.taskTime.text = likedItems[indexPath.row].startTime
-        cell.taskTag.text = likedItems[indexPath.row].tag
         cell.taskLiked.setImage(likedIcon, for: .normal)
         cell.delegate = self
         

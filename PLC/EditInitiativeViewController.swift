@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Firebase
+import SDWebImage
 
-class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
+class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
@@ -19,6 +21,10 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var participateCheckBox: UIButton!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
+    @IBOutlet weak var taskImageView: UIImageView!
+    @IBOutlet weak var addImageLabel: UILabel!
+    @IBOutlet weak var removeImageButton: UIButton!
+    @IBOutlet weak var addImageButton: UIButton!
     
     //MARK: Variables
     let startDatePicker = UIDatePicker()
@@ -27,18 +33,23 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
     var eventEndTime: TimeInterval = 0.0
     var task_in:Task!
     var task_out:Task!
+    var taskPhoto: UIImage = UIImage()
+    var taskPhotoURL: NSURL = NSURL()
     var titleChanged = false
     var descriptionChanged = false
     var timeChanged = false
     var endTimeChanged = false
     var locationChanged = false
     var tagsChanged = false
+    var photoChanged = false
+    var photoRemoved = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTask()
         
         validationCheckBoxLabel.isHidden = true
+        taskImageView.isHidden = true
         
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
@@ -57,6 +68,27 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         timeTextField.text = task_in.startTime
         endTimeTextField.text = task_in.endTime
         locationTextField.text = task_in.location
+        addImageButton.isHidden = true
+        removeImageButton.isHidden = true
+        
+        let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
+        // Load the image using SDWebImage
+        self.taskImageView.isHidden = false
+        taskImageView.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+            if error != nil {
+                "Error loading image: \(error)"
+                self.taskImageView.isHidden = true
+                self.addImageButton.isHidden = false
+                self.addImageLabel.text = "Add Image"
+            }
+            else{
+                print("icon image successful")
+                self.taskImageView.isHidden = false
+                self.removeImageButton.isHidden = false
+                self.addImageLabel.text = "\(self.task_in.id).png"
+            }
+            
+        }
         
         //TAGS
         leadCheckBox.isSelected = false
@@ -87,6 +119,22 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     // MARK: Actions
+    @IBAction func addImageButton(_ sender: UIButton) {
+        photoChanged = true
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true)
+    }
+    @IBAction func removeImageButton(_ sender: UIButton) {
+        photoRemoved = true
+        taskImageView.isHidden = true
+        addImageLabel.text = "Add Image"
+        addImageButton.isHidden = false
+        removeImageButton.isHidden = true
+    }
     
     @IBAction func leadCheckBox(_ sender: UIButton) {
         tagsChanged = true
@@ -126,6 +174,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         if datePicker == startDatePicker{
             eventTime = datePicker.date.timeIntervalSince1970
             timeTextField.text = format(datePicker: datePicker)
+            endDatePicker.minimumDate = datePicker.date
         }
         else{
             eventEndTime = datePicker.date.timeIntervalSince1970
@@ -206,7 +255,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
         if (valid){
             
             
-            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged){
+            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || photoChanged || photoRemoved){
                 let currentTask = Constants.refs.databaseTasks.child(task_in.id)
                 if (titleChanged){
                     currentTask.child("taskTitle").setValue(titleTextField.text!)
@@ -225,6 +274,46 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                 }
                 if (locationChanged){
                     currentTask.child("taskLocation").setValue(locationTextField.text!)
+                }
+                if (photoChanged){
+                    let imageName:String = String("\(task_in.id).png")
+                    
+                    let storageRef = Constants.refs.storage.child("taskPhotos/\(imageName)")
+                    
+                    // Delete the file
+                    storageRef.delete { error in
+                        if error != nil {
+                            print("Error deleting image: \(error)")
+                        }
+                    }
+                    
+                    SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+
+                    if let uploadData = UIImageJPEGRepresentation(taskPhoto, CGFloat(0.50)){
+                        storageRef.putData(uploadData, metadata: nil
+                            , completion: { (metadata, error) in
+                                if error != nil {
+                                    print("Error adding image: \(error)")
+                                    return
+                                }
+                        })
+                        
+                    }
+                }
+                if (photoRemoved){
+                    let imageName:String = String("\(task_in.id).png")
+                    
+                    let storageRef = Constants.refs.storage.child("taskPhotos/\(imageName)")
+                    
+                    // Delete the file
+                    storageRef.delete { error in
+                        if error != nil {
+                            print("Error deleting image: \(error)")
+                        }
+                        else{
+                            print("Successfully deleted")
+                        }
+                    }
                 }
                 if (tagsChanged){
                     var amounts = Dictionary<String, Int>()
@@ -257,5 +346,22 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+    }
+    // MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerController(_ _picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        taskPhoto = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
+        taskImageView.isHidden = false
+        taskImageView.image = taskPhoto
+        taskPhotoURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let imageName = taskPhotoURL.lastPathComponent
+        addImageLabel.text = imageName
+        
+        //print(imageName)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }

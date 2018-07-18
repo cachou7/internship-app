@@ -17,8 +17,8 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
-    @IBOutlet weak var taskTag: UILabel!
     @IBOutlet weak var taskLiked: UIButton!
+    @IBOutlet weak var taskImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

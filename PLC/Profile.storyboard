@@ -88,6 +88,7 @@
                         <outlet property="departmentLabel" destination="dAA-Kp-eMf" id="dhM-d4-Dur"/>
                         <outlet property="jobTitleLabel" destination="aaU-zQ-XGd" id="kcV-Aj-cxT"/>
                         <outlet property="nameLabel" destination="NCR-KX-MJX" id="7qf-OJ-pyg"/>
+                        <outlet property="profilePhoto" destination="Lmd-rT-A3j" id="a6w-7G-qDL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ukq-8I-YsT" userLabel="First Responder" sceneMemberID="firstResponder"/>

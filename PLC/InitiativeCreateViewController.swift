@@ -42,7 +42,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         validationCheckBoxLabel.isHidden = true
         leadAmountTextField.isEnabled = false
         participateAmountTextField.isEnabled = false
-        
+        endTimeTextField.isHidden = true
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
         endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
@@ -50,8 +50,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         endTimeTextField.inputView = endDatePicker
         startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
-
-        
     }
 
     
@@ -126,7 +124,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
             
-            Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any])
+            Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
             
             let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
             tasksCreated.child(key).setValue(true)
@@ -135,16 +133,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                 let imageName:String = String("\(key).png")
                 
                 let storageRef = Constants.refs.storage.child("taskPhotos/\(imageName)")
-                print(storageRef)
-                //let compressImage = HelperFunction.helper.resizeImage(image: taskPhoto)
-                //let metadata = StorageMetadata()
-               // metadata.contentType = "image/jpeg"
-                // Upload the file to the path "images/rivers.jpg"
-                //storageRef.putFile(from: taskPhotoURL as URL, metadata: nil) { metadata, error in
-                    //guard let metadata = metadata else {
-                       // return
-                    //}
-                //}
                 if let uploadData = UIImageJPEGRepresentation(taskPhoto, CGFloat(0.50)){
                     storageRef.putData(uploadData, metadata: nil
                         , completion: { (metadata, error) in
@@ -165,7 +153,11 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
         if datePicker == startDatePicker{
+            if endTimeTextField.isHidden == true{
+                endTimeTextField.isHidden = false
+            }
             eventTime = datePicker.date.timeIntervalSince1970
+            endDatePicker.minimumDate = datePicker.date
             timeTextField.text = format(datePicker: datePicker)
         }
         else{

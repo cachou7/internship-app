@@ -119,19 +119,22 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        cell.layer.borderColor = UIColor.white.cgColor
-        cell.layer.borderWidth = 5
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 20
+        cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+        cell.taskImage.layer.borderWidth = 0.5
+        cell.taskImage.layer.borderColor = UIColor.black.cgColor
+        cell.taskImage.clipsToBounds = true
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
         if shouldShowSearchResults{
             cell.taskTitle.text = filteredItems[indexPath.row].title
             cell.taskLocation.text = filteredItems[indexPath.row].location
             cell.taskTime.text = filteredItems[indexPath.row].startTime
-            cell.taskTag.text = filteredItems[indexPath.row].tag
             
             //Check if user has liked the task and display correct heart
-            currentTasks.observe(.value, with: { snapshot in
+            currentTasks.observeSingleEvent(of: .value, with: { snapshot in
                 if !snapshot.hasChild(self.filteredItems[indexPath.row].id) {
                     let unlikedIcon = UIImage(named: "heartIcon")
                     cell.taskLiked.setImage(unlikedIcon, for: .normal)
@@ -143,13 +146,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             })
         }
         else{
+            
                     cell.taskTitle.text = self.overallItems[indexPath.row].title
                     cell.taskLocation.text = self.overallItems[indexPath.row].location
                     cell.taskTime.text = self.overallItems[indexPath.row].startTime
-                    cell.taskTag.text = self.overallItems[indexPath.row].tag
                     
                 //Check if user has liked the task and display correct heart
-                currentTasks.observe(.value, with: { snapshot in
+            currentTasks.observeSingleEvent(of: .value, with: { snapshot in
                     if !snapshot.hasChild(self.overallItems[indexPath.row].id) {
                         let unlikedIcon = UIImage(named: "heartIcon")
                         cell.taskLiked.setImage(unlikedIcon, for: .normal)

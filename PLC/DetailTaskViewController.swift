@@ -32,9 +32,20 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
     @IBOutlet weak var editButton: UIBarButtonItem!
     var presenter = Presentr(presentationType: .bottomHalf)
 
+    @IBOutlet weak var RSVPButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if task_in.createdBy == currentUser.uid{
+            editButton.isEnabled = true
+            deleteButton.isEnabled = true
+            RSVPButton.isHidden = true
+        }
+        else{
+            editButton.isEnabled = false
+            deleteButton.isEnabled = false
+        }
         
         // Do any additional setup after loading the view.
         taskTitle.text = task_in.title
@@ -52,6 +63,9 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
                 self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
                 print("Error loading image: \(error)")
             }
+            else{
+                print("Successfuly loaded image")
+            }
 
         }
         
@@ -59,15 +73,6 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate{
         Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
             self.taskCreatedBy.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
             })
-
-        if task_in.createdBy == currentUser.uid{
-            editButton.isEnabled = true
-            deleteButton.isEnabled = true
-        }
-        else{
-            editButton.isEnabled = false
-            deleteButton.isEnabled = false
-        }
         
         let tags = task_in.tag
         let tagArray = tags.components(separatedBy: " ")
