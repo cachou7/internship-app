@@ -50,7 +50,7 @@ class CheckInViewController: UIViewController {
     
     private func configurePage(){
         //Getting users that are already checked in
-        Constants.refs.databaseTasks.child(task!.id).child("taskCheckedIn").observe(.value, with: { snapshot in
+        Constants.refs.databaseTasks.child(task!.id).child("taskCheckIn").observe(.value, with: { snapshot in
             var newCheckIns: [String] = []
             if (snapshot.exists()){
                 for child in snapshot.children {
