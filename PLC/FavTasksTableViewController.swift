@@ -168,14 +168,19 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         let likedIcon = UIImage(named: "redHeart")
         
-        cell.layer.borderColor = UIColor.white.cgColor
-        cell.layer.borderWidth = 5
-        cell.layer.cornerRadius = 20
-        cell.taskTitle.text = likedItems[indexPath.row].title
-        cell.taskLocation.text = likedItems[indexPath.row].location
-        cell.taskTime.text = likedItems[indexPath.row].startTime
-        cell.taskLiked.setImage(likedIcon, for: .normal)
-        cell.delegate = self
+        for i in 0..<self.datesList.count {
+            if (indexPath.section == i) {
+                cell.layer.borderColor = UIColor.white.cgColor
+                cell.layer.borderWidth = 5
+                cell.layer.cornerRadius = 20
+                cell.taskTitle.text = self.dateInfo[datesList[i]]![indexPath.row].title
+                cell.taskLocation.text = self.dateInfo[datesList[i]]![indexPath.row].location
+                cell.taskTime.text = self.dateInfo[datesList[i]]![indexPath.row].startTime
+                cell.taskTag.text = self.dateInfo[datesList[i]]![indexPath.row].tag
+                cell.taskLiked.setImage(likedIcon, for: .normal)
+                cell.delegate = self
+            }
+        }
         
         return cell
     }
