@@ -23,10 +23,8 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     }()
     
     let user = Auth.auth().currentUser!
-    //var likedItems: [Task] = []
     var dateInfo: [String:[Task]] = [:]
     var datesList: [String] = []
-    //var sortedDateArr: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,44 +101,55 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
             self.tableView.reloadData()
         })
         
-        Constants.refs.databaseUserSelectedDate.child(user.uid).observe(.value, with : { snapshot in
-            if snapshot.exists() {
-                let selectedDate = snapshot.value as! String
-                
-                var index = 0
-                var found = false
-            
-                if self.datesList.count != 0 {
-                    for i in 0..<self.datesList.count {
-                        if self.datesList[i] == selectedDate && !found {
-                            index = i
-                            found = true
+        let deadlineTime = DispatchTime.now() + .seconds(1)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            Constants.refs.databaseUserSelectedDate.child(self.user.uid).observe(.value, with : { snapshot in
+                if snapshot.exists() {
+                    let selectedDate = snapshot.value as! String
+                    
+                    var index = 0
+                    var found = false
+                    
+                    if self.datesList.count != 0 {
+                        for i in 0..<self.datesList.count {
+                            if self.datesList[i] == selectedDate && !found {
+                                index = i
+                                found = true
+                                break
+                            }
+                            else if !found {
+                                if self.datesList[i] > selectedDate {
+                                    index = i
+                                    break
+                                }
+                                else {
+                                    index = i
+                                }
+                            }
+                        }
+                        
+                        /*if !found {
+                         if self.datesList.count == 0 {
+                         index = 0
+                         }
+                         else {
+                         index = self.datesList.count - 1
+                         }
+                         }*/
+                        
+                        let indexPath = IndexPath(row: 0, section: index)
+                        
+                        let deadlineTime = DispatchTime.now() + .milliseconds(300)
+                        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                         }
                     }
-            
-                    if !found {
-                        if self.datesList.count == 0 {
-                            index = 0
-                        }
-                        else {
-                            index = self.datesList.count - 1
-                        }
-                    }
-            
-                    let indexPath = IndexPath(row: 0, section: index)
-                
-                    let deadlineTime = DispatchTime.now() + .seconds(1)
-                    DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                    }
+                    //self.tableView.reloadData()
+                    //self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    //self.tableView.reloadData()
                 }
-                //self.tableView.reloadData()
-                //self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                //self.tableView.reloadData()
-            }
-        })
-        
-        
+            })
+        }
     }
     
     override func didReceiveMemoryWarning() {

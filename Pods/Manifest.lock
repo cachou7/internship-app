@@ -46,9 +46,9 @@ PODS:
   - nanopb/encode (0.3.8)
   - NavigationDropdownMenu (4.0.0)
   - Presentr (1.3.2)
-  - SDWebImage (4.4.1):
-    - SDWebImage/Core (= 4.4.1)
-  - SDWebImage/Core (4.4.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
 
 DEPENDENCIES:
   - Firebase
@@ -95,7 +95,7 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NavigationDropdownMenu: 0d1b1266322f20d4908578011202fad266301c83
   Presentr: 797ae6ec8904eaba4ec58a4c2065bd66e31569ea
-  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
 PODFILE CHECKSUM: 46c8d44553faad742a9ae14750e13639337e0919
 
