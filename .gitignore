@@ -70,3 +70,5 @@ fastlane/test_output
 *.xcodeproj/
 project.xcworkspace/
 
+Pods/Target Support Files/Presentr
+Pods/Target Support Files/SDWebImage
