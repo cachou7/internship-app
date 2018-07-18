@@ -63,8 +63,12 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         Constants.refs.databaseCurrentTasks.observe(.value, with: { snapshot in
             if snapshot.hasChild(self.task_in.id){
                 self.RSVPButton.isHidden = true
-                if !(self.task_in.createdBy == currentUser.uid){
-                     self.checkInButton.isHidden = false
+                let tags = self.task_in.tag
+                let tagArray = tags.components(separatedBy: " ")
+                for tag in tagArray{
+                    if tag == "#participate" && !(self.task_in.createdBy == currentUser.uid){
+                        self.checkInButton.isHidden = false
+                    }
                 }
             }
         })
@@ -88,6 +92,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
         // Load the image using SDWebImage
+        SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if let error = error {
                 self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
@@ -152,6 +157,9 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 Constants.refs.databaseUsers.child(userInfo.key).child("tasks_liked").child(self.task_in.id).removeValue()
                 }});
             Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue();
+            Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue();
+            Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
+            Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
             Constants.refs.databaseTasks.child(self.task_in.id).removeValue()
             
             self.performSegue(withIdentifier: "unwindToInitiatives", sender: self)
@@ -187,7 +195,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
                 
-                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
+                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int)
                 self.task_in = updatedTask
                 self.viewDidLoad()
             })
