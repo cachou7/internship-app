@@ -47,7 +47,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.view.addSubview(calendar)
         
         self.calendar = calendar
-        
     }
     
     override func viewDidLoad() {
@@ -71,9 +70,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     currEventsOnDate = currEventsOnDate! + 1
                     self.datesWithEvents[dateString] = currEventsOnDate
                 }
+                
                 self.calendar.reloadData()
             })
         })
+        
         
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
             print("Deleting event from calendar...")
@@ -89,6 +90,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             self.taskIdDate.removeValue(forKey: taskId.key)
             self.calendar.reloadData()
         })
+        
+        let today = Date()
+        let currDate = dateFormatter2.string(from: today)
+        Constants.refs.databaseUserSelectedDate.child(user.uid).setValue(currDate)
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -118,9 +123,5 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             cell.eventIndicator.isHidden = false
             cell.eventIndicator.color = UIColor.black
         }
-    }
-    
-    func getselectedDate() -> Date {
-        return selectedDate
     }
 }
