@@ -17,6 +17,7 @@ struct Constants
         static let databaseTasks = databaseRoot.child("tasks")
         static let databaseUsers = databaseRoot.child("users")
         static let databaseUpcomingTasks = databaseRoot.child("upcomingTasks")
+        static let databaseUserSelectedDate = databaseRoot.child("userDate")
         static let storage = Storage.storage().reference()
     }
 }
