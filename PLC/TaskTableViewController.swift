@@ -90,7 +90,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts)
+                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int)
                 
                 newOverallItems.append(task!)
             }
@@ -119,20 +119,23 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
+        //Cell formating
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 20
+        //Cell ImageView Formatting
         cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
         cell.taskImage.layer.borderWidth = 0.5
         cell.taskImage.layer.borderColor = UIColor.black.cgColor
         cell.taskImage.clipsToBounds = true
+        
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
         if shouldShowSearchResults{
             cell.taskTitle.text = filteredItems[indexPath.row].title
             cell.taskLocation.text = filteredItems[indexPath.row].location
             cell.taskTime.text = filteredItems[indexPath.row].startTime
-            
+            cell.taskNumberOfLikes.text = String(filteredItems[indexPath.row].usersLikedAmount)
             //Check if user has liked the task and display correct heart
             currentTasks.observeSingleEvent(of: .value, with: { snapshot in
                 if !snapshot.hasChild(self.filteredItems[indexPath.row].id) {
@@ -150,6 +153,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                     cell.taskTitle.text = self.overallItems[indexPath.row].title
                     cell.taskLocation.text = self.overallItems[indexPath.row].location
                     cell.taskTime.text = self.overallItems[indexPath.row].startTime
+                    cell.taskNumberOfLikes.text = String(self.overallItems[indexPath.row].usersLikedAmount)
                     
                 //Check if user has liked the task and display correct heart
             currentTasks.observeSingleEvent(of: .value, with: { snapshot in
@@ -188,6 +192,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 currentTasks.child(self.overallItems[tappedIndexPath.row].id).setValue(true)
                 Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).setValue(true)
                 Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(self.overallItems[tappedIndexPath.row].ranking + 1)
+                
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems[tappedIndexPath.row].usersLikedAmount + 1)
             }
             //END HEART TAPPED
                 
@@ -198,6 +204,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 currentTasks.child(self.overallItems[tappedIndexPath.row].id).removeValue()
                 Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("users_liked").child(currentUser.uid).removeValue()
                 Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("ranking").setValue(self.overallItems[tappedIndexPath.row].ranking - 1)
+                Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems[tappedIndexPath.row].usersLikedAmount - 1)
              }
             //END HEART UNTAPPED
         })

@@ -10,7 +10,8 @@ import UIKit
 import FirebaseStorage
 import PhotosUI
 
-class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
     //MARK: Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -19,6 +20,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     @IBOutlet weak var leadCheck: UIButton!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
+    @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var addImageLabel: UILabel!
     @IBOutlet weak var leadAmountTextField: UITextField!
     @IBOutlet weak var participateAmountTextField: UITextField!
@@ -28,6 +30,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     //MARK: Variables
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
+    let categoryPickerView = UIPickerView()
+    let categories: [String] = ["Social", "Philanthropy", "Team Building", "Office Space", "Other"]
     var task: Task?
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
@@ -46,8 +50,14 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
         endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
+        
+        categoryPickerView.delegate = self
+        categoryPickerView.dataSource = self
+        
         timeTextField.inputView = startDatePicker
         endTimeTextField.inputView = endDatePicker
+        categoryTextField.inputView = categoryPickerView
+        
         startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
     }
@@ -117,9 +127,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             }
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
@@ -199,6 +209,25 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         textField.resignFirstResponder()
         return true
     }
+    
+    //MARK: UIPickerViewDataSource methods
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categories.count
+    }
+    
+    //MARK: UIPickerViewDelegates methods
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return categories[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        categoryTextField.text = "\(categories[pickerView.selectedRow(inComponent: 0)])"
+    }
+    
     
     private func dismiss(){
         self.dismiss(animated: true, completion: nil)

@@ -189,6 +189,7 @@
                                     <outlet property="taskImage" destination="nHw-0m-3hq" id="fz9-pQ-Urs"/>
                                     <outlet property="taskLiked" destination="16M-dI-3P6" id="mw8-df-2Zi"/>
                                     <outlet property="taskLocation" destination="Z6g-Gm-mBj" id="6cb-GP-lJF"/>
+                                    <outlet property="taskNumberOfLikes" destination="OVa-WP-P2o" id="F08-nE-Kuf"/>
                                     <outlet property="taskTime" destination="yn9-6d-pJG" id="Unv-hg-SfB"/>
                                     <outlet property="taskTitle" destination="8N4-8q-btJ" id="Kpw-az-UFg"/>
                                     <segue destination="3Pn-29-hrf" kind="show" identifier="detailTask" id="B0t-fQ-o6H"/>
