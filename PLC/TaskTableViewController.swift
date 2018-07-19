@@ -13,6 +13,11 @@ import Presentr
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Actions
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
     //SEGMENTED BAR
     @IBAction func segmentedBar(_ sender: UISegmentedControl) {
@@ -119,58 +124,44 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
-        //Cell formating
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.borderWidth = 1
-        cell.layer.cornerRadius = 20
-        //Cell ImageView Formatting
-        cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
-        cell.taskImage.layer.borderWidth = 0.5
-        cell.taskImage.layer.borderColor = UIColor.black.cgColor
-        cell.taskImage.clipsToBounds = true
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
+        var thisTask: Task!
         
         if shouldShowSearchResults{
-            cell.taskTitle.text = filteredItems[indexPath.row].title
-            cell.taskLocation.text = filteredItems[indexPath.row].location
-            cell.taskTime.text = filteredItems[indexPath.row].startTime
-            cell.taskNumberOfLikes.text = String(filteredItems[indexPath.row].usersLikedAmount)
-            //Check if user has liked the task and display correct heart
-            currentTasks.observeSingleEvent(of: .value, with: { snapshot in
-                if !snapshot.hasChild(self.filteredItems[indexPath.row].id) {
-                    let unlikedIcon = UIImage(named: "heartIcon")
-                    cell.taskLiked.setImage(unlikedIcon, for: .normal)
-                }
-                else {
-                    let likedIcon = UIImage(named: "redHeart")
-                    cell.taskLiked.setImage(likedIcon, for: .normal)
-                }
-            })
+            thisTask = filteredItems[indexPath.row]
         }
-        else{
-            
-                    cell.taskTitle.text = self.overallItems[indexPath.row].title
-                    cell.taskLocation.text = self.overallItems[indexPath.row].location
-                    cell.taskTime.text = self.overallItems[indexPath.row].startTime
-                    cell.taskNumberOfLikes.text = String(self.overallItems[indexPath.row].usersLikedAmount)
-                    
-                //Check if user has liked the task and display correct heart
-            currentTasks.observeSingleEvent(of: .value, with: { snapshot in
-                    if !snapshot.hasChild(self.overallItems[indexPath.row].id) {
-                        let unlikedIcon = UIImage(named: "heartIcon")
-                        cell.taskLiked.setImage(unlikedIcon, for: .normal)
-                    }
-                    else {
-                        let likedIcon = UIImage(named: "redHeart")
-                        cell.taskLiked.setImage(likedIcon, for: .normal)
-                    }
-                })
+        else {
+            thisTask = self.overallItems[indexPath.row]
         }
-
+        
+        cell.taskTitle.text = thisTask!.title
+        cell.taskLocation.text = thisTask!.location
+        cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
+        var startTime = thisTask.startTime.split(separator: " ")
+        var endTime = thisTask.endTime.split(separator: " ")
+        cell.taskMonth.text = String(startTime[0]).uppercased()
+        let taskDay = String(startTime[1]).split(separator: ",")
+        cell.taskDay.text = String(taskDay[0])
+        let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
+        let dateString = self.dateFormatter.string(from: checkdate as Date)
+        let dayOfWeek = getDayOfWeek(dateString)
+        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
+        //Check if user has liked the task and display correct heart
+        currentTasks.observeSingleEvent(of: .value, with: { snapshot in
+            if !snapshot.hasChild(thisTask!.id) {
+                let unlikedIcon = UIImage(named: "heartIcon")
+                cell.taskLiked.setImage(unlikedIcon, for: .normal)
+            }
+            else {
+                let likedIcon = UIImage(named: "redHeart")
+                cell.taskLiked.setImage(likedIcon, for: .normal)
+            }
+        })
         cell.delegate = self
         return cell
     }
+
     
     //LIKING TASKS
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
@@ -310,6 +301,31 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
 
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
+        }
+    }
+    
+    func getDayOfWeek(_ today:String) -> String? {
+        guard let todayDate = dateFormatter.date(from: today) else { return nil }
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        
+        switch weekDay {
+        case 0:
+            return "Sat"
+        case 1:
+            return "Sun"
+        case 2:
+            return "Mon"
+        case 3:
+            return "Tue"
+        case 4:
+            return "Wed"
+        case 5:
+            return "Thu"
+        case 6:
+            return "Fri"
+        default:
+            return "Yikes"
         }
     }
 }
