@@ -26,6 +26,7 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
 
         // Do any additional setup after loading the view.
         dataSource = self as UIPageViewControllerDataSource
+        delegate = self
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
                                direction: .forward,
@@ -111,7 +112,7 @@ extension LeaderboardPageViewController: UIPageViewControllerDelegate {
         return 
     }
     
-    func pageViewController(pageViewController: UIPageViewController,
+    func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
