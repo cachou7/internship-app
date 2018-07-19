@@ -32,6 +32,7 @@
 		99008FB82100DAE200F05899 /* WhoIsGoingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99008FB72100DAE200F05899 /* WhoIsGoingTableViewCell.swift */; };
 		99008FBA21011FF500F05899 /* DepartmentLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */; };
 		99008FBC2101200900F05899 /* OfficeLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */; };
+		990D7FEC2101291300549C6B /* FavTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */; };
 		995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */; };
 		99919A7F20FFA39D008ED134 /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99919A7E20FFA39D008ED134 /* CheckInViewController.swift */; };
 		99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */; };
@@ -105,6 +106,7 @@
 		99008FB72100DAE200F05899 /* WhoIsGoingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhoIsGoingTableViewCell.swift; sourceTree = "<group>"; };
 		99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentLeaderboardViewController.swift; sourceTree = "<group>"; };
 		99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfficeLeaderboardViewController.swift; sourceTree = "<group>"; };
+		990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavTaskTableViewCell.swift; sourceTree = "<group>"; };
 		995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardPageViewController.swift; sourceTree = "<group>"; };
 		99919A7E20FFA39D008ED134 /* CheckInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInViewController.swift; sourceTree = "<group>"; };
 		99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativeCreateViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				83DC45C520EC22780080B6A1 /* FavTasksViewController.swift */,
 				831CEC2520F69F77003CB892 /* CalendarViewController.swift */,
 				83D351DF20F67978006480F4 /* FavTasksTableViewController.swift */,
+				990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */,
 				99B367D620E668BE008EBF6F /* Constants.swift */,
 				8387316C20E55532001E1628 /* DetailTaskViewController.swift */,
 				99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */,
@@ -512,6 +515,7 @@
 				8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */,
 				83D351E020F67978006480F4 /* FavTasksTableViewController.swift in Sources */,
 				99008FBC2101200900F05899 /* OfficeLeaderboardViewController.swift in Sources */,
+				990D7FEC2101291300549C6B /* FavTaskTableViewCell.swift in Sources */,
 				99008FBA21011FF500F05899 /* DepartmentLeaderboardViewController.swift in Sources */,
 				99C9148920FD664300B8EEE5 /* RSVPViewController.swift in Sources */,
 				99B367D720E668BE008EBF6F /* Constants.swift in Sources */,

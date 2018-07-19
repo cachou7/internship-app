@@ -9,17 +9,14 @@
 import UIKit
 
 class LeaderboardViewController: UIViewController {
-    @IBOutlet weak var pageControl: UIPageControl!
-    
     var leaderboardPageViewController: LeaderboardPageViewController? {
         didSet {
-            leaderboardPageViewController?.leaderboardDelegate = self as LeaderboardPageViewControllerDelegate
+            leaderboardPageViewController?.leaderboardDelegate = self as! LeaderboardPageViewControllerDelegate
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        pageControl.addTarget(self, action: Selector(("didChangePageControlValue")), for: .valueChanged)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,27 +29,5 @@ class LeaderboardViewController: UIViewController {
             self.leaderboardPageViewController = leaderboardPageViewController
         }
     }
-    
-    /**
-     Fired when the user taps on the pageControl to change its current page.
-     */
-    func didChangePageControlValue() {
-        leaderboardPageViewController?.scrollToViewController(index: pageControl.currentPage)
-    }
-
-
-}
-
-extension LeaderboardViewController: LeaderboardPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didUpdatePageIndex index: Int) {
-        pageControl.currentPage = index
-    }
-    
-    
-    func pageViewController(pageViewController: LeaderboardPageViewController,
-                                    didUpdatePageCount count: Int) {
-        pageControl.numberOfPages = count
-    }
-    
 }
 

@@ -31,35 +31,28 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-Ic-LuK">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-Ic-LuK" customClass="UILead">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="BaR-aK-0Vq" kind="embed" id="6Gy-7X-rnl"/>
                                 </connections>
                             </containerView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="yrq-IV-mfB">
-                                <rect key="frame" x="176" y="581" width="23" height="37"/>
-                                <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="currentPageIndicatorTintColor" red="0.74117647060000003" green="0.8980392157" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="0Xf-Ic-LuK" secondAttribute="bottom" id="7YS-OV-3Ql"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="0Xf-Ic-LuK" secondAttribute="trailing" id="9P0-Dy-NdU"/>
                             <constraint firstItem="NDk-cv-Gan" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="8" symbolic="YES" id="Day-4N-Vmt"/>
                             <constraint firstItem="NDk-cv-Gan" firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="JgO-Fn-dHn"/>
-                            <constraint firstItem="yrq-IV-mfB" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="UbU-uz-0l8"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="top" secondItem="0Xf-Ic-LuK" secondAttribute="top" constant="20" id="Lx5-6m-66j"/>
+                            <constraint firstItem="0Xf-Ic-LuK" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="o21-68-s8C"/>
                             <constraint firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="qqM-NS-xev"/>
                             <constraint firstAttribute="centerY" secondItem="zEq-FU-wV5" secondAttribute="centerY" id="qzY-Ky-pLD"/>
-                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="yrq-IV-mfB" secondAttribute="bottom" id="sqW-4N-ztB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Leaderboard" image="iconTrophy" id="mVE-J6-jT4"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="pageControl" destination="yrq-IV-mfB" id="W3k-tO-p3x"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>

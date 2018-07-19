@@ -11,6 +11,7 @@ import UIKit
 class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewControllerDelegate {
     
     var leaderboardDelegate: LeaderboardPageViewControllerDelegate?
+    var pageControl = UIPageControl()
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         return [self.newLeaderboardViewController(leaderboardType: "Office"),
@@ -33,6 +34,18 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
                                animated: false,
                                completion: nil)
         }
+        configurePageControl()
+        
+    }
+    func configurePageControl() {
+        // The total number of pages that are available is based on how many available colors we have.
+        pageControl = UIPageControl(frame: CGRect(x: 0,y: self.view.frame.minY + 650,width: self.view.frame.width,height: 50))
+        self.pageControl.numberOfPages = orderedViewControllers.count
+        self.pageControl.currentPage = 0
+        self.pageControl.tintColor = UIColor.black
+        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
+        self.pageControl.currentPageIndicatorTintColor = UIColor.black
+        self.view.addSubview(pageControl)
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,57 +53,6 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
         // Dispose of any resources that can be recreated.
     }
     
-    /**
-     Scrolls to the next view controller.
-     */
-    func scrollToNextViewController() {
-        if let visibleViewController = viewControllers?.first,
-            let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) {
-            scrollToViewController(viewController: nextViewController)
-        }
-    }
-    
-    /**
-     Scrolls to the view controller at the given index. Automatically calculates
-     the direction.
-     
-     - parameter newIndex: the new index to scroll to
-     */
-    func scrollToViewController(index newIndex: Int) {
-        if let firstViewController = viewControllers?.first,
-            let currentIndex = orderedViewControllers.index(of: firstViewController) {
-            let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
-            let nextViewController = orderedViewControllers[newIndex]
-            scrollToViewController(viewController: nextViewController, direction:direction)
-        }
-    }
-    
-    /**
-     Scrolls to the given 'viewController' page.
-     
-     - parameter viewController: the view controller to show.
-     */
-    private func scrollToViewController(viewController: UIViewController,
-                                        direction: UIPageViewControllerNavigationDirection = .forward) {
-        setViewControllers([viewController],
-                           direction: direction,
-                           animated: false,
-                           completion: { (finished) -> Void in
-                            
-                            self.notifyLeaderboardDelegateOfNewIndex()
-        })
-    }
-    
-    /**
-     Notifies '_tutorialDelegate' that the current page index was updated.
-     */
-    private func notifyLeaderboardDelegateOfNewIndex() {
-        if let firstViewController = viewControllers?.first,
-            let index = orderedViewControllers.index(of: firstViewController) {
-            leaderboardDelegate?.pageViewController(self,
-                                                         didUpdatePageIndex: index)
-        }
-    }
 
 }
 
@@ -116,7 +78,8 @@ extension LeaderboardPageViewController: UIPageViewControllerDelegate {
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
-        notifyLeaderboardDelegateOfNewIndex()
+        let pageContentViewController = pageViewController.viewControllers![0]
+        self.pageControl.currentPage = orderedViewControllers.index(of: pageContentViewController)!
     }
     
 }
@@ -166,6 +129,14 @@ extension LeaderboardPageViewController: UIPageViewControllerDataSource {
         }
         
         return orderedViewControllers[nextIndex]
+    }
+    
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
+        return orderedViewControllers.count
+    }
+    
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
+        return 0
     }
     
 }
