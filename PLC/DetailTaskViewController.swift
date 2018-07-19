@@ -11,13 +11,14 @@ import Firebase
 import FirebaseUI
 import Presentr
 
-class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate{
+class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate, WhoIsGoingTableViewControllerDelegate{
     
     
     var task_in:Task!
     var taskIndex: Int!
     var RSVPController : RSVPViewController?
     var CheckInController : CheckInViewController?
+    var WhoIsGoingController : WhoIsGoingTableViewController?
     
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
@@ -77,7 +78,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             if snapshot.hasChild(self.task_in.id){
                 self.RSVPButton.isHidden = true
                 self.checkInButton.isHidden = true
-                self.whoIsGoingButton.setTitle("Who Went ⇡", for: UIControlState.normal)
+                self.whoIsGoingButton.isHidden = true
             }
         })
         
@@ -131,6 +132,12 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    @IBAction func whoIsGoingButton(_ sender: UIButton) {
+        WhoIsGoingController = (storyboard?.instantiateViewController(withIdentifier: "WhoIsGoingTableViewController") as! WhoIsGoingTableViewController)
+        WhoIsGoingController?.delegate = self
+        setWhoIsGoingCurrentTask()
+        customPresentViewController(presenter, viewController: WhoIsGoingController!, animated: true, completion: nil)
     }
     @IBAction func RSVPButton(_ sender: UIButton) {
         RSVPController = (storyboard?.instantiateViewController(withIdentifier: "RSVPViewController") as! RSVPViewController)
@@ -211,6 +218,12 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     //CheckInViewControllerDelegate method
     func setCheckInCurrentTask() {
         CheckInController?.task = task_in
+        
+    }
+    
+    //WhoIsGoingTableViewControllerDelegate method
+    func setWhoIsGoingCurrentTask() {
+        WhoIsGoingController?.task = task_in
         
     }
 

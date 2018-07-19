@@ -256,6 +256,9 @@
                                         <state key="normal" title="Who Is Going? ⇡">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="whoIsGoingButton:" destination="sbj-2x-T3s" eventType="touchUpInside" id="cue-oR-DBo"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -336,7 +339,6 @@
         <!--RSVPViewController-->
         <scene sceneID="bKm-D6-y72">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Txl-7s-yN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="RSVPViewController" title="RSVPViewController" id="H3i-44-i4n" customClass="RSVPViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qee-Lu-7KH" customClass="RSVP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
@@ -420,13 +422,13 @@
                         <outlet property="signUpLeaderButton" destination="1Az-80-uAH" id="Z0M-vL-jpM"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Txl-7s-yN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4282.608695652174" y="68.478260869565219"/>
+            <point key="canvasLocation" x="2583" y="76"/>
         </scene>
         <!--CheckInViewController-->
         <scene sceneID="UlX-Sd-Jdy">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0vl-eg-f9X" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="CheckInViewController" title="CheckInViewController" id="mwX-qV-Sjm" customClass="CheckInViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n2H-ja-EkH" customClass="CheckIn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
@@ -488,11 +490,75 @@
                         <outlet property="usersCheckedInLabel" destination="7FJ-dB-e8i" id="Hl9-ED-ocB"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0vl-eg-f9X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4362" y="-952"/>
+            <point key="canvasLocation" x="3261" y="76"/>
+        </scene>
+        <!--WhoIsGoingTableViewController-->
+        <scene sceneID="M4F-BT-eRV">
+            <objects>
+                <tableViewController storyboardIdentifier="WhoIsGoingTableViewController" title="WhoIsGoingTableViewController" id="xFA-jr-4Pp" customClass="WhoIsGoingTableViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zs7-xa-gl8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Who Is Involved?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FUl-dk-63v">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="42"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userCell" rowHeight="65" id="4DS-CZ-Xmv" customClass="WhoIsGoingTableViewCell" customModule="PLC" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="414" height="65"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4DS-CZ-Xmv" id="TMi-3H-8dQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="64.666666666666671"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="qcX-ls-d5g">
+                                            <rect key="frame" x="40" y="5" width="55" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="VfJ-43-Pia"/>
+                                                <constraint firstAttribute="width" constant="55" id="ftD-NQ-fq9"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="linkToUserProfile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2c-ej-WPf">
+                                            <rect key="frame" x="118.99999999999999" y="22" width="128.66666666666663" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="z2c-ej-WPf" firstAttribute="leading" secondItem="qcX-ls-d5g" secondAttribute="trailing" constant="24" id="Sih-oS-JX8"/>
+                                        <constraint firstItem="qcX-ls-d5g" firstAttribute="centerY" secondItem="TMi-3H-8dQ" secondAttribute="centerY" id="TMK-yW-dJw"/>
+                                        <constraint firstItem="qcX-ls-d5g" firstAttribute="top" secondItem="TMi-3H-8dQ" secondAttribute="top" constant="5" id="bYh-tr-xjl"/>
+                                        <constraint firstItem="z2c-ej-WPf" firstAttribute="centerY" secondItem="TMi-3H-8dQ" secondAttribute="centerY" id="bah-cq-h2Y"/>
+                                        <constraint firstAttribute="bottom" secondItem="qcX-ls-d5g" secondAttribute="bottom" constant="4.6666666666666714" id="eRf-EG-mqK"/>
+                                        <constraint firstItem="qcX-ls-d5g" firstAttribute="leading" secondItem="TMi-3H-8dQ" secondAttribute="leading" constant="40" id="ycJ-8g-S1I"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="userProfileLink" destination="z2c-ej-WPf" id="iXT-rp-BcQ"/>
+                                    <outlet property="userProfilePhoto" destination="qcX-ls-d5g" id="Qrl-Xp-MaH"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="xFA-jr-4Pp" id="9Kc-5n-VO4"/>
+                            <outlet property="delegate" destination="xFA-jr-4Pp" id="03l-Wp-xiQ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tmR-CY-9AH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3915.9420289855075" y="75.815217391304358"/>
         </scene>
     </scenes>
     <resources>
+        <image name="defaultPhoto" width="540" height="540"/>
         <image name="iconLocation" width="75" height="75"/>
     </resources>
 </document>

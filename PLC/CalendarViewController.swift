@@ -60,21 +60,24 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let timeInfo = snapshot.value as? [String : Any ] ?? [:]
-                let startTime = timeInfo["taskTimeMilliseconds"] as! TimeInterval
-                let date = NSDate(timeIntervalSince1970: startTime)
-                let dateString = self.dateFormatter.string(from: date as Date)
-                self.taskIdDate[timeInfo["taskId"] as! String] = dateString
-                let keyExists = self.datesWithEvents[dateString] != nil
-                if !keyExists {
-                    self.datesWithEvents[dateString] = 1
+                if timeInfo.count != 0{
+                    let startTime = timeInfo["taskTimeMilliseconds"] as! TimeInterval
+                    let date = NSDate(timeIntervalSince1970: startTime)
+                    let dateString = self.dateFormatter.string(from: date as Date)
+                    self.taskIdDate[timeInfo["taskId"] as! String] = dateString
+                    let keyExists = self.datesWithEvents[dateString] != nil
+                    if !keyExists {
+                        self.datesWithEvents[dateString] = 1
+                    }
+                    else {
+                        var currEventsOnDate = self.datesWithEvents[dateString]
+                        currEventsOnDate = currEventsOnDate! + 1
+                        self.datesWithEvents[dateString] = currEventsOnDate
+                    }
+                    
+                    self.calendar.reloadData()
                 }
-                else {
-                    var currEventsOnDate = self.datesWithEvents[dateString]
-                    currEventsOnDate = currEventsOnDate! + 1
-                    self.datesWithEvents[dateString] = currEventsOnDate
-                }
-                
-                self.calendar.reloadData()
+                //***Throw error here
             })
         })
         
