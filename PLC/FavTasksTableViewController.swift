@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class FavTasksTableViewController: UITableViewController, TaskTableViewCellDelegate {
+class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDelegate {
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -33,7 +33,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
             print("Fetching fav tasks...")
             // Get specific information for each liked task and add it to LikedItems, then reload data
-            Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
+            Constants.refs.databaseTasks.child(taskId.key).observe(.value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
                 if tasksInfo["participantAmount"]! as! Int != 0 {
@@ -72,9 +72,16 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 self.tableView.reloadData()
             })
             
+            Constants.refs.databaseTasks.child(taskId.key).observe(.childChanged, with: { snapshot in
+                let tasksInfo = snapshot.value as? Any
+                
+                print(tasksInfo)
+                
+                
+            })
+            
             self.tableView.reloadData()
         })
-        
         
         // Set up listener to detect when tasks are unliked from main Initiatives view and delete from likeItems
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
@@ -107,6 +114,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                 if snapshot.exists() {
                     let selectedDate = snapshot.value as! String
                     
+                    var row = 0
                     var index = 0
                     var found = false
                     
@@ -115,6 +123,13 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                             if self.datesList[i] == selectedDate && !found {
                                 index = i
                                 found = true
+                                for j in 0..<self.dateInfo[self.datesList[i]]!.count {
+                                    let currentTime = Date().timeIntervalSince1970
+                                    if (self.dateInfo[self.datesList[i]]![j].endTimeMilliseconds > currentTime) {
+                                        row = j
+                                        break
+                                    }
+                                }
                                 break
                             }
                             else if !found {
@@ -137,7 +152,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
                          }
                          }*/
                         
-                        let indexPath = IndexPath(row: 0, section: index)
+                        let indexPath = IndexPath(row: row, section: index)
                         
                         let deadlineTime = DispatchTime.now() + .milliseconds(300)
                         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
@@ -163,9 +178,22 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         var date = ""
+        let todaysDate = Date()
+        let today = dateFormatter.string(from: todaysDate)
+        
         date = self.dateInfo[datesList[section]]![0].startTime
+        let checkdate = NSDate(timeIntervalSince1970: self.dateInfo[datesList[section]]![0].timeMilliseconds)
+        let dateString = self.dateFormatter.string(from: checkdate as Date)
+        
+        let dayOfWeek = getDayOfWeek(dateString)
+        
+        if (dateString == today) {
+            return "Today"
+        }
+        
         let monthDay = date.words
-        return monthDay[0] + " " + monthDay[1]
+        
+        return dayOfWeek! + " " + monthDay[0] + " " + monthDay[1]
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -174,17 +202,25 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "favTaskCell", for: indexPath) as! FavTaskTableViewCell
         let likedIcon = UIImage(named: "redHeart")
         
         for i in 0..<self.datesList.count {
             if (indexPath.section == i) {
+                let myTask = self.dateInfo[datesList[i]]![indexPath.row]
                 cell.layer.borderColor = UIColor.white.cgColor
                 cell.layer.borderWidth = 5
                 cell.layer.cornerRadius = 20
-                cell.taskTitle.text = self.dateInfo[datesList[i]]![indexPath.row].title
-                cell.taskLocation.text = self.dateInfo[datesList[i]]![indexPath.row].location
-                cell.taskTime.text = self.dateInfo[datesList[i]]![indexPath.row].startTime
+                cell.taskTitle.text = myTask.title
+                cell.taskLocation.text = myTask.location
+                var startTime = myTask.startTime.split(separator: " ")
+                var endTime = myTask.endTime.split(separator: " ")
+                /*cell.taskTimeFrame.text = String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
+                cell.taskMonth.text = String(startTime[0]).uppercased()
+                let taskDay = String(startTime[1]).split(separator: ",")
+                cell.taskDay.text = String(taskDay[0])*/
+                cell.startTime.text = String(startTime[4]) + " " + String(startTime[5])
+                cell.endTime.text = String(endTime[4]) + " " + String(endTime[5])
                 cell.taskLiked.setImage(likedIcon, for: .normal)
                 cell.delegate = self
             }
@@ -194,7 +230,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     }
     
     // Remove task from Favs page if user untaps heart on this page
-    func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
+    func favTaskTableViewCellDidTapHeart(_ sender: FavTaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
         print("Removed task at row " + String(tappedIndexPath.row))
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
@@ -215,6 +251,31 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow {
             destinationVC.task_in = self.dateInfo[datesList[myIndex.section]]![myIndex.row]
+        }
+    }
+    
+    func getDayOfWeek(_ today:String) -> String? {
+        guard let todayDate = dateFormatter.date(from: today) else { return nil }
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        
+        switch weekDay {
+        case 0:
+            return "Sat"
+        case 1:
+            return "Sun"
+        case 2:
+            return "Mon"
+        case 3:
+            return "Tue"
+        case 4:
+            return "Wed"
+        case 5:
+            return "Thu"
+        case 6:
+            return "Fri"
+        default:
+            return "Yikes"
         }
     }
 }
