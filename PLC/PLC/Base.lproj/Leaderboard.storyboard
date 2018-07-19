@@ -13,7 +13,7 @@
         <!--Leaderboard-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController title="Leaderboard" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LeaderboardViewController" title="Leaderboard" id="8rJ-Kc-sve" customClass="LeaderboardViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW" userLabel="View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,30 +31,101 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-Ic-LuK">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="BaR-aK-0Vq" kind="embed" id="6Gy-7X-rnl"/>
+                                </connections>
+                            </containerView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="yrq-IV-mfB">
+                                <rect key="frame" x="176" y="581" width="23" height="37"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" red="0.74117647060000003" green="0.8980392157" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="NDk-cv-Gan" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="8" symbolic="YES" id="Day-4N-Vmt"/>
                             <constraint firstItem="NDk-cv-Gan" firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="JgO-Fn-dHn"/>
+                            <constraint firstItem="yrq-IV-mfB" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="UbU-uz-0l8"/>
                             <constraint firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="qqM-NS-xev"/>
                             <constraint firstAttribute="centerY" secondItem="zEq-FU-wV5" secondAttribute="centerY" id="qzY-Ky-pLD"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="yrq-IV-mfB" secondAttribute="bottom" id="sqW-4N-ztB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Leaderboard" image="iconTrophy" id="mVE-J6-jT4"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="pageControl" destination="yrq-IV-mfB" id="W3k-tO-p3x"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="844" y="0.0"/>
+            <point key="canvasLocation" x="733.60000000000002" y="-0.44977511244377816"/>
         </scene>
-        <!--LeaderboardPageView-->
-        <scene sceneID="1vA-e6-DMr">
+        <!--LeaderboardPageViewController-->
+        <scene sceneID="AOI-8c-4Le">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="LeaderboardPageViewController" storyboardName="LeaderboardPageView" id="4gq-Vx-aZa" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="thi-eZ-t3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pageViewController storyboardIdentifier="LeaderboardPageViewController" autoresizesArchivedViewToFullSize="NO" title="LeaderboardPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="BaR-aK-0Vq" customClass="LeaderboardPageViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ECo-zM-iC2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1432" y="19"/>
+            <point key="canvasLocation" x="734" y="697"/>
+        </scene>
+        <!--DepartmentLeaderboardViewController-->
+        <scene sceneID="uTR-nY-dLM">
+            <objects>
+                <viewController storyboardIdentifier="DepartmentLeaderboardViewController" title="DepartmentLeaderboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="l7R-ff-QVw" customClass="DepartmentLeaderboardViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gzh-BP-tyF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Department Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgO-8N-ab4">
+                                <rect key="frame" x="16" y="40" width="341" height="35"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hgO-8N-ab4" firstAttribute="top" secondItem="o4Q-0O-8sG" secondAttribute="top" constant="20" id="aN2-Xn-iHc"/>
+                            <constraint firstItem="hgO-8N-ab4" firstAttribute="leading" secondItem="o4Q-0O-8sG" secondAttribute="leading" constant="16" id="nCL-QK-aSz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="o4Q-0O-8sG"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6QH-99-Qb9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1106" y="1454"/>
+        </scene>
+        <!--OfficeLeaderboardViewController-->
+        <scene sceneID="dcd-Gx-gfw">
+            <objects>
+                <viewController storyboardIdentifier="OfficeLeaderboardViewController" title="OfficeLeaderboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="scx-3c-4Vk" customClass="OfficeLeaderboardViewController" customModule="PLC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="51v-UJ-L5L">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Office Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bcf-Cg-cXa">
+                                <rect key="frame" x="16" y="40" width="315.5" height="42"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Bcf-Cg-cXa" firstAttribute="leading" secondItem="BLP-iO-GBn" secondAttribute="leading" constant="16" id="L1c-Uw-UMg"/>
+                            <constraint firstItem="Bcf-Cg-cXa" firstAttribute="top" secondItem="BLP-iO-GBn" secondAttribute="top" constant="20" id="X6g-8d-DEr"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BLP-iO-GBn"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Gs-Hf-QJo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="238" y="1455"/>
         </scene>
     </scenes>
     <resources>

@@ -32,6 +32,7 @@ class FavTasksTableViewController: UITableViewController, TaskTableViewCellDeleg
         // Set up listener to get liked tasks and detect when tasks are liked
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
             print("Fetching fav tasks...")
+            print(taskId.key)
             // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
