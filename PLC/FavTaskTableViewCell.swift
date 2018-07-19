@@ -7,18 +7,38 @@
 //
 
 import UIKit
+import Firebase
 
 class FavTaskTableViewCell: UITableViewCell {
-
+    
+    let key = currentUser.uid
+    weak var delegate: FavTaskTableViewCellDelegate?
+    
+    @IBOutlet weak var taskTitle: UILabel!
+    @IBOutlet weak var taskLocation: UILabel!
+    @IBOutlet weak var taskCategory: UILabel!
+    @IBOutlet weak var taskLiked: UIButton!
+    @IBOutlet weak var startTime: UILabel!
+    @IBOutlet weak var endTime: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
+    @IBAction func heartButton(_ sender: UIButton) {
+        
+        delegate?.favTaskTableViewCellDidTapHeart(self)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
+}
 
+protocol FavTaskTableViewCellDelegate : class {
+    func favTaskTableViewCellDidTapHeart(_ sender: FavTaskTableViewCell)
 }
