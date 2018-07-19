@@ -43,6 +43,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.delegate = self
         calendar.swipeToChooseGesture.isEnabled = true
         calendar.backgroundColor = UIColor.white
+        //calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
+        //calendar.appearance.caseOptions = FSCalendarCaseOptions.weekdayUsesSingleUpperCase
+        calendar.appearance.calendar.scrollEnabled = true
         //calendar.placeholderType = .none
         self.view.addSubview(calendar)
         

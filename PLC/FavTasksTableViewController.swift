@@ -33,7 +33,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
             print("Fetching fav tasks...")
             // Get specific information for each liked task and add it to LikedItems, then reload data
-            Constants.refs.databaseTasks.child(taskId.key).observe(.value, with: { snapshot in
+            Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
                 if tasksInfo["participantAmount"]! as! Int != 0 {
