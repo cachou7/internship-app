@@ -51,7 +51,7 @@
                         <viewLayoutGuide key="safeArea" id="7q4-JP-vo8"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="My Initiatives" image="iconCalender" id="wJw-d3-wQu"/>
-                    <navigationItem key="navigationItem" title="My Initiatives" id="fbZ-tZ-wNd"/>
+                    <navigationItem key="navigationItem" title="My Initiatives" leftItemsSupplementBackButton="YES" id="fbZ-tZ-wNd"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="topStackView" destination="I8l-ze-PFM" id="cDu-HS-jhW"/>
