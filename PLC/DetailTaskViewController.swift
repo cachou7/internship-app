@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseUI
 import Presentr
+import SDWebImage
 
 class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate, WhoIsGoingTableViewControllerDelegate{
     

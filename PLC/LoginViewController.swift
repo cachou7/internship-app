@@ -119,96 +119,12 @@ class LoginViewController: UIViewController {
     @IBAction func signUpDidTouch(_ sender: Any) {
         CreateNewAccountController = (storyboard?.instantiateViewController(withIdentifier: "CreateNewAccountViewController") as! CreateNewAccountViewController)
         customPresentViewController(presenter, viewController: CreateNewAccountController!, animated: true, completion: nil)
-        
-        
-        /*
-        let alert = UIAlertController(title: "Register",
-                                      message: "",
-                                      preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
-            
-            let emailField = alert.textFields![0]
-            let passwordField = alert.textFields![1]
-            let firstName = alert.textFields![2].text
-            let lastName = alert.textFields![3].text
-            let jobTitle = alert.textFields![4].text
-            let department = alert.textFields![5].text
-            let projects = alert.textFields![6].text
-            
-            // Creates a new user account if there are no errors
-            Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { user, error in
-                if error == nil {
-                        guard let user = Auth.auth().currentUser else { return }
-                    currentUser = User(authData: user, firstName: firstName!, lastName: lastName!, jobTitle: jobTitle!, department: department!, currentProjects: projects!, points: 0)
-                        let key = currentUser.uid
-                        Constants.refs.databaseUsers.observe(.value, with: { snapshot in
-                            if !snapshot.hasChild(key) {
-                                print("New user added to database")
-                                Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": firstName!, "lastName": lastName!, "jobTitle": jobTitle!, "department": department!, "currentProjects": projects!, "points": 0, "tasks_created": [], "tasks_liked": []])
-                            }
-                        })
-                    Auth.auth().signIn(withEmail: self.textFieldLoginEmail.text!,
-                                       password: self.textFieldLoginPassword.text!)
-                    self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
-                    self.textFieldLoginEmail.text = nil
-                    self.textFieldLoginPassword.text = nil
-                }
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .cancel)
-        
-        alert.addTextField { textEmail in
-            textEmail.placeholder = "Enter your email"
-        }
-        
-        alert.addTextField { textPassword in
-            textPassword.isSecureTextEntry = true
-            textPassword.placeholder = "Enter your password"
-        }
-        
-        alert.addTextField { textFirstName in
-            textFirstName.placeholder = "First Name"
-        }
-        
-        alert.addTextField { textLastName in
-            textLastName.placeholder = "Last Name"
-        }
-        
-        alert.addTextField { textJobTitle in
-            textJobTitle.placeholder = "Job Title"
-        }
-        
-        alert.addTextField { textDepartment in
-            textDepartment.placeholder = "Department"
-        }
-        
-        alert.addTextField { textProjects in
-            textProjects.placeholder = "Current Projects"
-        }
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
- */
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func completionFunction(){
-        Auth.auth().signIn(withEmail: self.textFieldLoginEmail.text!,
-                           password: self.textFieldLoginPassword.text!)
-        self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
-        self.textFieldLoginEmail.text = nil
-        self.textFieldLoginPassword.text = nil
-    }
-
 }
 
 extension LoginViewController: UITextFieldDelegate {

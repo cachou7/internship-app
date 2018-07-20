@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 protocol WhoIsGoingTableViewControllerDelegate
 {
@@ -109,7 +110,7 @@ class WhoIsGoingTableViewController: UITableViewController {
         cell.layer.cornerRadius = 20
         //Cell ImageView Formatting
         cell.userProfilePhoto.layer.cornerRadius = cell.userProfilePhoto.frame.size.width/2
-        cell.userProfilePhoto.layer.borderWidth = 0.5
+        cell.userProfilePhoto.layer.borderWidth = 0.1
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
         cell.userProfilePhoto.clipsToBounds = true
     
@@ -119,6 +120,19 @@ class WhoIsGoingTableViewController: UITableViewController {
             if (indexPath.section == i) {
                 print(sectionArrays[sections[i]]?[indexPath.row])
                 cell.userProfileLink.text = sectionArrays[sections[i]]?[indexPath.row]
+                let storageRef = Constants.refs.storage.child("userPhotos/\(sectionArrays[sections[i]]?[indexPath.row]).png")
+                // Load the image using SDWebImage
+                SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+                cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+                    if let error = error {
+                        cell.userProfilePhoto.image = #imageLiteral(resourceName: "iconProfile")
+                        print("Error loading image: \(error)")
+                    }
+                    else{
+                        print("Successfuly loaded image")
+                    }
+                    
+                }
             }
         }
         

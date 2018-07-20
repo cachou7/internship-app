@@ -21,9 +21,9 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     @IBOutlet weak var currentProjectsTextField: UITextField!
     
     var profilePic: UIImage = UIImage()
-    var profilePicURL: NSURL = NSURL()
+    //var profilePicURL: NSURL = NSURL()
     let departmentPickerView = UIPickerView()
-    let departments: [String] = ["Client Services", "CRUX", "Data Science", "Finance", "Internal", "IT", "Media", "Project Management", "Social", "Strategy & Consulting", "Technology"]
+    let departments: [String] = ["Engineering", "Strategy & Consulting", "Marketing & Experience"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,8 +63,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
             Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { user, error in
                 if error == nil {
                     guard let user = Auth.auth().currentUser else { return }
-                    let changeRequest = user.createProfileChangeRequest()
-                    changeRequest.photoURL = self.profilePicURL as URL
                     currentUser = User(authData: user, firstName: self.firstNameTextField.text!, lastName: self.lastNameTextField.text!, jobTitle: self.jobTitleTextField.text!, department: self.departmentTextField.text!, currentProjects: self.currentProjectsTextField.text!, points: 0)
                     let key = currentUser.uid
                     Constants.refs.databaseUsers.observe(.value, with: { snapshot in
@@ -72,8 +70,25 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                             print("New user added to database")
                             Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "tasks_created": [], "tasks_liked": []])
                         }
+                        if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
+                            let imageName:String = String("\(key).png")
+                            
+                            let storageRef = Constants.refs.storage.child("userPhotos/\(imageName)")
+                            if let uploadData = UIImageJPEGRepresentation(self.profilePic, CGFloat(0.50)){
+                                storageRef.putData(uploadData, metadata: nil
+                                    , completion: { (metadata, error) in
+                                        if error != nil {
+                                            print("error")
+                                            return
+                                        }
+                                })
+                                
+                            }
+                        }
                     })
                 }
+                
+                
             }
             dismiss(animated: true, completion: nil)
         }
@@ -96,7 +111,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     func imagePickerController(_ _picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         profilePic = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
         profilePhoto.image = profilePic
-        profilePicURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        //profilePicURL = info[UIImagePickerControllerReferenceURL] as! NSURL
         dismiss(animated: true, completion: nil)
     }
     
