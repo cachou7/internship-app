@@ -222,7 +222,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self as UISearchResultsUpdating
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search here..."
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
