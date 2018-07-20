@@ -95,10 +95,10 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             participateAmountTextField.isEnabled = false
         }
     }
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+    @IBAction func cancelButton(_ sender: UIButton) {
         dismiss()
     }
-    @IBAction func createButton(_ sender: UIBarButtonItem) {
+    @IBAction func createButton(_ sender: UIButton) {
         let valid = validate()
         if (valid){
             var amounts = Dictionary<String, Int>()

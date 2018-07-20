@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import Presentr
 
 var currentUser: User!
 
@@ -16,12 +17,18 @@ class LoginViewController: UIViewController {
     // MARK: Constants
     let loginToTasks = "LoginToTasks"
     
+    var presenter = Presentr(presentationType: .popup)
+    var CreateNewAccountController : CreateNewAccountViewController?
+    
     // MARK: Outlets
     @IBOutlet weak var textFieldLoginEmail: UITextField!
     @IBOutlet weak var textFieldLoginPassword: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.roundCorners = true
+        presenter.cornerRadius = 20
         
         textFieldLoginEmail.borderStyle = UITextBorderStyle.none
         textFieldLoginPassword.borderStyle = UITextBorderStyle.none
@@ -110,6 +117,11 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func signUpDidTouch(_ sender: Any) {
+        CreateNewAccountController = (storyboard?.instantiateViewController(withIdentifier: "CreateNewAccountViewController") as! CreateNewAccountViewController)
+        customPresentViewController(presenter, viewController: CreateNewAccountController!, animated: true, completion: nil)
+        
+        
+        /*
         let alert = UIAlertController(title: "Register",
                                       message: "",
                                       preferredStyle: .alert)
@@ -181,11 +193,20 @@ class LoginViewController: UIViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
+ */
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func completionFunction(){
+        Auth.auth().signIn(withEmail: self.textFieldLoginEmail.text!,
+                           password: self.textFieldLoginPassword.text!)
+        self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
+        self.textFieldLoginEmail.text = nil
+        self.textFieldLoginPassword.text = nil
     }
 
 }
