@@ -33,6 +33,7 @@
 		99008FBA21011FF500F05899 /* DepartmentLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */; };
 		99008FBC2101200900F05899 /* OfficeLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */; };
 		990D7FEC2101291300549C6B /* FavTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */; };
+		990D7FEE21022D4700549C6B /* CreateNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */; };
 		995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */; };
 		99919A7F20FFA39D008ED134 /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99919A7E20FFA39D008ED134 /* CheckInViewController.swift */; };
 		99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */; };
@@ -107,6 +108,7 @@
 		99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentLeaderboardViewController.swift; sourceTree = "<group>"; };
 		99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfficeLeaderboardViewController.swift; sourceTree = "<group>"; };
 		990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavTaskTableViewCell.swift; sourceTree = "<group>"; };
+		990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAccountViewController.swift; sourceTree = "<group>"; };
 		995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardPageViewController.swift; sourceTree = "<group>"; };
 		99919A7E20FFA39D008ED134 /* CheckInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInViewController.swift; sourceTree = "<group>"; };
 		99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativeCreateViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				99008FB52100DA4500F05899 /* WhoIsGoingTableViewController.swift */,
 				99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */,
 				99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */,
+				990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */,
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
 				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
@@ -499,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				831CEC2620F69F77003CB892 /* CalendarViewController.swift in Sources */,
+				990D7FEE21022D4700549C6B /* CreateNewAccountViewController.swift in Sources */,
 				99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */,
 				83ADA39920E1547400CD5F30 /* LeaderboardViewController.swift in Sources */,
 				83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */,

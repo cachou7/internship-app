@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class ProfileViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
@@ -23,10 +24,25 @@ class ProfileViewController: UIViewController {
         departmentLabel.text = "Department: " + currentUser.department
         currentProjectsLabel.text = "Current Project(s): " + currentUser.currentProjects
         
+        
         profilePhoto.layer.cornerRadius = profilePhoto.frame.size.width/2
-        profilePhoto.layer.borderWidth = 0.5
+        profilePhoto.layer.borderWidth = 0.1
         profilePhoto.layer.borderColor = UIColor.black.cgColor
         profilePhoto.clipsToBounds = true
+        
+        let storageRef = Constants.refs.storage.child("userPhotos/\(currentUser.uid).png")
+        // Load the image using SDWebImage
+        SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+        profilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+            if let error = error {
+                self.profilePhoto.image = #imageLiteral(resourceName: "iconProfile")
+                print("Error loading image: \(error)")
+            }
+            else{
+                print("Successfuly loaded image")
+            }
+            
+        }
         
     }
     

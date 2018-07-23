@@ -43,17 +43,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         // get a reference to the view controller for the popover
         let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
         
-        // set the presentation style
-        popController.modalPresentationStyle = UIModalPresentationStyle.popover
+        customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
         
-        popController.popoverPresentationController?.barButtonItem = sender
+        // set the presentation style
+        //popController.modalPresentationStyle = UIModalPresentationStyle.popover
+        
+        //popController.popoverPresentationController?.barButtonItem = sender
         
         // set up the popover presentation controller
-        popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
-        popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
+        //popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        //popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
         
         // present the popover
-        self.present(popController, animated: true, completion: nil)
+        //self.present(popController, animated: true, completion: nil)
         self.tableView.reloadData()
     }
     //END COMPOSE BUTTON
@@ -71,10 +73,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var passedTask:Task!
     var shouldShowSearchResults = false
     var initialToolbar: UIView! = nil
+    var presenter = Presentr(presentationType: .popup)
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        presenter.roundCorners = true
+        presenter.cornerRadius = 20
         
         initialToolbar = tableView.tableHeaderView
         
