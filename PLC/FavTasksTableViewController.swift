@@ -43,7 +43,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int)
+                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
                 
                 //self.likedItems.append(likedTask!)
                 print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
@@ -223,6 +223,26 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                 cell.startTime.text = String(startTime[4]) + " " + String(startTime[5])
                 cell.endTime.text = String(endTime[4]) + " " + String(endTime[5])
                 cell.taskLiked.setImage(likedIcon, for: .normal)
+                if myTask.category == "Fun and Games" {
+                    cell.taskCategoryIcon.image = UIImage(named: "iconParty")
+                    cell.taskCategory.text = "Fun & Games"
+                }
+                else if myTask.category == "Philanthropy" {
+                    cell.taskCategoryIcon.image = UIImage(named: "iconCharity")
+                    cell.taskCategory.text = "Philanthropy"
+                }
+                else if myTask.category == "Shared Interests" {
+                    cell.taskCategoryIcon.image = UIImage(named: "iconGroup")
+                    cell.taskCategory.text = "Shared Interests"
+                }
+                else if myTask.category == "Skill Building" {
+                    cell.taskCategoryIcon.image = UIImage(named: "iconBrain")
+                    cell.taskCategory.text = "Skill Building"
+                }
+                else {
+                    cell.taskCategoryIcon.image = UIImage(named: "iconStar")
+                    cell.taskCategory.text = "Other"
+                }
                 cell.delegate = self
             }
         }

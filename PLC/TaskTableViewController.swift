@@ -90,7 +90,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
-                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int)
+                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
                 
                 newOverallItems.append(task!)
             }
@@ -130,8 +130,9 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             thisTask = self.overallItems[indexPath.row]
         }
         
+        cell.taskTitle.numberOfLines = 1
+        cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
-        //cell.taskLocation.text = thisTask!.location
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
         cell.taskMonth.text = String(startTime[0]).uppercased()
@@ -174,6 +175,28 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }
             
         }
+        
+        if thisTask!.category == "Fun and Games" {
+            cell.taskCategoryIcon.image = UIImage(named: "iconParty")
+            cell.taskCategory.text = "Fun & Games"
+        }
+        else if thisTask!.category == "Philanthropy" {
+            cell.taskCategoryIcon.image = UIImage(named: "iconCharity")
+            cell.taskCategory.text = "Philanthropy"
+        }
+        else if thisTask!.category == "Shared Interests" {
+            cell.taskCategoryIcon.image = UIImage(named: "iconGroup")
+            cell.taskCategory.text = "Shared Interests"
+        }
+        else if thisTask!.category == "Skill Building" {
+            cell.taskCategoryIcon.image = UIImage(named: "iconBrain")
+            cell.taskCategory.text = "Skill Building"
+        }
+        else {
+            cell.taskCategoryIcon.image = UIImage(named: "iconStar")
+            cell.taskCategory.text = "Other"
+        }
+        
         cell.delegate = self
         return cell
     }
@@ -320,8 +343,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         
         switch weekDay {
-        case 0:
-            return "Sat"
         case 1:
             return "Sun"
         case 2:
@@ -334,6 +355,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             return "Thu"
         case 6:
             return "Fri"
+        case 7:
+            return "Sat"
         default:
             return "Yikes"
         }

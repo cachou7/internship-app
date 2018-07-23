@@ -31,7 +31,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
     let categoryPickerView = UIPickerView()
-    let categories: [String] = ["Social", "Philanthropy", "Team Building", "Office Space", "Other"]
+    let categories: [String] = ["Fun and Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
     var task: Task?
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
@@ -127,9 +127,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             }
             let key = Constants.refs.databaseTasks.childByAutoId().key
             
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0)
+            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0, category: categoryTextField.text!)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")

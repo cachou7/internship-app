@@ -88,6 +88,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         })
         
         // Do any additional setup after loading the view.
+        taskTitle.numberOfLines = 1
+        taskTitle.adjustsFontSizeToFitWidth = true
         taskTitle.text = task_in.title
         taskLocation.text = task_in.location
         var startTime = task_in.startTime.split(separator: " ")
@@ -225,7 +227,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
                 
-                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int)
+                let updatedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
                 self.task_in = updatedTask
                 self.viewDidLoad()
             })
@@ -256,8 +258,6 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         
         switch weekDay {
-        case 0:
-            return "Sat"
         case 1:
             return "Sun"
         case 2:
@@ -270,6 +270,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             return "Thu"
         case 6:
             return "Fri"
+        case 7:
+            return "Sat"
         default:
             return "Yikes"
         }

@@ -14,6 +14,8 @@ class FavTaskTableViewCell: UITableViewCell {
     let key = currentUser.uid
     weak var delegate: FavTaskTableViewCellDelegate?
     
+    
+    @IBOutlet weak var taskCategoryIcon: UIImageView!
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskCategory: UILabel!
