@@ -13,6 +13,11 @@ import Presentr
 
 class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate, WhoIsGoingTableViewControllerDelegate{
     
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
     var task_in:Task!
     var taskIndex: Int!
@@ -20,17 +25,16 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var CheckInController : CheckInViewController?
     var WhoIsGoingController : WhoIsGoingTableViewController?
     
+    @IBOutlet weak var taskDay: UILabel!
+    @IBOutlet weak var taskMonth: UILabel!
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
-    @IBOutlet weak var taskEndTime: UILabel!
     @IBOutlet weak var taskCreatedBy: UILabel!
     @IBOutlet weak var taskDescription: UILabel!
     @IBOutlet weak var taskLeaderAmount: UILabel!
     @IBOutlet weak var taskParticipantAmount: UILabel!
     @IBOutlet weak var taskPhoto: UIImageView!
-    @IBOutlet weak var leaderStack: UIStackView!
-    @IBOutlet weak var participateStack: UIStackView!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     var presenter = Presentr(presentationType: .bottomHalf)
@@ -85,21 +89,33 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         // Do any additional setup after loading the view.
         taskTitle.text = task_in.title
         taskLocation.text = task_in.location
-        taskTime.text = task_in.startTime
-        taskEndTime.text = task_in.endTime
+        var startTime = task_in.startTime.split(separator: " ")
+        var endTime = task_in.endTime.split(separator: " ")
+        taskMonth.text = String(startTime[0]).uppercased()
+        let taskDayText = String(startTime[1]).split(separator: ",")
+        taskDay.text = String(taskDayText[0])
+        let checkdate = NSDate(timeIntervalSince1970: task_in.timeMilliseconds)
+        let dateString = self.dateFormatter.string(from: checkdate as Date)
+        let dayOfWeek = getDayOfWeek(dateString)
+        let taskTimeFrame = String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
+        taskTime.text = dayOfWeek! + ", " + String(startTime[0]) + " " + String(taskDayText[0]) + " at " + taskTimeFrame
         taskDescription.text = task_in.description
-        leaderStack.isHidden = true
-        participateStack.isHidden = true
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if let error = error {
-                self.taskPhoto.image = #imageLiteral(resourceName: "defaultPhoto")
+                self.taskPhoto.image = #imageLiteral(resourceName: "merchMart")
+                //self.taskPhoto.image = #imageLiteral(resourceName: "loginHeader")
+                
+                self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill
+                self.taskPhoto.clipsToBounds = true
                 print("Error loading image: \(error)")
             }
             else{
+                self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill
+                self.taskPhoto.clipsToBounds = true
                 print("Successfuly loaded image")
             }
 
@@ -107,19 +123,25 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         //Setting the label for the user who created event
         Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
-            self.taskCreatedBy.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
+            self.taskCreatedBy.text = "Created by " + (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
             })
         
+        taskLeaderAmount.text = "0"
+        taskParticipantAmount.text = "0"
         let tags = task_in.tag
         let tagArray = tags.components(separatedBy: " ")
         for tag in tagArray{
             if tag == "#lead"{
-                leaderStack.isHidden = false
-                taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
+                Constants.refs.databaseTasks.child(task_in.id + "/taskRSVP/leaders").observe(.value, with: { snapshot in
+                    self.taskLeaderAmount.text = String(snapshot.childrenCount)
+                })
+                //taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
             }
             if tag == "#participate"{
-                participateStack.isHidden = false
-                taskParticipantAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
+                Constants.refs.databaseTasks.child(task_in.id + "/taskRSVP/participants").observe(.value, with: { snapshot in
+                    self.taskParticipantAmount.text = String(snapshot.childrenCount)
+                })
+                //taskParticipantAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
             }
         }
     }
@@ -226,6 +248,30 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         WhoIsGoingController?.task = task_in
         
     }
-
+    
+    func getDayOfWeek(_ today:String) -> String? {
+        guard let todayDate = dateFormatter.date(from: today) else { return nil }
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        
+        switch weekDay {
+        case 0:
+            return "Sat"
+        case 1:
+            return "Sun"
+        case 2:
+            return "Mon"
+        case 3:
+            return "Tue"
+        case 4:
+            return "Wed"
+        case 5:
+            return "Thu"
+        case 6:
+            return "Fri"
+        default:
+            return "Yikes"
+        }
+    }
     
 }
