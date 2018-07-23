@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import NavigationDropdownMenu
 import Presentr
+import SDWebImage
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Actions
@@ -141,17 +142,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
         
         cell.taskTitle.text = thisTask!.title
-        cell.taskLocation.text = thisTask!.location
+        //cell.taskLocation.text = thisTask!.location
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        var endTime = thisTask.endTime.split(separator: " ")
         cell.taskMonth.text = String(startTime[0]).uppercased()
         let taskDay = String(startTime[1]).split(separator: ",")
         cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
         let dayOfWeek = getDayOfWeek(dateString)
-        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
+        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " · " + thisTask!.location
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
             if !snapshot.hasChild(thisTask!.id) {
@@ -163,6 +163,28 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 cell.taskLiked.setImage(likedIcon, for: .normal)
             }
         })
+        
+        let storageRef = Constants.refs.storage.child("taskPhotos/\(thisTask.id).png")
+        // Load the image using SDWebImage
+        SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+        cell.taskImage.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+            if let error = error {
+                cell.taskImage.image = #imageLiteral(resourceName: "merchMart")
+                //self.taskPhoto.image = #imageLiteral(resourceName: "loginHeader")
+                
+                cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
+                cell.taskImage.clipsToBounds = true
+                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                print("Error loading image: \(error)")
+            }
+            else{
+                cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
+                cell.taskImage.clipsToBounds = true
+                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                print("Successfuly loaded image")
+            }
+            
+        }
         cell.delegate = self
         return cell
     }
