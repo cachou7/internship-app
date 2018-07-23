@@ -18,8 +18,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Information About User Activity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6i-Ge-mAm">
+                                <rect key="frame" x="16" y="277" width="343" height="341"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SwB-5M-yqA">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <navigationItem id="k93-G3-L5A">
+                                        <barButtonItem key="rightBarButtonItem" title="Sign Out" id="gTv-f6-oot">
+                                            <connections>
+                                                <action selector="signOutButton:" destination="acc-KK-lwb" id="f46-GS-zjA"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="vI0-UL-5Yp">
-                                <rect key="frame" x="16" y="45" width="343" height="198.5"/>
+                                <rect key="frame" x="16" y="82" width="343" height="198.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-ER-sBY">
                                         <rect key="frame" x="0.0" y="0.0" width="165" height="198.5"/>
@@ -65,18 +85,14 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Information About User Activity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6i-Ge-mAm">
-                                <rect key="frame" x="16" y="277" width="343" height="341"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="vI0-UL-5Yp" firstAttribute="top" secondItem="UUE-Q1-HoN" secondAttribute="top" constant="25" id="1dd-U8-Hat"/>
+                            <constraint firstItem="SwB-5M-yqA" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" id="6Be-Bd-Kg8"/>
+                            <constraint firstItem="vI0-UL-5Yp" firstAttribute="top" secondItem="SwB-5M-yqA" secondAttribute="bottom" constant="18" id="C4D-B9-h2c"/>
                             <constraint firstItem="vI0-UL-5Yp" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" constant="16" id="DQo-wC-GFU"/>
+                            <constraint firstItem="SwB-5M-yqA" firstAttribute="top" secondItem="UUE-Q1-HoN" secondAttribute="top" id="Hll-wj-jBE"/>
+                            <constraint firstItem="UUE-Q1-HoN" firstAttribute="trailing" secondItem="SwB-5M-yqA" secondAttribute="trailing" id="KIU-Tx-DPm"/>
                             <constraint firstItem="UUE-Q1-HoN" firstAttribute="trailing" secondItem="vI0-UL-5Yp" secondAttribute="trailing" constant="16" id="kgh-eq-h8c"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UUE-Q1-HoN"/>
@@ -89,9 +105,11 @@
                         <outlet property="jobTitleLabel" destination="aaU-zQ-XGd" id="kcV-Aj-cxT"/>
                         <outlet property="nameLabel" destination="NCR-KX-MJX" id="7qf-OJ-pyg"/>
                         <outlet property="profilePhoto" destination="Lmd-rT-A3j" id="a6w-7G-qDL"/>
+                        <segue destination="0gv-zU-p2o" kind="unwind" identifier="unwindToLogin" unwindAction="unwindToLoginWithSegue:" id="Gla-y0-qf4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ukq-8I-YsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0gv-zU-p2o" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="844" y="1075.4122938530736"/>
         </scene>

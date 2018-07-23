@@ -44,18 +44,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
         
         customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
-        
-        // set the presentation style
-        //popController.modalPresentationStyle = UIModalPresentationStyle.popover
-        
-        //popController.popoverPresentationController?.barButtonItem = sender
-        
-        // set up the popover presentation controller
-        //popController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
-        //popController.popoverPresentationController?.delegate = self as UIPopoverPresentationControllerDelegate
-        
-        // present the popover
-        //self.present(popController, animated: true, completion: nil)
+
         self.tableView.reloadData()
     }
     //END COMPOSE BUTTON
@@ -271,12 +260,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     //END SEARCH FUNCTION
-    
-    // UIPopoverPresentationControllerDelegate method
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        // Force popover style
-        return UIModalPresentationStyle.popover
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

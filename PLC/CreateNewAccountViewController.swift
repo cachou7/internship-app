@@ -69,21 +69,35 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                         if !snapshot.hasChild(key) {
                             print("New user added to database")
                             Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "tasks_created": [], "tasks_liked": []])
-                        }
-                        if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
-                            let imageName:String = String("\(key).png")
-                            
-                            let storageRef = Constants.refs.storage.child("userPhotos/\(imageName)")
-                            if let uploadData = UIImageJPEGRepresentation(self.profilePic, CGFloat(0.50)){
-                                storageRef.putData(uploadData, metadata: nil
-                                    , completion: { (metadata, error) in
-                                        if error != nil {
-                                            print("error")
-                                            return
-                                        }
-                                })
+                            if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
+                                let imageName:String = String("\(key).png")
                                 
+                                let storageRef = Constants.refs.storage.child("userPhotos/\(imageName)")
+                                if let uploadData = UIImageJPEGRepresentation(self.profilePic, CGFloat(0.50)){
+                                    storageRef.putData(uploadData, metadata: nil
+                                        , completion: { (metadata, error) in
+                                            if error != nil {
+                                                print("error")
+                                                return
+                                            }
+                                    })
+                                    
+                                }
                             }
+                            switch(currentUser.department){
+                            case("Engineering"):
+                                Constants.refs.databaseEngineering.child(currentUser.uid).setValue(["userID": currentUser.uid])
+                                break
+                            case("Marketing & Experience"):
+                                Constants.refs.databaseMarketing.child(currentUser.uid).setValue(["userID": currentUser.uid])
+                                break
+                            case("Strategy & Consulting"):
+                                Constants.refs.databaseStrategy.child(currentUser.uid).setValue(["userID": currentUser.uid])
+                                break
+                            default:
+                                break
+                            }
+                            
                         }
                     })
                 }

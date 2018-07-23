@@ -125,6 +125,10 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func unwindToLogin(segue:UIStoryboardSegue){
+        currentUser = nil
+    }
 }
 
 extension LoginViewController: UITextFieldDelegate {

@@ -105,7 +105,7 @@ class WhoIsGoingTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! WhoIsGoingTableViewCell
         print(cell.userProfileLink.text as Any)
         //Cell formating
-        cell.layer.borderColor = UIColor.black.cgColor
+        //cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 20
         //Cell ImageView Formatting

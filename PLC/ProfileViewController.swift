@@ -50,6 +50,15 @@ class ProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBAction func signOutButton(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive) { _ in
+            self.performSegue(withIdentifier: "unwindToLogin", sender: self)
+        })
+        
+        self.present(alert, animated: true, completion: nil)
+    }
     
     
 }
