@@ -236,7 +236,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                     cell.taskCategory.text = "Shared Interests"
                 }
                 else if myTask.category == "Skill Building" {
-                    cell.taskCategoryIcon.image = UIImage(named: "iconBrain")
+                    cell.taskCategoryIcon.image = UIImage(named: "iconSkill")
                     cell.taskCategory.text = "Skill Building"
                 }
                 else {
