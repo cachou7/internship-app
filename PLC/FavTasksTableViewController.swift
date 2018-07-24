@@ -283,8 +283,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         
         switch weekDay {
-        case 0:
-            return "Sat"
         case 1:
             return "Sun"
         case 2:
@@ -297,6 +295,8 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
             return "Thu"
         case 6:
             return "Fri"
+        case 7:
+            return "Sat"
         default:
             return "Yikes"
         }
