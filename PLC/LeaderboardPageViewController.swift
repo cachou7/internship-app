@@ -37,6 +37,7 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
         configurePageControl()
         
     }
+    
     func configurePageControl() {
         // The total number of pages that are available is based on how many available colors we have.
         pageControl = UIPageControl(frame: CGRect(x: 0,y: self.view.frame.minY + 650,width: self.view.frame.width,height: 50))

@@ -24,7 +24,7 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
     //var checkIns: [String] = []
     var leaders: [String] = []
     var participants: [String] = []
-    var sections: [String] = ["Signed Up"]
+    var sections: [String] = []
     var sectionArrays: [String:[String]] = [:]
 
     @IBOutlet weak var tableView: UITableView!
@@ -33,6 +33,8 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         
         //checkInTableView.isHidden = true
+        /*
+        sections.append("Signed Up")
         sectionArrays["Signed Up"] = []
         
         let tags = task?.tag
@@ -44,11 +46,15 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
             }
             
         }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
+ */
         configurePage()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.dataSource = self
+        tableView.delegate = self
+        //tableView.register(InvolvementTableViewCell.self, forCellReuseIdentifier: "userCell")
+        tableView.reloadData()
     }
     
     private func configurePage(){
@@ -57,9 +63,17 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let checkedInInfo = snapshot.value as! [String : String]
+                        print(self.sectionArrays["Checked In"])
+                        if self.sectionArrays["Checked In"] != nil{
+                            (self.sectionArrays["Checked In"]!).append(checkedInInfo["userID"]!)
+                            print("true")
+                        }
+                        else{
+                            self.sections.append("Checked In")
+                            self.sectionArrays["Checked In"] = [checkedInInfo["userID"]!]
+                        }
                         print(checkedInInfo["userID"]!)
-                        (self.sectionArrays["Checked In"]!).append(checkedInInfo["userID"]!)
-                        print(checkedInInfo["userID"]!)
+                        self.tableView.reloadData()
                     }
                 }
             }
@@ -71,8 +85,17 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                     if let snapshot = child as? DataSnapshot{
                         let leaderInfo = snapshot.value as! [String : String ]
                         print(leaderInfo["userID"]!)
-                        (self.sectionArrays["Signed Up"]!).append(leaderInfo["userID"]!)
+                        if self.sectionArrays["Signed Up"] != nil{
+                            (self.sectionArrays["Signed Up"]!).append(leaderInfo["userID"]!)
+                            print("true")
+                        }
+                        else{
+                            self.sections.append("Signed Up")
+                            self.sectionArrays["Signed Up"] = [leaderInfo["userID"]!]
+                        }
+                        //(self.sectionArrays["Signed Up"]!).append(leaderInfo["userID"]!)
                         self.leaders.append(leaderInfo["userID"]!)
+                        self.tableView.reloadData()
                     }
                 }
             }
@@ -84,14 +107,21 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let participantInfo = snapshot.value as! [String : String ]
-                        (self.sectionArrays["Signed Up"]!).append(participantInfo["userID"]!)
+                        if self.sectionArrays["Signed Up"] != nil{
+                            (self.sectionArrays["Signed Up"]!).append(participantInfo["userID"]!)
+                            print("true")
+                        }
+                        else{
+                            self.sections.append("Signed Up")
+                            self.sectionArrays["Signed Up"] = [participantInfo["userID"]!]
+                        }
                         self.participants.append(participantInfo["userID"]!)
+                        self.tableView.reloadData()
                     }
 
                 }
             }
         })
-        self.tableView.reloadData()
         return
     }
     
@@ -110,7 +140,7 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         return (self.sectionArrays[sections[section]]?.count)!
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         print("The section is "+sections[section])
         return sections[section]
     }
@@ -119,8 +149,8 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! InvolvementTableViewCell
         print(cell.userProfileLink.text as Any)
         //Cell formating
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.borderWidth = 1
+        cell.layer.borderColor = UIColor.lightGray.cgColor
+        cell.layer.borderWidth = 0.1
         cell.layer.cornerRadius = 20
         //Cell ImageView Formatting
         cell.userProfilePhoto.layer.cornerRadius = cell.userProfilePhoto.frame.size.width/2
@@ -132,26 +162,34 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         
         for i in 0..<self.sectionArrays.count{
             if (indexPath.section == i) {
-                print(sectionArrays[sections[i]]?[indexPath.row])
+                if sections[i] == "Checked In"{
+                    cell.userTypeIcon.image = #imageLiteral(resourceName: "iconPerson")
+                }
+                else{
+                    if participants.contains((sectionArrays[sections[i]]?[indexPath.row])!){
+                        cell.userTypeIcon.image = #imageLiteral(resourceName: "iconPerson")
+                    }
+                }
                 cell.userProfileLink.text = sectionArrays[sections[i]]?[indexPath.row]
+                let storageRef = Constants.refs.storage.child("userPhotos/\(sectionArrays[sections[i]]?[indexPath.row]).png")
+                // Load the image using SDWebImage
+                SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+                cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+                    if let error = error {
+                        cell.userProfilePhoto.image = #imageLiteral(resourceName: "iconProfile")
+                        print("Error loading image: \(error)")
+                    }
+                    else{
+                        print("Successfuly loaded image")
+                    }
+                    
+                }
             }
         }
         
         //cell.delegate = self
         return cell
     }
-    
-    
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -14,6 +14,7 @@ class InvolvementTableViewCell: UITableViewCell {
     
     @IBOutlet weak var userProfileLink: UILabel!
     @IBOutlet weak var userProfilePhoto: UIImageView!
+    @IBOutlet weak var userTypeIcon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

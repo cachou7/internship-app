@@ -125,11 +125,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var thisTask: Task!
         
         if shouldShowSearchResults{
-            thisTask = filteredItems[indexPath.row]
+            thisTask = self.filteredItems[indexPath.row]
         }
         else {
             thisTask = self.overallItems[indexPath.row]
         }
+        
+        print(thisTask.title)
         
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
@@ -250,8 +252,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailTask", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
-
-            destinationVC.task_in = self.overallItems[myIndex]
+            
+            if shouldShowSearchResults{
+                destinationVC.task_in = self.filteredItems[myIndex]
+            }
+            else {
+                destinationVC.task_in = self.overallItems[myIndex]
+            }
             destinationVC.taskIndex = myIndex
         }
     }
