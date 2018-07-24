@@ -38,12 +38,12 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Zyo-AH-lkV">
-                                        <rect key="frame" x="0.0" y="82.666666666666686" width="374" height="100"/>
+                                        <rect key="frame" x="0.0" y="82.666666666666671" width="374" height="70.000000000000014"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="Description" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BFJ-0P-Njr">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="100"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="70"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="100" id="RRM-hW-f8M"/>
+                                                    <constraint firstAttribute="height" constant="70" id="RRM-hW-f8M"/>
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -52,7 +52,7 @@
                                         </subviews>
                                     </stackView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TAV-yA-G2X">
-                                        <rect key="frame" x="0.0" y="192.66666666666666" width="374" height="32.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="162.66666666666666" width="374" height="32.666666666666657"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="TAV-yA-G2X" secondAttribute="height" multiplier="343:30" id="KVm-KU-Mla"/>
                                         </constraints>
@@ -61,13 +61,13 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="End Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GS2-1q-0QF">
-                                        <rect key="frame" x="0.0" y="235.33333333333331" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="205.33333333333334" width="374" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vsV-mD-5JM">
-                                        <rect key="frame" x="0.0" y="275.33333333333331" width="374" height="32.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="245.33333333333329" width="374" height="32.666666666666657"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="vsV-mD-5JM" secondAttribute="height" multiplier="343:30" id="DLA-lH-16F"/>
                                         </constraints>
@@ -76,13 +76,13 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FTf-JQ-t82">
-                                        <rect key="frame" x="0.0" y="318" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="288" width="374" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="VIt-Ty-b19">
-                                        <rect key="frame" x="0.0" y="358" width="374" height="272.66666666666674"/>
+                                        <rect key="frame" x="0.0" y="328" width="374" height="302.66666666666674"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="I8m-gx-Y7D">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="50"/>
@@ -117,7 +117,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="iWG-z1-p9j">
-                                                <rect key="frame" x="0.0" y="64.999999999999986" width="374" height="207.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="64.999999999999986" width="374" height="237.66666666666663"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SgF-QA-IGI">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="20.333333333333332"/>
@@ -137,7 +137,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ExJ-LP-j5p">
-                                                        <rect key="frame" x="0.0" y="20.333333333333314" width="374" height="187.33333333333334"/>
+                                                        <rect key="frame" x="0.0" y="20.333333333333329" width="374" height="217.33333333333337"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uvs-X5-Cuc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
@@ -175,7 +175,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9sC-3w-bLx">
-                                                                <rect key="frame" x="0.0" y="157.33333333333331" width="374" height="30"/>
+                                                                <rect key="frame" x="0.0" y="187.33333333333331" width="374" height="30"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="lqp-J8-PyN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>

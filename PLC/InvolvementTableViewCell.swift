@@ -1,5 +1,5 @@
 //
-//  WhoIsGoingTableViewCell.swift
+//  InvolvementTableViewCell.swift
 //  PLC
 //
 //  Created by Connor Eschrich on 7/19/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WhoIsGoingTableViewCell: UITableViewCell {
+class InvolvementTableViewCell: UITableViewCell {
 
     let key = currentUser.uid
     

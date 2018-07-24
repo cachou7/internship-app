@@ -12,7 +12,7 @@ import FirebaseUI
 import Presentr
 import SDWebImage
 
-class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate, WhoIsGoingTableViewControllerDelegate{
+class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, CheckInViewControllerDelegate, InvolvementViewControllerDelegate{
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,7 +24,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var taskIndex: Int!
     var RSVPController : RSVPViewController?
     var CheckInController : CheckInViewController?
-    var WhoIsGoingController : WhoIsGoingTableViewController?
+    var InvolvementController : InvolvementViewController?
     
     @IBOutlet weak var taskDay: UILabel!
     @IBOutlet weak var taskMonth: UILabel!
@@ -39,10 +39,26 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     var presenter = Presentr(presentationType: .bottomHalf)
+    let presenterInvolvement: Presentr = {
+        let width = ModalSize.full
+        let height = ModalSize.fluid(percentage: 0.90)
+        let center = ModalCenterPosition.customOrigin(origin: CGPoint(x: 0, y: 100))
+        let customType = PresentationType.custom(width: width, height: height, center: center)
+        
+        let customPresenter = Presentr(presentationType: customType)
+        //customPresenter.transitionType = .coverVerticalFromBottom
+        customPresenter.dismissTransitionType = .crossDissolve
+        customPresenter.roundCorners = false
+        //customPresenter.backgroundColor = .green
+        customPresenter.backgroundOpacity = 0.5
+        customPresenter.dismissOnSwipe = true
+        customPresenter.dismissOnSwipeDirection = .bottom
+        return customPresenter
+    }()
 
     @IBOutlet weak var RSVPButton: UIButton!
     @IBOutlet weak var checkInButton: UIButton!
-    @IBOutlet weak var whoIsGoingButton: UIButton!
+    @IBOutlet weak var involvementButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +74,10 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             editButton.isEnabled = true
             deleteButton.isEnabled = true
             RSVPButton.isHidden = true
-            whoIsGoingButton.isHidden = false
+            involvementButton.isHidden = false
         }
         else{
-            whoIsGoingButton.isHidden = true
+            involvementButton.isHidden = true
             editButton.isEnabled = false
             deleteButton.isEnabled = false
         }
@@ -83,7 +99,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             if snapshot.hasChild(self.task_in.id){
                 self.RSVPButton.isHidden = true
                 self.checkInButton.isHidden = true
-                self.whoIsGoingButton.isHidden = true
+                self.involvementButton.isHidden = false
             }
         })
         
@@ -156,11 +172,11 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func whoIsGoingButton(_ sender: UIButton) {
-        WhoIsGoingController = (storyboard?.instantiateViewController(withIdentifier: "WhoIsGoingTableViewController") as! WhoIsGoingTableViewController)
-        WhoIsGoingController?.delegate = self
-        setWhoIsGoingCurrentTask()
-        customPresentViewController(presenter, viewController: WhoIsGoingController!, animated: true, completion: nil)
+    @IBAction func involvementButton(_ sender: UIButton) {
+        InvolvementController = (storyboard?.instantiateViewController(withIdentifier: "InvolvementViewController") as! InvolvementViewController)
+        InvolvementController?.delegate = self
+        setInvolvementCurrentTask()
+        customPresentViewController(presenterInvolvement, viewController: InvolvementController!, animated: true, completion: nil)
     }
     @IBAction func RSVPButton(_ sender: UIButton) {
         RSVPController = (storyboard?.instantiateViewController(withIdentifier: "RSVPViewController") as! RSVPViewController)
@@ -245,8 +261,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     }
     
     //WhoIsGoingTableViewControllerDelegate method
-    func setWhoIsGoingCurrentTask() {
-        WhoIsGoingController?.task = task_in
+    func setInvolvementCurrentTask() {
+        InvolvementController?.task = task_in
         
     }
     

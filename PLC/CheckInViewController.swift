@@ -51,19 +51,17 @@ class CheckInViewController: UIViewController {
     private func configurePage(){
         //Getting users that are already checked in
         Constants.refs.databaseTasks.child(task!.id).child("taskCheckIn").observe(.value, with: { snapshot in
-            var newCheckIns: [String] = []
             if (snapshot.exists()){
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let checkedInInfo = snapshot.value as! [String : String ]
-                        newCheckIns.append(checkedInInfo["userID"]!)
+                        self.usersCheckedIn.append(checkedInInfo["userID"]!)
                     
                         if (checkedInInfo["userID"]! == currentUser.uid){
                             self.alreadyCheckedInLabel.isHidden = false
                             self.checkInButton.isEnabled = false
                         }
                     }
-                    self.usersCheckedIn.append(contentsOf: newCheckIns)
                     self.usersCheckedInLabel.text = "\(String(describing: self.usersCheckedIn.count)) people already checked in"
                 }
             }

@@ -69,6 +69,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
         presenter.roundCorners = true
         presenter.cornerRadius = 20
+        presenter.dismissOnTap = false
         
         initialToolbar = tableView.tableHeaderView
         
