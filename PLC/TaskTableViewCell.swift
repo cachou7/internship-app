@@ -16,12 +16,13 @@ class TaskTableViewCell: UITableViewCell {
     
     
     
+    @IBOutlet weak var taskCategory: UILabel!
+    @IBOutlet weak var taskImage: UIImageView!
     @IBOutlet weak var taskCategoryIcon: UIImageView!
     @IBOutlet weak var taskSecondPoints: UILabel!
     @IBOutlet weak var taskSecondIcon: UIImageView!
     @IBOutlet weak var taskFirstPoints: UILabel!
     @IBOutlet weak var taskFirstIcon: UIImageView!
-    @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskMonth: UILabel!
     @IBOutlet weak var taskDay: UILabel!
     @IBOutlet weak var taskTitle: UILabel!
