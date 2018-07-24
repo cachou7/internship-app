@@ -31,9 +31,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         
         // Set up listener to get liked tasks and detect when tasks are liked
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
-            print("Fetching fav tasks...")
-            print(taskId.key)
-            // Get specific information for each liked task and add it to LikedItems, then reload data
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
@@ -75,10 +72,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
             
             Constants.refs.databaseTasks.child(taskId.key).observe(.childChanged, with: { snapshot in
                 let tasksInfo = snapshot.value as? Any
-                
-                print(tasksInfo)
-                
-                
             })
             
             self.tableView.reloadData()
@@ -143,16 +136,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                                 }
                             }
                         }
-                        
-                        /*if !found {
-                         if self.datesList.count == 0 {
-                         index = 0
-                         }
-                         else {
-                         index = self.datesList.count - 1
-                         }
-                         }*/
-                        
                         let indexPath = IndexPath(row: row, section: index)
                         
                         let deadlineTime = DispatchTime.now() + .milliseconds(300)
@@ -160,9 +143,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                             self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                         }
                     }
-                    //self.tableView.reloadData()
-                    //self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                    //self.tableView.reloadData()
                 }
             })
         }
@@ -216,10 +196,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                 cell.taskLocation.text = myTask.location
                 var startTime = myTask.startTime.split(separator: " ")
                 var endTime = myTask.endTime.split(separator: " ")
-                /*cell.taskTimeFrame.text = String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
-                cell.taskMonth.text = String(startTime[0]).uppercased()
-                let taskDay = String(startTime[1]).split(separator: ",")
-                cell.taskDay.text = String(taskDay[0])*/
                 cell.startTime.text = String(startTime[4]) + " " + String(startTime[5])
                 cell.endTime.text = String(endTime[4]) + " " + String(endTime[5])
                 cell.taskLiked.setImage(likedIcon, for: .normal)
@@ -253,7 +229,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
     // Remove task from Favs page if user untaps heart on this page
     func favTaskTableViewCellDidTapHeart(_ sender: FavTaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        print("Removed task at row " + String(tappedIndexPath.row))
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
         let unlikedIcon = UIImage(named: "heartIcon")
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
@@ -299,6 +274,18 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
             return "Sat"
         default:
             return "Yikes"
+        }
+    }
+    
+    @IBAction func unwindToFavInitiatives(segue:UIStoryboardSegue) {
+        if segue.identifier == "unwindToFavInitiatives" {
+            /*
+            let selectedIndex = tableView.indexPathForSelectedRow?.row
+            self.likedItems.remove(at: selectedIndex!)
+            
+            tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
+ */
+            self.tableView.reloadData()
         }
     }
 }

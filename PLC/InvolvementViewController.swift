@@ -20,8 +20,6 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
     var users: [User] = []
     var delegate: InvolvementViewControllerDelegate?
     var task: Task?
-    //var signUps: [String] = []
-    //var checkIns: [String] = []
     var leaders: [String] = []
     var participants: [String] = []
     var sections: [String] = []
@@ -31,29 +29,13 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //checkInTableView.isHidden = true
-        /*
-        sections.append("Signed Up")
-        sectionArrays["Signed Up"] = []
-        
-        let tags = task?.tag
-        let tagArray = tags?.components(separatedBy: " ")
-        for tag in tagArray!{
-            if tag == "#participate"{
-                self.sections.append("Checked In")
-                self.sectionArrays["Checked In"] = []
-            }
-            
-        }
- */
+
         configurePage()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.dataSource = self
         tableView.delegate = self
-        //tableView.register(InvolvementTableViewCell.self, forCellReuseIdentifier: "userCell")
         tableView.reloadData()
     }
     
@@ -127,7 +109,6 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -147,7 +128,7 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! InvolvementTableViewCell
-        print(cell.userProfileLink.text as Any)
+
         //Cell formating
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0.1
@@ -157,8 +138,6 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         cell.userProfilePhoto.layer.borderWidth = 0.5
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
         cell.userProfilePhoto.clipsToBounds = true
-        
-        //cell.userProfileLink.text = String(self.overallItems[indexPath.row].usersLikedAmount)
         
         for i in 0..<self.sectionArrays.count{
             if (indexPath.section == i) {
@@ -175,12 +154,8 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 // Load the image using SDWebImage
                 SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
                 cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-                    if let error = error {
+                    if error != nil {
                         cell.userProfilePhoto.image = #imageLiteral(resourceName: "iconProfile")
-                        print("Error loading image: \(error)")
-                    }
-                    else{
-                        print("Successfuly loaded image")
                     }
                     
                 }

@@ -13,43 +13,6 @@ import Presentr
 import SDWebImage
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
-    //MARK: Actions
-    fileprivate lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        return formatter
-    }()
-    
-    //SEGMENTED BAR
-    @IBAction func segmentedBar(_ sender: UISegmentedControl) {
-        self.sortTasks()
-    }
-    //END SEGMENTED BAR
-    
-    //SEARCH BUTTON
-    @IBAction func searchButton(_ sender: UIBarButtonItem) {
-        if tableView.tableHeaderView != initialToolbar{
-            shouldShowSearchResults = false
-            tableView.tableHeaderView = initialToolbar
-            tableView.reloadData()
-        }
-        else{
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-    //END SEARCH BUTTON
-    
-    //COMPOSE BUTTON
-    @IBAction func composeButton(_ sender: UIBarButtonItem) {
-        // get a reference to the view controller for the popover
-        let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
-        
-        customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
-
-        self.tableView.reloadData()
-    }
-    //END COMPOSE BUTTON
-    
     //MARK: Variables
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var menuView: NavigationDropdownMenu!
@@ -105,6 +68,44 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         super.didReceiveMemoryWarning()
     }
     
+    //MARK: Actions
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
+    
+    //SEGMENTED BAR
+    @IBAction func segmentedBar(_ sender: UISegmentedControl) {
+        self.sortTasks()
+    }
+    //END SEGMENTED BAR
+    
+    //SEARCH BUTTON
+    @IBAction func searchButton(_ sender: UIBarButtonItem) {
+        if tableView.tableHeaderView != initialToolbar{
+            shouldShowSearchResults = false
+            tableView.tableHeaderView = initialToolbar
+            tableView.reloadData()
+        }
+        else{
+            tableView.tableHeaderView = searchController.searchBar
+        }
+    }
+    //END SEARCH BUTTON
+    
+    //COMPOSE BUTTON
+    @IBAction func composeButton(_ sender: UIBarButtonItem) {
+        // get a reference to the view controller for the popover
+        let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
+        
+        customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
+        
+        self.tableView.reloadData()
+    }
+    //END COMPOSE BUTTON
+    
+    //TABLEVIEW DELEGATES
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -130,8 +131,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         else {
             thisTask = self.overallItems[indexPath.row]
         }
-        
-        print(thisTask.title)
         
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
@@ -161,20 +160,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         cell.taskImage.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-            if let error = error {
+            if error != nil {
                 cell.taskImage.image = #imageLiteral(resourceName: "merchMart")
-                //self.taskPhoto.image = #imageLiteral(resourceName: "loginHeader")
-                
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
                 cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
-                print("Error loading image: \(error)")
             }
             else{
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
                 cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
-                print("Successfuly loaded image")
             }
             
         }
@@ -203,6 +198,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.delegate = self
         return cell
     }
+    //END TABLEVIEW DELEGATES
 
     
     //LIKING TASKS

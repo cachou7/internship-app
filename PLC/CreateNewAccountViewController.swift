@@ -21,7 +21,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     @IBOutlet weak var currentProjectsTextField: UITextField!
     
     var profilePic: UIImage = UIImage()
-    //var profilePicURL: NSURL = NSURL()
     let departmentPickerView = UIPickerView()
     let departments: [String] = ["Engineering", "Strategy & Consulting", "Marketing & Experience"]
     
@@ -38,7 +37,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
         profilePhoto.layer.borderColor = UIColor.black.cgColor
         profilePhoto.clipsToBounds = true
 
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,7 +65,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                     let key = currentUser.uid
                     Constants.refs.databaseUsers.observe(.value, with: { snapshot in
                         if !snapshot.hasChild(key) {
-                            print("New user added to database")
                             Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "tasks_created": [], "tasks_liked": []])
                             if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
                                 let imageName:String = String("\(key).png")
@@ -77,7 +74,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                                     storageRef.putData(uploadData, metadata: nil
                                         , completion: { (metadata, error) in
                                             if error != nil {
-                                                print("error")
                                                 return
                                             }
                                     })
@@ -108,9 +104,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
         }
     }
     @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
-        print("password text field")
         reEnterPasswordTextField.isHidden = false
-        print(reEnterPasswordTextField.becomeFirstResponder())
     }
     
     //MARK: UITextFieldDelegate
@@ -125,7 +119,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     func imagePickerController(_ _picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         profilePic = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
         profilePhoto.image = profilePic
-        //profilePicURL = info[UIImagePickerControllerReferenceURL] as! NSURL
         dismiss(animated: true, completion: nil)
     }
     

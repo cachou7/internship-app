@@ -126,11 +126,9 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if let error = error {
                 self.taskPhoto.image = #imageLiteral(resourceName: "merchMart")
-                //self.taskPhoto.image = #imageLiteral(resourceName: "loginHeader")
                 
                 self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill
                 self.taskPhoto.clipsToBounds = true
-                print("Error loading image: \(error)")
             }
             else{
                 self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill

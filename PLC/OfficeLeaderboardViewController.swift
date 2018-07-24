@@ -45,7 +45,6 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(String(self.users.count))
         return self.users.count
     }
     
@@ -53,9 +52,7 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "officeCell", for: indexPath) as! OfficeLeaderboardTableViewCell
         
         let thisUser = self.users[indexPath.row]
-        
-        print("This user is " + thisUser.uid)
-        
+
         cell.layer.borderWidth = 0.1
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.cornerRadius = 20
@@ -72,14 +69,9 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-            if let error = error {
+            if error != nil {
                 cell.userProfilePhoto.image = #imageLiteral(resourceName: "iconProfile")
-                print("Error loading image: \(error)")
             }
-            else{
-                print("Successfuly loaded image")
-            }
-            
         }
         return cell
     }

@@ -16,7 +16,6 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
     @IBOutlet weak var tableView: UITableView!
     var currentDB = Constants.refs.databaseRoot
     var users: [User] = []
-    var newUsers: [User] = []
     
     
     override func viewDidLoad() {
@@ -41,30 +40,17 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         
         //Users Loaded From DB
         currentDB.observe(.value, with: { snapshot in
-            self.newUsers = []
-            print(snapshot)
-            
             for child in snapshot.children {
-                print(child)
                 if let snapshot = child as? DataSnapshot{
                     let usersInfo = snapshot.value as? [String : Any ] ?? [:]
                     Constants.refs.databaseUsers.child(usersInfo["userID"] as! String).observeSingleEvent(of: .value, with: { snapshot in
                         let userSnap = snapshot.value as? [String : Any ] ?? [:]
                         let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
-                        print("User added to newUsers " + (user?.uid)!)
-                        //self.newUsers.append(user!)
-                        //print("new user1 " + String(self.newUsers.count))
                         self.users.append(user!)
                         self.sortUsers()
                     })
-                    //print("new user2 " + String(self.newUsers.count))
                 }
-                //print("new user3 " + String(self.newUsers.count))
-                
-                //self.sortUsers()
             }})
-        
-        //print("here")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,11 +60,9 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(String(self.users.count))
         return self.users.count
     }
     
@@ -86,8 +70,6 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "departmentCell", for: indexPath) as! DepartmentLeaderboardTableViewCell
         
         let thisUser = self.users[indexPath.row]
-        
-        print("This user is " + thisUser.uid)
         
         cell.layer.borderWidth = 0.1
         cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -105,14 +87,9 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-            if let error = error {
+            if error != nil {
                 cell.userProfilePhoto.image = #imageLiteral(resourceName: "iconProfile")
-                print("Error loading image: \(error)")
             }
-            else{
-                print("Successfuly loaded image")
-            }
-            
         }
         return cell
     }

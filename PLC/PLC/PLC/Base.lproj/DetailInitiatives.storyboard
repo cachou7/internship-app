@@ -342,6 +342,7 @@
                         <outlet property="taskTime" destination="MTD-Mq-WwM" id="Th0-fc-dyT"/>
                         <outlet property="taskTitle" destination="QNe-YU-6Qn" id="9fS-WV-so1"/>
                         <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToInitiatives" unwindAction="unwindToInitiativesWithSegue:" id="mWp-GE-qLW"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" unwindAction="unwindToFavInitiativesWithSegue:" id="Gl1-aP-KxA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PFz-BW-E7A" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -32,26 +32,24 @@ class RSVPViewController: UIViewController {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
-        
-        //self.viewDidLoad()
     }
     @IBAction func signUpLeaderButton(_ sender: UIButton) {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
-        //self.viewDidLoad()
+        
+            Constants.refs.databaseUsers.child(currentUser.uid ).child("tasks_lead").child(task!.id).setValue(true)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(task!.id)
         alreadyInvolvedLabel.isHidden = true
         configurePage()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     private func userAlreadySignedUp(){
@@ -75,9 +73,7 @@ class RSVPViewController: UIViewController {
                             if let snapshot = child as? DataSnapshot{
                                 let leaderInfo = snapshot.value as! [String : String ]
                                 if (leaderInfo["userID"]! == currentUser.uid){
-                                    self.signUpLeaderButton.isEnabled = false
-                                    self.goingParticipantButton.isEnabled = false
-                                    self.alreadyInvolvedLabel.isHidden = false
+                                    self.userAlreadySignedUp()
                                 }
                                 self.leadersRSVP.append(leaderInfo["userID"]!)
                             }
@@ -105,9 +101,7 @@ class RSVPViewController: UIViewController {
                             if let snapshot = child as? DataSnapshot{
                                 let participantInfo = snapshot.value as! [String : String ]
                                 if (participantInfo["userID"]! == currentUser.uid){
-                                    self.signUpLeaderButton.isEnabled = false
-                                    self.goingParticipantButton.isEnabled = false
-                                    self.alreadyInvolvedLabel.isHidden = false
+                                    self.userAlreadySignedUp()
                                 }
                                 self.participantsRSVP.append(participantInfo["userID"]!)
                             }

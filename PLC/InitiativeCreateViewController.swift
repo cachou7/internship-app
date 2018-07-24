@@ -129,7 +129,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             
             task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0, category: categoryTextField.text!)
             
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category] as [String : Any]
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category as Any] as [String : Any]
         Constants.refs.databaseTasks.child(key).setValue(taskDB)
             
             Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
@@ -147,7 +147,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                     storageRef.putData(uploadData, metadata: nil
                         , completion: { (metadata, error) in
                             if error != nil {
-                                print("error")
                                 return
                             }
                     })
@@ -194,7 +193,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         let imageName = taskPhotoURL.lastPathComponent
         addImageLabel.text = imageName
         
-        //print(imageName)
         dismiss(animated: true, completion: nil)
     }
     

@@ -76,13 +76,11 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         self.taskImageView.isHidden = false
         taskImageView.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if error != nil {
-                "Error loading image: \(error)"
                 self.taskImageView.isHidden = true
                 self.addImageButton.isHidden = false
                 self.addImageLabel.text = "Add Image"
             }
             else{
-                print("icon image successful")
                 self.taskImageView.isHidden = false
                 self.removeImageButton.isHidden = false
                 self.addImageLabel.text = "\(self.task_in.id).png"
@@ -283,7 +281,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                     // Delete the file
                     storageRef.delete { error in
                         if error != nil {
-                            print("Error deleting image: \(error)")
+                            print("Error deleting image")
                         }
                     }
                     
@@ -293,7 +291,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                         storageRef.putData(uploadData, metadata: nil
                             , completion: { (metadata, error) in
                                 if error != nil {
-                                    print("Error adding image: \(error)")
+                                    print("Error adding image")
                                     return
                                 }
                         })
@@ -308,11 +306,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                     // Delete the file
                     storageRef.delete { error in
                         if error != nil {
-                            print("Error deleting image: \(error)")
+                            print("Error deleting image")
                         }
-                        else{
-                            print("Successfully deleted")
-                        }
+                 
                     }
                 }
                 if (tagsChanged){
@@ -357,7 +353,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         let imageName = taskPhotoURL.lastPathComponent
         addImageLabel.text = imageName
         
-        //print(imageName)
         dismiss(animated: true, completion: nil)
     }
     

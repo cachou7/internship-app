@@ -51,19 +51,12 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
 }
 
 protocol LeaderboardPageViewControllerDelegate: class {
-    /**
-     Called when the current index is updated.
-     
-     - parameter leaderboardPageViewController: the LeaderboardPageViewController instance
-     - parameter index: the index of the currently visible page.
-     */
     func pageViewController(_ pageViewController: UIPageViewController,
                                     didUpdatePageIndex index: Int)
     

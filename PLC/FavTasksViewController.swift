@@ -25,8 +25,6 @@ class FavTasksViewController: UIViewController {
         let destination = segue.destination
         if let calendarController = destination as? CalendarViewController {
             calendarViewController = calendarController
-            //calendarViewController?.delegate = self as! FSCalendarDelegate
-            //calendarViewController?.dataSource = self as! FSCalendarDataSource
         }
         
         if let favTasksTableController = destination as? FavTasksTableViewController {
