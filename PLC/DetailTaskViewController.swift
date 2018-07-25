@@ -97,6 +97,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         Constants.refs.databasePastTasks.observe(.value, with: { snapshot in
             if snapshot.hasChild(self.task_in.id){
+                self.editButton.isEnabled = false
                 self.RSVPButton.isHidden = true
                 self.checkInButton.isHidden = true
                 self.involvementButton.isHidden = false

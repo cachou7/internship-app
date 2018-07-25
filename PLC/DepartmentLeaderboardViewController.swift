@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SDWebImage
+import Presentr
 
 class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,10 +17,13 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
     @IBOutlet weak var tableView: UITableView!
     var currentDB = Constants.refs.databaseRoot
     var users: [User] = []
-    
+    var presenter = Presentr(presentationType: .popup)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.roundCorners = true
+        presenter.cornerRadius = 20
         
         departmentTypeLabel.text = currentUser.department
         
@@ -66,6 +70,15 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         return self.users.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath){
+        let popController = UIStoryboard(name: "OtherUserProfile", bundle: nil).instantiateViewController(withIdentifier: "otherUserViewController")
+        
+        //popController.navigationItem.
+        
+        customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
+        
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "departmentCell", for: indexPath) as! DepartmentLeaderboardTableViewCell
         
@@ -101,6 +114,8 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         //END OVERALL
         self.tableView.reloadData()
     }
+    
+
     
 
 }

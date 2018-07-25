@@ -38,7 +38,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         jobTitleLabel.text = "Job Title: " + (user?.jobTitle)!
         departmentLabel.text = "Department: " + (user?.department)!
         currentProjectsLabel.text = "Current Project(s): " + (user?.currentProjects)!
-        pointsLabel.text = "Points: " + String((user?.points)!)
+        pointsLabel.text = String((user?.points)!)
         
         
         profilePhoto.layer.cornerRadius = profilePhoto.frame.size.width/2

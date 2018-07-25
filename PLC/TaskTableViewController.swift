@@ -8,21 +8,17 @@
 
 import UIKit
 import Firebase
-import NavigationDropdownMenu
 import Presentr
 import SDWebImage
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     //MARK: Variables
     @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
-    var menuView: NavigationDropdownMenu!
     var searchController: UISearchController!
     var myIndex = 0
     var currentDB: String = ""
-    //var items: [Task] = []
     var overallItems: [Task] = []
     var filteredItems: [Task] = []
-    var indexDropdown: Int = 0
     var passedTask:Task!
     var shouldShowSearchResults = false
     var initialToolbar: UIView! = nil
@@ -62,6 +58,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
             self.sortTasks()
             }})
+        
+        
+        Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
+            for child in snapshot.children {
+                if let snap = child as? DataSnapshot{
+                    let taskInfo = snap.value as? [String : Any ] ?? [:]
+                    //self.overallItems.remove(at: self.overallItems.index(of: taskInfo["taskID"] as! Task))
+                }
+            }
+        })
     }
     
     override func didReceiveMemoryWarning() {

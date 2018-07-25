@@ -163,7 +163,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     @IBAction func locationChanged(_ sender: UITextField) {
         locationChanged = true
     }
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+    @IBAction func cancelButton(_ sender: UIButton) {
         dismiss()
     }
     

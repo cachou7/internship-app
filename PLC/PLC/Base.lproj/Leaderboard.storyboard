@@ -155,6 +155,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="o4Q-0O-8sG"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Yud-b4-xwu"/>
                     <connections>
                         <outlet property="departmentTypeLabel" destination="PaT-vE-TJS" id="x5j-Ev-Tp8"/>
                         <outlet property="tableView" destination="KHq-hF-uh6" id="8UA-k3-10h"/>
@@ -224,6 +225,7 @@
                                             <outlet property="userPoints" destination="vcy-AX-WrH" id="X1M-Cy-cRY"/>
                                             <outlet property="userProfileLink" destination="N7c-JH-1EZ" id="ycW-ll-kMw"/>
                                             <outlet property="userProfilePhoto" destination="Ux3-iI-DKl" id="2qr-rI-yZO"/>
+                                            <segue destination="pEH-tn-YMp" kind="show" identifier="toProfile" id="SsI-6U-PmM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -240,6 +242,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BLP-iO-GBn"/>
                     </view>
+                    <navigationItem key="navigationItem" id="eoI-ND-QM9"/>
                     <connections>
                         <outlet property="tableView" destination="q3b-KT-MiV" id="3JB-wx-up0"/>
                     </connections>
@@ -247,6 +250,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Gs-Hf-QJo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="237.59999999999999" y="1454.1229385307347"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="QDr-Ri-37G">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Profile" id="pEH-tn-YMp" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WXi-zO-J83" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="646" y="1970"/>
         </scene>
     </scenes>
     <resources>
