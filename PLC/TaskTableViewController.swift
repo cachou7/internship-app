@@ -174,23 +174,55 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
         }
         
+        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
+        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
+        
+        if leaderPts / 10 < 35 {
+            leaderPts = 35
+        }
+        else {
+            leaderPts /= 10
+            if leaderPts > 100 {
+                leaderPts = 100
+            }
+        }
+        if participantPts / 10 < 5 {
+            participantPts = 5
+        }
+        else {
+            participantPts /= 10
+            if participantPts > 20 {
+                participantPts = 20
+            }
+        }
+        
         if thisTask!.category == "Fun and Games" {
+            cell.taskLeaderPoints.text = "+" + String(leaderPts) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(participantPts) + " pts"
             cell.taskCategoryIcon.image = UIImage(named: "iconParty")
             cell.taskCategory.text = "Fun & Games"
         }
         else if thisTask!.category == "Philanthropy" {
+            cell.taskLeaderPoints.text = "+" + String(leaderPts * 7 / 4) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(participantPts * 7 / 4) + " pts"
             cell.taskCategoryIcon.image = UIImage(named: "iconCharity")
             cell.taskCategory.text = "Philanthropy"
         }
         else if thisTask!.category == "Shared Interests" {
+            cell.taskLeaderPoints.text = "+" + String(leaderPts * 3 / 2) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(participantPts * 3 / 2) + " pts"
             cell.taskCategoryIcon.image = UIImage(named: "iconGroup")
             cell.taskCategory.text = "Shared Interests"
         }
         else if thisTask!.category == "Skill Building" {
+            cell.taskLeaderPoints.text = "+" + String(leaderPts * 2) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(participantPts * 2) + " pts"
             cell.taskCategoryIcon.image = UIImage(named: "iconSkill")
             cell.taskCategory.text = "Skill Building"
         }
         else {
+            cell.taskLeaderPoints.text = "+" + String(leaderPts * 5 / 4) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(participantPts * 5 / 4) + " pts"
             cell.taskCategoryIcon.image = UIImage(named: "iconStar")
             cell.taskCategory.text = "Other"
         }
