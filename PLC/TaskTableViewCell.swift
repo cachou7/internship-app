@@ -16,6 +16,8 @@ class TaskTableViewCell: UITableViewCell {
     
     
     
+    @IBOutlet weak var taskParticipantPoints: UILabel!
+    @IBOutlet weak var taskLeaderPoints: UILabel!
     @IBOutlet weak var taskCategory: UILabel!
     @IBOutlet weak var taskImage: UIImageView!
     @IBOutlet weak var taskCategoryIcon: UIImageView!

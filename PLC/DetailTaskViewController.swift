@@ -26,6 +26,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var CheckInController : CheckInViewController?
     var InvolvementController : InvolvementViewController?
     
+    @IBOutlet weak var taskParticipantPoints: UILabel!
+    @IBOutlet weak var taskLeaderPoints: UILabel!
     @IBOutlet weak var taskDay: UILabel!
     @IBOutlet weak var taskMonth: UILabel!
     @IBOutlet weak var taskTitle: UILabel!
@@ -120,6 +122,49 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         let taskTimeFrame = String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
         taskTime.text = dayOfWeek! + ", " + String(startTime[0]) + " " + String(taskDayText[0]) + " at " + taskTimeFrame
         taskDescription.text = task_in.description
+        
+        var leaderPts = Int((task_in.endTimeMilliseconds - task_in.timeMilliseconds) / 200)
+        var participantPts = Int((task_in.endTimeMilliseconds - task_in.timeMilliseconds) / 1000)
+        
+        if leaderPts / 10 < 35 {
+            leaderPts = 35
+        }
+        else {
+            leaderPts /= 10
+            if leaderPts > 100 {
+                leaderPts = 100
+            }
+        }
+        if participantPts / 10 < 5 {
+            participantPts = 5
+        }
+        else {
+            participantPts /= 10
+            if participantPts > 20 {
+                participantPts = 20
+            }
+        }
+        
+        if task_in!.category == "Fun and Games" {
+            taskLeaderPoints.text = "+" + String(leaderPts) + " pts"
+            taskParticipantPoints.text = "+" + String(participantPts) + " pts"
+        }
+        else if task_in!.category == "Philanthropy" {
+            taskLeaderPoints.text = "+" + String(leaderPts * 7 / 4) + " pts"
+            taskParticipantPoints.text = "+" + String(participantPts * 7 / 4) + " pts"
+        }
+        else if task_in!.category == "Shared Interests" {
+            taskLeaderPoints.text = "+" + String(leaderPts * 3 / 2) + " pts"
+            taskParticipantPoints.text = "+" + String(participantPts * 3 / 2) + " pts"
+        }
+        else if task_in!.category == "Skill Building" {
+            taskLeaderPoints.text = "+" + String(leaderPts * 2) + " pts"
+            taskParticipantPoints.text = "+" + String(participantPts * 2) + " pts"
+        }
+        else {
+            taskLeaderPoints.text = "+" + String(leaderPts * 5 / 4) + " pts"
+            taskParticipantPoints.text = "+" + String(participantPts * 5 / 4) + " pts"
+        }
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
         // Load the image using SDWebImage
