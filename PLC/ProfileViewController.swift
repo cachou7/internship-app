@@ -18,6 +18,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var jobTitleLabel: UILabel!
     @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var signOutButton: UIBarButtonItem!
+    @IBOutlet weak var backToLeaderboardButton: UIBarButtonItem!
     
     //var createdTasks: [Task] = []
     //var leadTasks: [Task] = []
@@ -30,7 +32,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        user = currentUser!
+        if user == nil{
+            user = currentUser!
+            backToLeaderboardButton.tintColor = UIColor.clear
+            backToLeaderboardButton.isEnabled = false
+        }
         
         //configureTable()
         
@@ -46,7 +52,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         profilePhoto.layer.borderColor = UIColor.black.cgColor
         profilePhoto.clipsToBounds = true
         
-        let storageRef = Constants.refs.storage.child("userPhotos/\(user?.uid).png")
+        let storageRef = Constants.refs.storage.child("userPhotos/\((user?.uid)!).png")
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         profilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
@@ -200,6 +206,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         })
         
         self.present(alert, animated: true, completion: nil)
+    }
+    @IBAction func backButton(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
     

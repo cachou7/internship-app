@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import SDWebImage
-import Presentr
 
 class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -17,13 +16,9 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
     @IBOutlet weak var tableView: UITableView!
     var currentDB = Constants.refs.databaseRoot
     var users: [User] = []
-    var presenter = Presentr(presentationType: .popup)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        presenter.roundCorners = true
-        presenter.cornerRadius = 20
         
         departmentTypeLabel.text = currentUser.department
         
@@ -70,15 +65,6 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         return self.users.count
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath){
-        let popController = UIStoryboard(name: "OtherUserProfile", bundle: nil).instantiateViewController(withIdentifier: "otherUserViewController")
-        
-        //popController.navigationItem.
-        
-        customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
-        
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "departmentCell", for: indexPath) as! DepartmentLeaderboardTableViewCell
         
@@ -93,7 +79,8 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
         cell.userProfilePhoto.clipsToBounds = true
         
-        cell.userProfileLink.text = thisUser.uid
+        cell.rankLabel.text = String(indexPath.row+1)
+        cell.userProfileLink.text = "\(thisUser.firstName) \(thisUser.lastName)"
         cell.userPoints.text = String(thisUser.points)
         
         let storageRef = Constants.refs.storage.child("userPhotos/\(thisUser.uid).png")
@@ -113,6 +100,15 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         self.users.sort(by: {$0.points > $1.points})
         //END OVERALL
         self.tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toProfile"{
+            let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
+            destinationVC.signOutButton.isEnabled = false
+            destinationVC.signOutButton.tintColor = UIColor.clear
+            destinationVC.user = self.users[(tableView.indexPathForSelectedRow?.row)!]
+        }
     }
     
 

@@ -71,12 +71,25 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created by Leo Gitelman" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEx-pu-aEP">
-                                        <rect key="frame" x="90" y="229" width="307" height="22"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
-                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3sv-JH-SFl">
+                                        <rect key="frame" x="90" y="229" width="181" height="34"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created by " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEx-pu-aEP">
+                                                <rect key="frame" x="0.0" y="0.0" width="84" height="34"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
+                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNM-gL-jlR">
+                                                <rect key="frame" x="84" y="0.0" width="97" height="34"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
+                                                <state key="normal" title="Leo Gitelman"/>
+                                                <connections>
+                                                    <segue destination="vkG-Dg-bSV" kind="show" identifier="toProfile" id="PjY-bO-hAu"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconClock" translatesAutoresizingMaskIntoConstraints="NO" id="yhW-tr-lW5">
                                         <rect key="frame" x="18" y="279" width="25" height="25"/>
                                     </imageView>
@@ -195,6 +208,7 @@
                                     <constraint firstItem="a7D-AQ-rgH" firstAttribute="centerX" secondItem="Cp2-4M-4oH" secondAttribute="centerX" id="CyQ-eC-67C"/>
                                     <constraint firstItem="A8w-WE-iBO" firstAttribute="top" secondItem="Cp2-4M-4oH" secondAttribute="bottom" id="D38-Cw-x0b"/>
                                     <constraint firstItem="Oke-V0-QvZ" firstAttribute="centerX" secondItem="uwi-2u-2lN" secondAttribute="centerX" id="EcU-LN-Zqh"/>
+                                    <constraint firstItem="3sv-JH-SFl" firstAttribute="top" secondItem="QNe-YU-6Qn" secondAttribute="bottom" constant="-3" id="GiY-qc-jzI"/>
                                     <constraint firstAttribute="trailing" secondItem="Rwa-IE-GWm" secondAttribute="trailing" constant="78" id="Gko-Bh-vrq"/>
                                     <constraint firstAttribute="trailing" secondItem="MmP-lW-1Mm" secondAttribute="trailing" constant="59" id="HKb-hd-U3M"/>
                                     <constraint firstItem="aoC-Aw-J92" firstAttribute="top" secondItem="Rwa-IE-GWm" secondAttribute="bottom" constant="9" id="Hqh-ml-kB6"/>
@@ -208,7 +222,6 @@
                                     <constraint firstItem="QNe-YU-6Qn" firstAttribute="trailing" secondItem="eJv-00-xSv" secondAttribute="trailing" constant="4" id="PDu-HZ-TjT"/>
                                     <constraint firstItem="h1o-t6-BlV" firstAttribute="top" secondItem="ftI-q3-TgJ" secondAttribute="bottom" constant="44" id="PSz-dY-Xnc"/>
                                     <constraint firstItem="KY5-T7-2rP" firstAttribute="firstBaseline" secondItem="MmP-lW-1Mm" secondAttribute="firstBaseline" id="PZy-Bb-RhI"/>
-                                    <constraint firstItem="9iQ-4W-tZp" firstAttribute="bottom" secondItem="OEx-pu-aEP" secondAttribute="bottom" id="Qmp-Zv-2kB"/>
                                     <constraint firstItem="aoC-Aw-J92" firstAttribute="centerY" secondItem="eJv-00-xSv" secondAttribute="centerY" id="RKc-KP-Pra"/>
                                     <constraint firstItem="h1o-t6-BlV" firstAttribute="top" secondItem="QNe-YU-6Qn" secondAttribute="bottom" constant="29" id="Ri5-8W-nHy"/>
                                     <constraint firstItem="MTD-Mq-WwM" firstAttribute="leading" secondItem="yhW-tr-lW5" secondAttribute="trailing" constant="11" id="S0Y-Ef-I3g"/>
@@ -242,11 +255,9 @@
                                     <constraint firstItem="A8w-WE-iBO" firstAttribute="leading" secondItem="vYQ-9p-Z59" secondAttribute="leading" id="lGZ-d9-iaT"/>
                                     <constraint firstItem="h1o-t6-BlV" firstAttribute="centerX" secondItem="6y6-CG-ceb" secondAttribute="centerX" id="m1a-kq-59T"/>
                                     <constraint firstItem="KY5-T7-2rP" firstAttribute="top" secondItem="aCC-Lk-zC1" secondAttribute="bottom" constant="23" id="mn0-wr-18I"/>
-                                    <constraint firstItem="QNe-YU-6Qn" firstAttribute="leading" secondItem="OEx-pu-aEP" secondAttribute="leading" id="nI8-hb-4Pe"/>
                                     <constraint firstItem="fA5-dn-dEl" firstAttribute="top" secondItem="vYQ-9p-Z59" secondAttribute="top" id="no8-FZ-6AC"/>
                                     <constraint firstItem="fA5-dn-dEl" firstAttribute="centerX" secondItem="vYQ-9p-Z59" secondAttribute="centerX" id="oHZ-kx-yGj"/>
                                     <constraint firstItem="ftI-q3-TgJ" firstAttribute="centerX" secondItem="9iQ-4W-tZp" secondAttribute="centerX" id="osh-LG-Grh"/>
-                                    <constraint firstItem="OEx-pu-aEP" firstAttribute="trailing" secondItem="6y6-CG-ceb" secondAttribute="trailing" id="oxl-mu-bMf"/>
                                     <constraint firstItem="MTD-Mq-WwM" firstAttribute="top" secondItem="h1o-t6-BlV" secondAttribute="bottom" constant="7" id="pPx-i7-cZh"/>
                                     <constraint firstItem="fA5-dn-dEl" firstAttribute="centerX" secondItem="h1o-t6-BlV" secondAttribute="centerX" id="rw5-RG-3m3"/>
                                     <constraint firstItem="Oke-V0-QvZ" firstAttribute="bottom" secondItem="a7D-AQ-rgH" secondAttribute="bottom" id="sOe-vL-hEa"/>
@@ -300,6 +311,7 @@
                             <constraint firstItem="vYQ-9p-Z59" firstAttribute="bottom" secondItem="lMD-Vx-ZNS" secondAttribute="bottom" constant="-50" id="L76-G4-zT1"/>
                             <constraint firstItem="ZAJ-gK-JTf" firstAttribute="leading" secondItem="lMD-Vx-ZNS" secondAttribute="leading" id="MRx-15-CDV"/>
                             <constraint firstItem="lMD-Vx-ZNS" firstAttribute="bottom" secondItem="ZAJ-gK-JTf" secondAttribute="bottom" id="S9K-y9-7sp"/>
+                            <constraint firstItem="3sv-JH-SFl" firstAttribute="leading" secondItem="lMD-Vx-ZNS" secondAttribute="leading" constant="91" id="Zhb-A0-ffo"/>
                             <constraint firstItem="lMD-Vx-ZNS" firstAttribute="trailing" secondItem="ZAJ-gK-JTf" secondAttribute="trailing" id="cca-ja-zPR"/>
                             <constraint firstItem="ZAJ-gK-JTf" firstAttribute="top" secondItem="vYQ-9p-Z59" secondAttribute="bottom" id="feB-nS-iof"/>
                             <constraint firstItem="vYQ-9p-Z59" firstAttribute="centerX" secondItem="Y4f-pl-XGR" secondAttribute="centerX" id="ydK-9W-Nbz"/>
@@ -331,7 +343,7 @@
                         <outlet property="deleteButton" destination="oXG-EZ-kSe" id="zwB-R9-4An"/>
                         <outlet property="editButton" destination="rx3-xB-HG9" id="YWa-26-0c3"/>
                         <outlet property="involvementButton" destination="NZg-rg-fqj" id="yTp-3C-S8I"/>
-                        <outlet property="taskCreatedBy" destination="OEx-pu-aEP" id="dYz-g2-Wuf"/>
+                        <outlet property="taskCreatedBy" destination="TNM-gL-jlR" id="OL3-a2-ZW2"/>
                         <outlet property="taskDay" destination="9iQ-4W-tZp" id="ajV-oL-A4m"/>
                         <outlet property="taskDescription" destination="6y6-CG-ceb" id="Ulg-kP-tmR"/>
                         <outlet property="taskLeaderAmount" destination="uwi-2u-2lN" id="8WT-nN-AFM"/>
@@ -582,6 +594,7 @@
                                             <outlet property="userProfileLink" destination="Onj-iy-fxA" id="soz-ve-kzb"/>
                                             <outlet property="userProfilePhoto" destination="sZE-d2-cTq" id="PbW-PP-IwT"/>
                                             <outlet property="userTypeIcon" destination="Fhq-w3-Lte" id="o7z-i2-Xsi"/>
+                                            <segue destination="vkG-Dg-bSV" kind="show" identifier="toProfile" id="QfG-gP-tQO"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -607,6 +620,14 @@
             </objects>
             <point key="canvasLocation" x="3928.985507246377" y="75.815217391304358"/>
         </scene>
+        <!--Profile-->
+        <scene sceneID="fev-SQ-zb4">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Profile" id="vkG-Dg-bSV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HST-XM-nOC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3906" y="-494"/>
+        </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="540" height="540"/>
@@ -616,4 +637,7 @@
         <image name="iconPerson" width="25" height="25"/>
         <image name="iconPin" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="QfG-gP-tQO"/>
+    </inferredMetricsTieBreakers>
 </document>

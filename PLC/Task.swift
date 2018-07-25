@@ -25,7 +25,6 @@ class Task{
     var amounts: Dictionary<String, Int>
     var usersLikedAmount: Int
     var category: String
-    //var users_liked = [String:Bool]()
     
     //MARK: Initialization
     

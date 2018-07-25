@@ -13,13 +13,13 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
     var leaderboardDelegate: LeaderboardPageViewControllerDelegate?
     var pageControl = UIPageControl()
     
-    private(set) lazy var orderedViewControllers: [UIViewController] = {
+    private(set) lazy var orderedViewControllers: [UINavigationController] = {
         return [self.newLeaderboardViewController(leaderboardType: "Office"),
                 self.newLeaderboardViewController(leaderboardType: "Department")]
     }()
     
-    private func newLeaderboardViewController(leaderboardType: String) -> UIViewController {
-        return (storyboard?.instantiateViewController(withIdentifier: "\(leaderboardType)LeaderboardViewController"))!
+    private func newLeaderboardViewController(leaderboardType: String) -> UINavigationController {
+        return (storyboard?.instantiateViewController(withIdentifier: "\(leaderboardType)LeaderboardNavigationController"))! as! UINavigationController
     }
 
     override func viewDidLoad() {
@@ -73,7 +73,7 @@ extension LeaderboardPageViewController: UIPageViewControllerDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
-        self.pageControl.currentPage = orderedViewControllers.index(of: pageContentViewController)!
+        self.pageControl.currentPage = orderedViewControllers.index(of: pageContentViewController as! UINavigationController)!
     }
     
 }
@@ -84,7 +84,7 @@ extension LeaderboardPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
+        guard let viewControllerIndex = orderedViewControllers.index(of: viewController as! UINavigationController) else {
             return nil
         }
         
@@ -105,7 +105,7 @@ extension LeaderboardPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
+        guard let viewControllerIndex = orderedViewControllers.index(of: viewController as! UINavigationController) else {
             return nil
         }
         

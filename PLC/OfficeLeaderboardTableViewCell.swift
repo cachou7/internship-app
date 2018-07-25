@@ -13,6 +13,8 @@ class OfficeLeaderboardTableViewCell: UITableViewCell {
     @IBOutlet weak var userProfilePhoto: UIImageView!
     @IBOutlet weak var userProfileLink: UILabel!
     @IBOutlet weak var userPoints: UILabel!
+    @IBOutlet weak var rankLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

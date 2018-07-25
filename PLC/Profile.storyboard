@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,9 +17,12 @@
         <scene sceneID="DQc-8l-Mpk">
             <objects>
                 <navigationController storyboardIdentifier="NavController" id="Jg1-y3-72g" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="q1k-BC-fsT">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="q1k-BC-fsT">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="acc-KK-lwb" kind="relationship" relationship="rootViewController" id="ba2-E8-UB2"/>
@@ -37,10 +41,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="vI0-UL-5Yp">
-                                <rect key="frame" x="16" y="84" width="343" height="198.5"/>
+                                <rect key="frame" x="16" y="136" width="343" height="201"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-ER-sBY">
-                                        <rect key="frame" x="0.0" y="0.0" width="165" height="198.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="165" height="201"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Lmd-rT-A3j">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="165"/>
@@ -50,41 +54,41 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="User Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="NCR-KX-MJX">
-                                                <rect key="frame" x="0.0" y="165" width="165" height="33.5"/>
+                                                <rect key="frame" x="0.0" y="165" width="165" height="36"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="26"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2eY-6x-aJd">
-                                        <rect key="frame" x="175" y="34" width="168" height="131"/>
+                                        <rect key="frame" x="175" y="27" width="168" height="147"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Points" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WeN-aG-y6R">
-                                                <rect key="frame" x="40.5" y="0.0" width="87.5" height="39.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                                <rect key="frame" x="35" y="0.0" width="98.5" height="46.5"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="34"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="l6a-RT-CXl">
-                                                <rect key="frame" x="15.5" y="49.5" width="137.5" height="81.5"/>
+                                                <rect key="frame" x="19" y="56.5" width="130.5" height="90.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaU-zQ-XGd">
-                                                        <rect key="frame" x="0.0" y="0.0" width="66" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="23.5"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Department" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-Kp-eMf">
-                                                        <rect key="frame" x="0.0" y="30.5" width="92" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <rect key="frame" x="0.0" y="33.5" width="92" height="23.5"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Project(s)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OI-7i-B4a">
-                                                        <rect key="frame" x="0.0" y="61" width="137.5" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <rect key="frame" x="0.0" y="67" width="130.5" height="23.5"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -95,7 +99,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QTG-hF-cfL">
-                                <rect key="frame" x="16" y="290" width="343" height="324"/>
+                                <rect key="frame" x="16" y="344.5" width="343" height="269.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="113" id="rE3-uD-aKj" userLabel="CellTable" customClass="TaskTableViewCell" customModule="PLC" customModuleProvider="target">
@@ -289,7 +293,16 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="iconProfile" id="iuF-DG-TzE"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="oYN-kn-GjX">
+                    <navigationItem key="navigationItem" title="Profile" leftItemsSupplementBackButton="YES" id="oYN-kn-GjX">
+                        <barButtonItem key="backBarButtonItem" title="Profile" id="XwS-gg-KWp"/>
+                        <leftBarButtonItems>
+                            <barButtonItem image="back_arrow1x" landscapeImage="back_arrow1x" largeContentSizeImage="back_arrow1x" id="z7I-Oq-hoH">
+                                <connections>
+                                    <action selector="backButton:" destination="acc-KK-lwb" id="iWH-8X-8OW"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem id="qZ4-72-CEU"/>
+                        </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" title="Sign Out" id="gTv-f6-oot">
                             <connections>
                                 <action selector="signOutButton:" destination="acc-KK-lwb" id="f46-GS-zjA"/>
@@ -298,12 +311,14 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="backToLeaderboardButton" destination="z7I-Oq-hoH" id="7lo-L3-pkf"/>
                         <outlet property="currentProjectsLabel" destination="8OI-7i-B4a" id="wAo-Pv-IeS"/>
                         <outlet property="departmentLabel" destination="dAA-Kp-eMf" id="dhM-d4-Dur"/>
                         <outlet property="jobTitleLabel" destination="aaU-zQ-XGd" id="kcV-Aj-cxT"/>
                         <outlet property="nameLabel" destination="NCR-KX-MJX" id="7qf-OJ-pyg"/>
                         <outlet property="pointsLabel" destination="WeN-aG-y6R" id="BnH-mB-O9l"/>
                         <outlet property="profilePhoto" destination="Lmd-rT-A3j" id="a6w-7G-qDL"/>
+                        <outlet property="signOutButton" destination="gTv-f6-oot" id="NQa-98-dob"/>
                         <outlet property="tableView" destination="QTG-hF-cfL" id="Ryt-LO-5MA"/>
                         <segue destination="0gv-zU-p2o" kind="unwind" identifier="unwindToLogin" unwindAction="unwindToLoginWithSegue:" id="Gla-y0-qf4"/>
                     </connections>
@@ -323,6 +338,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="back_arrow1x" width="13" height="21"/>
         <image name="defaultPhoto" width="540" height="540"/>
         <image name="heartIcon" width="25" height="25"/>
         <image name="iconCrown" width="25" height="25"/>

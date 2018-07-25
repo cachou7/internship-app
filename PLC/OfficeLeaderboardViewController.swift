@@ -62,7 +62,8 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
         cell.userProfilePhoto.clipsToBounds = true
         
-        cell.userProfileLink.text = thisUser.uid
+        cell.rankLabel.text = String(indexPath.row+1)
+        cell.userProfileLink.text = "\(thisUser.firstName) \(thisUser.lastName)" 
         cell.userPoints.text = String(thisUser.points)
         
         let storageRef = Constants.refs.storage.child("userPhotos/\(thisUser.uid).png")
@@ -84,5 +85,14 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         self.tableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toProfile"{
+            let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
+            destinationVC.signOutButton.isEnabled = false
+            destinationVC.signOutButton.tintColor = UIColor.clear
+            destinationVC.user = self.users[(tableView.indexPathForSelectedRow?.row)!]
+            //self.show(destinationVC, sender: Any?.self)
+        }
+    }
     
 }

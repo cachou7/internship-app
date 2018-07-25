@@ -33,7 +33,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskLocation: UILabel!
     @IBOutlet weak var taskTime: UILabel!
-    @IBOutlet weak var taskCreatedBy: UILabel!
+    @IBOutlet weak var taskCreatedBy: UIButton!
     @IBOutlet weak var taskDescription: UILabel!
     @IBOutlet weak var taskLeaderAmount: UILabel!
     @IBOutlet weak var taskParticipantAmount: UILabel!
@@ -170,7 +170,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         // Load the image using SDWebImage
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-            if let error = error {
+            if error != nil {
                 self.taskPhoto.image = #imageLiteral(resourceName: "merchMart")
                 
                 self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill
@@ -186,7 +186,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         //Setting the label for the user who created event
         Constants.refs.databaseUsers.child(task_in.createdBy).observeSingleEvent(of: .value, with: {(snapshot) in
-            self.taskCreatedBy.text = "Created by " + (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
+            self.taskCreatedBy.setTitle((snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String), for: .normal)
             })
         
         taskLeaderAmount.text = "0"
@@ -272,6 +272,18 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editTask", let destinationVC = segue.destination as? EditInitiativeViewController, let task_out = task_in {
             destinationVC.task_in = task_out
+        }
+        else if segue.identifier == "toProfile"{
+            let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
+            destinationVC.signOutButton.isEnabled = false
+            destinationVC.signOutButton.tintColor = UIColor.clear
+            Constants.refs.databaseUsers.child(self.task_in.createdBy).observe(.value, with: {(snapshot) in
+                let userSnap = snapshot.value as? [String : Any ] ?? [:]
+                let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
+                destinationVC.user = user
+                
+            })
+            //self.show(destinationVC, sender: Any?.self)
         }
     }
     

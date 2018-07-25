@@ -59,7 +59,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             self.sortTasks()
             }})
         
-        
+        /*
         Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
             for child in snapshot.children {
                 if let snap = child as? DataSnapshot{
@@ -68,6 +68,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 }
             }
         })
+ */
     }
     
     override func didReceiveMemoryWarning() {
@@ -126,6 +127,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var isLead = false
+        var isParticipant = false
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
@@ -136,6 +139,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
         else {
             thisTask = self.overallItems[indexPath.row]
+        }
+        
+        let tags = thisTask.tag
+        let tagArray = tags.components(separatedBy: " ")
+        for tag in tagArray{
+            if tag == "#lead"{
+                isLead = true            }
+            if tag == "#participate"{
+                isParticipant = true
+            }
         }
         
         cell.taskTitle.numberOfLines = 1
@@ -179,56 +192,56 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }
             
         }
-        
-        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
-        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
-        
-        if leaderPts / 10 < 35 {
-            leaderPts = 35
-        }
-        else {
-            leaderPts /= 10
-            if leaderPts > 100 {
-                leaderPts = 100
-            }
-        }
-        if participantPts / 10 < 5 {
-            participantPts = 5
-        }
-        else {
-            participantPts /= 10
-            if participantPts > 20 {
-                participantPts = 20
-            }
-        }
+        cell.taskParticipantPoints.text = "+ 0 pts"
+        cell.taskLeaderPoints.text = "+ 0 pts"
         
         if thisTask!.category == "Fun and Games" {
-            cell.taskLeaderPoints.text = "+" + String(leaderPts) + " pts"
-            cell.taskParticipantPoints.text = "+" + String(participantPts) + " pts"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask)) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask)) + " pts"
+            }
             cell.taskCategoryIcon.image = UIImage(named: "iconParty")
             cell.taskCategory.text = "Fun & Games"
         }
         else if thisTask!.category == "Philanthropy" {
-            cell.taskLeaderPoints.text = "+" + String(leaderPts * 7 / 4) + " pts"
-            cell.taskParticipantPoints.text = "+" + String(participantPts * 7 / 4) + " pts"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 7 / 4) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 7 / 4) + " pts"
+            }
             cell.taskCategoryIcon.image = UIImage(named: "iconCharity")
             cell.taskCategory.text = "Philanthropy"
         }
         else if thisTask!.category == "Shared Interests" {
-            cell.taskLeaderPoints.text = "+" + String(leaderPts * 3 / 2) + " pts"
-            cell.taskParticipantPoints.text = "+" + String(participantPts * 3 / 2) + " pts"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 3 / 2) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 3 / 2) + " pts"
+            }
             cell.taskCategoryIcon.image = UIImage(named: "iconGroup")
             cell.taskCategory.text = "Shared Interests"
         }
         else if thisTask!.category == "Skill Building" {
-            cell.taskLeaderPoints.text = "+" + String(leaderPts * 2) + " pts"
-            cell.taskParticipantPoints.text = "+" + String(participantPts * 2) + " pts"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 2) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 2) + " pts"
+            }
             cell.taskCategoryIcon.image = UIImage(named: "iconSkill")
             cell.taskCategory.text = "Skill Building"
         }
         else {
-            cell.taskLeaderPoints.text = "+" + String(leaderPts * 5 / 4) + " pts"
-            cell.taskParticipantPoints.text = "+" + String(participantPts * 5 / 4) + " pts"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 5 / 4) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 5 / 4) + " pts"
+            }
             cell.taskCategoryIcon.image = UIImage(named: "iconStar")
             cell.taskCategory.text = "Other"
         }
@@ -379,7 +392,35 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
     }
     
-    func getDayOfWeek(_ today:String) -> String? {
+    private func getLeaderPoints(thisTask: Task)-> Int{
+        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
+        if leaderPts / 10 < 35 {
+            leaderPts = 35
+        }
+        else {
+            leaderPts /= 10
+            if leaderPts > 100 {
+                leaderPts = 100
+            }
+        }
+        return leaderPts
+    }
+    
+    private func getParticipantPoints(thisTask: Task)-> Int{
+        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
+        if participantPts / 10 < 5 {
+            participantPts = 5
+        }
+        else {
+            participantPts /= 10
+            if participantPts > 20 {
+                participantPts = 20
+            }
+        }
+        return participantPts
+    }
+    
+    private func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }
         let myCalendar = Calendar(identifier: .gregorian)
         let weekDay = myCalendar.component(.weekday, from: todayDate)

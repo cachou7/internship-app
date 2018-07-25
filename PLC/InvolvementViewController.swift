@@ -45,31 +45,25 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let checkedInInfo = snapshot.value as! [String : String]
-                        print(self.sectionArrays["Checked In"])
                         if self.sectionArrays["Checked In"] != nil{
                             (self.sectionArrays["Checked In"]!).append(checkedInInfo["userID"]!)
-                            print("true")
                         }
                         else{
                             self.sections.append("Checked In")
                             self.sectionArrays["Checked In"] = [checkedInInfo["userID"]!]
                         }
-                        print(checkedInInfo["userID"]!)
                         self.tableView.reloadData()
                     }
                 }
             }
         })
-       // self.tableView.reloadData()
         Constants.refs.databaseTasks.child(task!.id).child("taskRSVP").child("leaders").observe(.value, with: { snapshot in
             if (snapshot.exists()){
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let leaderInfo = snapshot.value as! [String : String ]
-                        print(leaderInfo["userID"]!)
                         if self.sectionArrays["Signed Up"] != nil{
                             (self.sectionArrays["Signed Up"]!).append(leaderInfo["userID"]!)
-                            print("true")
                         }
                         else{
                             self.sections.append("Signed Up")
@@ -82,8 +76,6 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         })
-       // self.tableView.reloadData()
-        //Getting RSVP-ed participants
         Constants.refs.databaseTasks.child(task!.id).child("taskRSVP").child("participants").observe(.value, with: { snapshot in
             if (snapshot.exists()){
                 for child in snapshot.children {
@@ -91,7 +83,6 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                         let participantInfo = snapshot.value as! [String : String ]
                         if self.sectionArrays["Signed Up"] != nil{
                             (self.sectionArrays["Signed Up"]!).append(participantInfo["userID"]!)
-                            print("true")
                         }
                         else{
                             self.sections.append("Signed Up")
@@ -149,8 +140,11 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                         cell.userTypeIcon.image = #imageLiteral(resourceName: "iconPerson")
                     }
                 }
-                cell.userProfileLink.text = sectionArrays[sections[i]]?[indexPath.row]
-                let storageRef = Constants.refs.storage.child("userPhotos/\(sectionArrays[sections[i]]?[indexPath.row]).png")
+                Constants.refs.databaseUsers.child((sectionArrays[sections[i]]?[indexPath.row])!).observeSingleEvent(of: .value, with: {(snapshot) in
+                    cell.userProfileLink.text = (snapshot.childSnapshot(forPath: "firstName").value as! String) + " " + (snapshot.childSnapshot(forPath: "lastName").value as! String)
+                })
+                //cell.userProfileLink.text = sectionArrays[sections[i]]?[indexPath.row]
+                let storageRef = Constants.refs.storage.child("userPhotos/\((sectionArrays[sections[i]]?[indexPath.row])!).png")
                 // Load the image using SDWebImage
                 SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
                 cell.userProfilePhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
@@ -165,6 +159,23 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         //cell.delegate = self
         return cell
     }
-
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toProfile"{
+            let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
+            destinationVC.signOutButton.isEnabled = false
+            destinationVC.signOutButton.tintColor = UIColor.clear
+            for i in 0..<self.sectionArrays.count{
+                if (tableView.indexPathForSelectedRow?.section == i) {
+                    Constants.refs.databaseUsers.child((sectionArrays[sections[i]]?[(tableView.indexPathForSelectedRow?.row)!])!).observe(.value, with: {(snapshot) in
+                    let userSnap = snapshot.value as? [String : Any ] ?? [:]
+                    let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
+                    destinationVC.user = user
+                    
+                })
+                }
+            }
+        }
+    }
+    
 }
