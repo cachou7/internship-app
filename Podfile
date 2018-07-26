@@ -13,6 +13,7 @@ platform :ios, '9.0'
     pod 'NavigationDropdownMenu', '~> 4.0.0'
     pod 'FSCalendar'
     pod 'Presentr'
+    pod 'YNSearch'
   end
 
   post_install do |installer|

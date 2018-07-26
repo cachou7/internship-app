@@ -25,6 +25,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var RSVPController : RSVPViewController?
     var CheckInController : CheckInViewController?
     var InvolvementController : InvolvementViewController?
+    var isLead = false
+    var isParticipant = false
     
     @IBOutlet weak var taskParticipantPoints: UILabel!
     @IBOutlet weak var taskLeaderPoints: UILabel!
@@ -84,15 +86,21 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             deleteButton.isEnabled = false
         }
         
+        let tags = task_in?.tag
+        let tagArray = tags?.components(separatedBy: " ")
+        for tag in tagArray!{
+            if tag == "#lead"{
+                isLead = true            }
+            if tag == "#participate"{
+                isParticipant = true
+            }
+        }
+        
         Constants.refs.databaseCurrentTasks.observe(.value, with: { snapshot in
             if snapshot.hasChild(self.task_in.id){
                 self.RSVPButton.isHidden = true
-                let tags = self.task_in.tag
-                let tagArray = tags.components(separatedBy: " ")
-                for tag in tagArray{
-                    if tag == "#participate" && !(self.task_in.createdBy == currentUser.uid){
-                        self.checkInButton.isHidden = false
-                    }
+                if self.isParticipant && !(self.task_in.createdBy == currentUser.uid){
+                    self.checkInButton.isHidden = false
                 }
             }
         })
@@ -122,48 +130,50 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         let taskTimeFrame = String(startTime[4]) + " " + String(startTime[5]) + " - " + String(endTime[4]) + " " + String(endTime[5])
         taskTime.text = dayOfWeek! + ", " + String(startTime[0]) + " " + String(taskDayText[0]) + " at " + taskTimeFrame
         taskDescription.text = task_in.description
+        let thisTask = task_in
+        taskParticipantPoints.text = "+ 0 pts"
+        taskLeaderPoints.text = "+ 0 pts"
         
-        var leaderPts = Int((task_in.endTimeMilliseconds - task_in.timeMilliseconds) / 200)
-        var participantPts = Int((task_in.endTimeMilliseconds - task_in.timeMilliseconds) / 1000)
-        
-        if leaderPts / 10 < 35 {
-            leaderPts = 35
-        }
-        else {
-            leaderPts /= 10
-            if leaderPts > 100 {
-                leaderPts = 100
+        if thisTask!.category == "Fun and Games" {
+            if isLead{
+                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!)) + " pts"
+            }
+            if isParticipant{
+                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!)) + " pts"
             }
         }
-        if participantPts / 10 < 5 {
-            participantPts = 5
-        }
-        else {
-            participantPts /= 10
-            if participantPts > 20 {
-                participantPts = 20
+        else if thisTask!.category == "Philanthropy" {
+            if isLead{
+                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 7 / 4) + " pts"
+            }
+            if isParticipant{
+                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 7 / 4) + " pts"
             }
         }
-        
-        if task_in!.category == "Fun and Games" {
-            taskLeaderPoints.text = "+" + String(leaderPts) + " pts"
-            taskParticipantPoints.text = "+" + String(participantPts) + " pts"
+        else if thisTask!.category == "Shared Interests" {
+            if isLead{
+                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 3 / 2) + " pts"
+            }
+            if isParticipant{
+                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 3 / 2) + " pts"
+            }
         }
-        else if task_in!.category == "Philanthropy" {
-            taskLeaderPoints.text = "+" + String(leaderPts * 7 / 4) + " pts"
-            taskParticipantPoints.text = "+" + String(participantPts * 7 / 4) + " pts"
-        }
-        else if task_in!.category == "Shared Interests" {
-            taskLeaderPoints.text = "+" + String(leaderPts * 3 / 2) + " pts"
-            taskParticipantPoints.text = "+" + String(participantPts * 3 / 2) + " pts"
-        }
-        else if task_in!.category == "Skill Building" {
-            taskLeaderPoints.text = "+" + String(leaderPts * 2) + " pts"
-            taskParticipantPoints.text = "+" + String(participantPts * 2) + " pts"
+        else if thisTask!.category == "Skill Building" {
+            if isLead{
+                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 2) + " pts"
+            }
+            if isParticipant{
+                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 2) + " pts"
+            }
         }
         else {
-            taskLeaderPoints.text = "+" + String(leaderPts * 5 / 4) + " pts"
-            taskParticipantPoints.text = "+" + String(participantPts * 5 / 4) + " pts"
+            if isLead{
+                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 5 / 4) + " pts"
+            }
+            if isParticipant{
+                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 5 / 4) + " pts"
+            }
+            
         }
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
@@ -191,22 +201,16 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         taskLeaderAmount.text = "0"
         taskParticipantAmount.text = "0"
-        let tags = task_in.tag
-        let tagArray = tags.components(separatedBy: " ")
-        for tag in tagArray{
-            if tag == "#lead"{
+            if isLead{
                 Constants.refs.databaseTasks.child(task_in.id + "/taskRSVP/leaders").observe(.value, with: { snapshot in
                     self.taskLeaderAmount.text = String(snapshot.childrenCount)
                 })
-                //taskLeaderAmount.text = "\(String(describing: task_in.amounts["leaders"]!))"
             }
-            if tag == "#participate"{
+            if isParticipant{
                 Constants.refs.databaseTasks.child(task_in.id + "/taskRSVP/participants").observe(.value, with: { snapshot in
                     self.taskParticipantAmount.text = String(snapshot.childrenCount)
                 })
-                //taskParticipantAmount.text = "\(String(describing: task_in.amounts["participants"]!))"
             }
-        }
     }
     
     // align description to upper left
@@ -322,6 +326,34 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     func setInvolvementCurrentTask() {
         InvolvementController?.task = task_in
         
+    }
+    
+    private func getLeaderPoints(thisTask: Task)-> Int{
+        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
+        if leaderPts / 10 < 35 {
+            leaderPts = 35
+        }
+        else {
+            leaderPts /= 10
+            if leaderPts > 100 {
+                leaderPts = 100
+            }
+        }
+        return leaderPts
+    }
+    
+    private func getParticipantPoints(thisTask: Task)-> Int{
+        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
+        if participantPts / 10 < 5 {
+            participantPts = 5
+        }
+        else {
+            participantPts /= 10
+            if participantPts > 20 {
+                participantPts = 20
+            }
+        }
+        return participantPts
     }
     
     func getDayOfWeek(_ today:String) -> String? {

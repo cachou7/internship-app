@@ -86,7 +86,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KHq-hF-uh6">
-                                <rect key="frame" x="16" y="175" width="341" height="473"/>
+                                <rect key="frame" x="16" y="175" width="341" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="departmentCell" rowHeight="65" id="pah-DL-Lmk" customClass="DepartmentLeaderboardTableViewCell" customModule="PLC" customModuleProvider="target">
@@ -147,7 +147,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="o4Q-0O-8sG" firstAttribute="bottom" secondItem="KHq-hF-uh6" secondAttribute="bottom" constant="19" id="Wva-k5-kxJ"/>
+                            <constraint firstItem="o4Q-0O-8sG" firstAttribute="bottom" secondItem="KHq-hF-uh6" secondAttribute="bottom" id="Wva-k5-kxJ"/>
                             <constraint firstItem="KHq-hF-uh6" firstAttribute="top" secondItem="xUy-Ka-I1A" secondAttribute="bottom" constant="15" id="bBt-gM-C6z"/>
                             <constraint firstItem="KHq-hF-uh6" firstAttribute="trailing" secondItem="xUy-Ka-I1A" secondAttribute="trailing" id="fyd-YD-feN"/>
                             <constraint firstItem="xUy-Ka-I1A" firstAttribute="top" secondItem="o4Q-0O-8sG" secondAttribute="top" constant="20" id="hIc-Ov-9ZD"/>

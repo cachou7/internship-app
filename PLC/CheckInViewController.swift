@@ -27,7 +27,8 @@ class CheckInViewController: UIViewController {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskCheckIn").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 3)
-        //self.viewDidLoad()
+        
+        Constants.refs.databaseUsers.child(currentUser.uid ).child("tasks_participated").child(task!.id).setValue(true)
     }
     
     override func viewDidLoad() {

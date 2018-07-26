@@ -118,6 +118,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="categoryChanged:" destination="Enx-Ap-6vX" eventType="editingChanged" id="x7N-kA-Ip6"/>
+                                        </connections>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Vcc-Xz-bu8">
                                         <rect key="frame" x="0.0" y="326" width="343" height="140.5"/>
@@ -292,6 +295,7 @@
                     <connections>
                         <outlet property="addImageButton" destination="jeX-BB-8pp" id="ptG-Hi-85h"/>
                         <outlet property="addImageLabel" destination="ogO-fF-MMY" id="716-sb-MsA"/>
+                        <outlet property="categoryTextField" destination="yjt-Sz-68x" id="HpV-tE-yx6"/>
                         <outlet property="descriptionTextField" destination="BFJ-0P-Njr" id="O8f-dv-3tx"/>
                         <outlet property="endTimeTextField" destination="BT2-Yr-FC1" id="QmV-lM-6Xb"/>
                         <outlet property="leadAmountTextField" destination="lEq-MM-U8U" id="JXd-xK-Isd"/>

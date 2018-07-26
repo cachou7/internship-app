@@ -45,8 +45,13 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
                     Constants.refs.databaseUsers.child(usersInfo["userID"] as! String).observeSingleEvent(of: .value, with: { snapshot in
                         let userSnap = snapshot.value as? [String : Any ] ?? [:]
                         let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
-                        self.users.append(user!)
-                        self.sortUsers()
+                        let containsUser = self.users.contains { (person) -> Bool in
+                            return person.uid == user?.uid
+                        }
+                        if !containsUser{
+                            self.users.append(user!)
+                            self.sortUsers()
+                        }
                     })
                 }
             }})

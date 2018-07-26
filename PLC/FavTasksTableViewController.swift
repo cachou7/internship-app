@@ -234,8 +234,12 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
         Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("ranking").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].ranking - 1)
         
-        Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1)
-        
+        if (self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1) > 0{
+            Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("usersLikedAmount").setValue(0)
+        }
+        else{
+            Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1)
+        }
         Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("users_liked").child(user.uid).removeValue()
         currentTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).removeValue()
         

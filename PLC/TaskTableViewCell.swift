@@ -18,9 +18,8 @@ class TaskTableViewCell: UITableViewCell {
     
     @IBOutlet weak var taskParticipantPoints: UILabel!
     @IBOutlet weak var taskLeaderPoints: UILabel!
-    @IBOutlet weak var taskCategory: UILabel!
+    @IBOutlet weak var taskCategory: UIButton!
     @IBOutlet weak var taskImage: UIImageView!
-    @IBOutlet weak var taskCategoryIcon: UIImageView!
     @IBOutlet weak var taskSecondPoints: UILabel!
     @IBOutlet weak var taskSecondIcon: UIImageView!
     @IBOutlet weak var taskFirstPoints: UILabel!
@@ -41,11 +40,20 @@ class TaskTableViewCell: UITableViewCell {
         delegate?.taskTableViewCellDidTapHeart(self)
     }
     
+    @IBAction func categoryButton(_ sender: UIButton) {
+        delegate?.taskTableViewCellCategoryButtonClicked(self)
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+    
+    
 }
 
 protocol TaskTableViewCellDelegate : class {
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell)
+    func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell)
 }
+
+
+

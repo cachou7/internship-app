@@ -10,9 +10,8 @@ import UIKit
 import Firebase
 import SDWebImage
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var currentProjectsLabel: UILabel!
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TaskTableViewCellDelegate {
+    
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var departmentLabel: UILabel!
     @IBOutlet weak var jobTitleLabel: UILabel!
@@ -20,10 +19,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var signOutButton: UIBarButtonItem!
     @IBOutlet weak var backToLeaderboardButton: UIBarButtonItem!
-    
-    //var createdTasks: [Task] = []
-    //var leadTasks: [Task] = []
-    
+
     var sections: [String] = []
     var sectionArrays: [String:[Task]] = [:]
     var user: User?
@@ -38,12 +34,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             backToLeaderboardButton.isEnabled = false
         }
         
-        //configureTable()
-        
-        nameLabel.text = (user?.firstName)! + " " + (user?.lastName)!
-        jobTitleLabel.text = "Job Title: " + (user?.jobTitle)!
-        departmentLabel.text = "Department: " + (user?.department)!
-        currentProjectsLabel.text = "Current Project(s): " + (user?.currentProjects)!
+        self.navigationItem.title = (user?.firstName)! + " " + (user?.lastName)!
+        jobTitleLabel.text = (user?.jobTitle)!
+        departmentLabel.text = (user?.department)!
         pointsLabel.text = String((user?.points)!)
         
         
@@ -85,7 +78,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                             }
                             self.sortTasks()
                         })
-                        //self.sortTasks()
+                        
                     }
                 }
             }
@@ -114,85 +107,47 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                             }
                             self.sortTasks()
                         })
-                        //self.sortTasks()
                     }
                 }
             }
         })
+        
+        if user!.uid == currentUser.uid{
+            Constants.refs.databaseUsers.child((user?.uid)!).child("tasks_participated").observe(.value, with: { snapshot in
+                if (snapshot.exists()){
+                    for child in snapshot.children {
+                        if let snapshot = child as? DataSnapshot{
+                            Constants.refs.databaseTasks.child(snapshot.key).observe(.value, with: { (snap) in
+                                let tasksInfo = snap.value as? [String : Any ] ?? [:]
+                                var amounts = Dictionary<String, Int>()
+                                if tasksInfo["participantAmount"]! as! Int != 0{
+                                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                }
+                                if tasksInfo["leaderAmount"]! as! Int != 0{
+                                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                                }
+                                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                                if self.sectionArrays["Participated"] != nil{
+                                    (self.sectionArrays["Participated"]!).append(task!)
+                                }
+                                else{
+                                    self.sections.append("Participated")
+                                    self.sectionArrays["Participated"] = [task!]
+                                }
+                                self.sortTasks()
+                            })
+                            
+                        }
+                    }
+                }
+            })
+        }
 
         
         tableView.dataSource = self
         tableView.delegate = self
         tableView.reloadData()
     }
-    /*
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.reloadData()
-    }
- */
-    
-    private func configureTable(){
-        Constants.refs.databaseUsers.child((user?.uid)!).child("tasks_lead").observe(.value, with: { snapshot in
-            if (snapshot.exists()){
-                for child in snapshot.children {
-                    if let snapshot = child as? DataSnapshot{
-                        Constants.refs.databaseTasks.child(snapshot.key).observeSingleEvent(of: .value, with: { (snap) in
-                            let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
-                            var amounts = Dictionary<String, Int>()
-                            if tasksInfo["participantAmount"]! as! Int != 0{
-                                amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
-                            }
-                            if tasksInfo["leaderAmount"]! as! Int != 0{
-                                amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                            }
-                            let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Lead"] != nil{
-                                (self.sectionArrays["Lead"]!).append(task!)
-                            }
-                            else{
-                                self.sections.append("Lead")
-                                self.sectionArrays["Lead"] = [task!]
-                            }
-                        })
-                        self.sortTasks()
-                    }
-                }
-            }
-        })
-        Constants.refs.databaseUsers.child((user?.uid)!).child("tasks_created").observe(.value, with: { snapshot in
-            if (snapshot.exists()){
-                for child in snapshot.children {
-                    if let snapshot = child as? DataSnapshot{
-                        print(snapshot.key)
-                        Constants.refs.databaseTasks.child(snapshot.key).observeSingleEvent(of: .value, with: { (snap) in
-                            let tasksInfo = snap.value as? [String : Any ] ?? [:]
-                            var amounts = Dictionary<String, Int>()
-                            if tasksInfo["participantAmount"]! as! Int != 0{
-                                amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
-                            }
-                            if tasksInfo["leaderAmount"]! as! Int != 0{
-                                amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                            }
-                            let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Created"] != nil{
-                                (self.sectionArrays["Created"]!).append(task!)
-                            }
-                            else{
-                                self.sections.append("Created")
-                                self.sectionArrays["Created"] = [task!]
-                            }
-                        })
-                        self.sortTasks()
-                    }
-                }
-            }
-        })
-        return
-    }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -232,10 +187,23 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         var thisTask: Task!
+        var isLead = false
+        var isParticipant = false
+
         
         for i in 0..<self.sectionArrays.count{
             if (indexPath.section == i) {
                 thisTask = (sectionArrays[sections[i]]?[indexPath.row])!
+            }
+        }
+        
+        let tags = thisTask.tag
+        let tagArray = tags.components(separatedBy: " ")
+        for tag in tagArray{
+            if tag == "#lead"{
+                isLead = true            }
+            if tag == "#participate"{
+                isParticipant = true
             }
         }
         
@@ -281,30 +249,72 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
         }
+        cell.taskParticipantPoints.text = "+ 0 pts"
+        cell.taskLeaderPoints.text = "+ 0 pts"
         
-        if thisTask!.category == "Fun and Games" {
-            cell.taskCategoryIcon.image = UIImage(named: "iconParty")
-            cell.taskCategory.text = "Fun & Games"
+        cell.taskCategory.setTitle(thisTask!.category, for: .normal)
+        
+        if thisTask!.category == "Fun & Games" {
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask)) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask)) + " pts"
+            }
         }
         else if thisTask!.category == "Philanthropy" {
-            cell.taskCategoryIcon.image = UIImage(named: "iconCharity")
-            cell.taskCategory.text = "Philanthropy"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 7 / 4) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 7 / 4) + " pts"
+            }
         }
         else if thisTask!.category == "Shared Interests" {
-            cell.taskCategoryIcon.image = UIImage(named: "iconGroup")
-            cell.taskCategory.text = "Shared Interests"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 3 / 2) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 3 / 2) + " pts"
+            }
         }
         else if thisTask!.category == "Skill Building" {
-            cell.taskCategoryIcon.image = UIImage(named: "iconSkill")
-            cell.taskCategory.text = "Skill Building"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 2) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 2) + " pts"
+            }
         }
         else {
-            cell.taskCategoryIcon.image = UIImage(named: "iconStar")
-            cell.taskCategory.text = "Other"
+            if isLead{
+                cell.taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask) * 5 / 4) + " pts"
+            }
+            if isParticipant{
+                cell.taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask) * 5 / 4) + " pts"
+            }
         }
-        
+        cell.delegate = self
         return cell
     }
+    
+    //TASK TABLE VIEW CELL DELEGATE
+    func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell){
+        let storyboard = UIStoryboard(name: "Initiatives", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
+        let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
+        childVC.navigationItem.title = sender.taskCategory.title(for: .normal)
+        
+         let taskController = storyboard.instantiateViewController(withIdentifier: "TaskTableViewController") as! TaskTableViewController
+        childVC.overallItems = taskController.overallItems
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
+        return
+    }
+    //END TASK TABLE VIEW CELL DELEGATE
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -352,6 +362,34 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             destinationVC.taskIndex = myIndex
         }
+    }
+    
+    private func getLeaderPoints(thisTask: Task)-> Int{
+        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
+        if leaderPts / 10 < 35 {
+            leaderPts = 35
+        }
+        else {
+            leaderPts /= 10
+            if leaderPts > 100 {
+                leaderPts = 100
+            }
+        }
+        return leaderPts
+    }
+    
+    private func getParticipantPoints(thisTask: Task)-> Int{
+        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
+        if participantPts / 10 < 5 {
+            participantPts = 5
+        }
+        else {
+            participantPts /= 10
+            if participantPts > 20 {
+                participantPts = 20
+            }
+        }
+        return participantPts
     }
 
     

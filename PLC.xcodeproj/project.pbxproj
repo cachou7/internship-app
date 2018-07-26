@@ -49,6 +49,9 @@
 		99C9148920FD664300B8EEE5 /* RSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C9148820FD664300B8EEE5 /* RSVPViewController.swift */; };
 		99DFD1F420F64F4100129EEA /* EditInitiative.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */; };
 		99DFD1F620F64FB000129EEA /* EditInitiativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */; };
+		99F81E9C210A168F009821DE /* SearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81E9B210A168F009821DE /* SearchBarViewController.swift */; };
+		99F81E9E210A1844009821DE /* DetailSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */; };
+		99F81EA0210A3AAB009821DE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81E9F210A3AAB009821DE /* SearchViewController.swift */; };
 		FF68A459AA8A35490CDACE98 /* Pods_PLC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E156B58806FAE17D15096 /* Pods_PLC.framework */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +129,9 @@
 		99C9148820FD664300B8EEE5 /* RSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPViewController.swift; sourceTree = "<group>"; };
 		99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditInitiative.storyboard; sourceTree = "<group>"; };
 		99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInitiativeViewController.swift; sourceTree = "<group>"; };
+		99F81E9B210A168F009821DE /* SearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarViewController.swift; sourceTree = "<group>"; };
+		99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchTableViewController.swift; sourceTree = "<group>"; };
+		99F81E9F210A3AAB009821DE /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A39E332087E068BEECDDDE60 /* Pods-PLC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PLC/Pods-PLC.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +204,7 @@
 				8365F91720E6BF0C0018BB43 /* PLC.entitlements */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
 				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
+				99F81E9F210A3AAB009821DE /* SearchViewController.swift */,
 				83DC45C520EC22780080B6A1 /* FavTasksViewController.swift */,
 				831CEC2520F69F77003CB892 /* CalendarViewController.swift */,
 				83D351DF20F67978006480F4 /* FavTasksTableViewController.swift */,
@@ -221,7 +228,9 @@
 				99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */,
 				992AA0F92106374300F74B38 /* OfficeLeaderboardTableViewCell.swift */,
 				990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */,
+				99F81E9B210A168F009821DE /* SearchBarViewController.swift */,
 				990D7FEF21060ACB00549C6B /* DepartmentLeaderboardTableViewCell.swift */,
+				99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */,
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
 				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
@@ -445,6 +454,7 @@
 				"${BUILT_PRODUCTS_DIR}/NavigationDropdownMenu/NavigationDropdownMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/Presentr/Presentr.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/YNSearch/YNSearch.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -456,6 +466,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NavigationDropdownMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Presentr.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YNSearch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -521,11 +532,13 @@
 				99AB733820E54FEB00E00A2A /* Task.swift in Sources */,
 				99008FB62100DA4500F05899 /* InvolvementViewController.swift in Sources */,
 				8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */,
+				99F81E9C210A168F009821DE /* SearchBarViewController.swift in Sources */,
 				99DFD1F620F64FB000129EEA /* EditInitiativeViewController.swift in Sources */,
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,
 				8365F91620E6B9C90018BB43 /* UserModel.swift in Sources */,
 				83D351E020F67978006480F4 /* FavTasksTableViewController.swift in Sources */,
 				99008FBC2101200900F05899 /* OfficeLeaderboardViewController.swift in Sources */,
+				99F81E9E210A1844009821DE /* DetailSearchTableViewController.swift in Sources */,
 				990D7FEC2101291300549C6B /* FavTaskTableViewCell.swift in Sources */,
 				99008FBA21011FF500F05899 /* DepartmentLeaderboardViewController.swift in Sources */,
 				992AA0FA2106374300F74B38 /* OfficeLeaderboardTableViewCell.swift in Sources */,
@@ -533,6 +546,7 @@
 				99B367D720E668BE008EBF6F /* Constants.swift in Sources */,
 				8365F91920E6C1640018BB43 /* LoginViewController.swift in Sources */,
 				995285DF20EBC268000E29B4 /* LeaderboardPageViewController.swift in Sources */,
+				99F81EA0210A3AAB009821DE /* SearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

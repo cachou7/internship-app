@@ -28,15 +28,25 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
                     let userSnap = snapshot.value as? [String : Any ] ?? [:]
                     let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
                     print("User added to newUsers " + (user?.uid)!)
-                    self.users.append(user!)
-                    self.sortUsers()
+                    let containsUser = self.users.contains { (person) -> Bool in
+                        return person.uid == user!.uid
+                        }
+                    if !containsUser{
+                        self.users.append(user!)
+                        self.sortUsers()
+                    }
+                    }
                 }
-            }})
+            })
     }
     
     override func viewDidAppear(_ animated: Bool) {
         tableView.delegate = self
         tableView.dataSource = self
+        
+        for user in users{
+            print(user.uid)
+        }
     }
     
     override func didReceiveMemoryWarning() {

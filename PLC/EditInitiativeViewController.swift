@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SDWebImage
 
-class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
@@ -25,10 +25,13 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     @IBOutlet weak var addImageLabel: UILabel!
     @IBOutlet weak var removeImageButton: UIButton!
     @IBOutlet weak var addImageButton: UIButton!
+    @IBOutlet weak var categoryTextField: UITextField!
     
     //MARK: Variables
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
+    let categoryPickerView = UIPickerView()
+    let categories: [String] = ["Fun and Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
     var task_in:Task!
@@ -43,6 +46,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     var tagsChanged = false
     var photoChanged = false
     var photoRemoved = false
+    var categoryChanged = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +55,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         validationCheckBoxLabel.isHidden = true
         taskImageView.isHidden = true
         
+        categoryPickerView.delegate = self
+        categoryPickerView.dataSource = self
+        categoryTextField.inputView = categoryPickerView
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
         endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
@@ -68,6 +75,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         timeTextField.text = task_in.startTime
         endTimeTextField.text = task_in.endTime
         locationTextField.text = task_in.location
+        categoryTextField.text = task_in.category
         addImageButton.isHidden = true
         removeImageButton.isHidden = true
         
@@ -163,6 +171,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     @IBAction func locationChanged(_ sender: UITextField) {
         locationChanged = true
     }
+    @IBAction func categoryChanged(_ sender: UITextField) {
+        categoryChanged = true
+    }
     @IBAction func cancelButton(_ sender: UIButton) {
         dismiss()
     }
@@ -227,6 +238,11 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
             locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
+        if (categoryTextField.text?.isEmpty)!{
+            // Change the placeholder color to red for textfield passWord
+            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            valid = false
+        }
         if !(leadCheckBox.isSelected) && !(participateCheckBox.isSelected){
             validationCheckBoxLabel.isHidden = false
             valid = false
@@ -253,7 +269,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         if (valid){
             
             
-            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || photoChanged || photoRemoved){
+            if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || photoChanged || photoRemoved || categoryChanged){
                 let currentTask = Constants.refs.databaseTasks.child(task_in.id)
                 if (titleChanged){
                     currentTask.child("taskTitle").setValue(titleTextField.text!)
@@ -272,6 +288,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                 }
                 if (locationChanged){
                     currentTask.child("taskLocation").setValue(locationTextField.text!)
+                }
+                if (locationChanged){
+                    currentTask.child("category").setValue(categoryTextField.text!)
                 }
                 if (photoChanged){
                     let imageName:String = String("\(task_in.id).png")
@@ -358,5 +377,23 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     
     @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: UIPickerViewDataSource methods
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categories.count
+    }
+    
+    //MARK: UIPickerViewDelegates methods
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return categories[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        categoryTextField.text = "\(categories[pickerView.selectedRow(inComponent: 0)])"
     }
 }

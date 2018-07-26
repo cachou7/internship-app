@@ -31,7 +31,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
     let categoryPickerView = UIPickerView()
-    let categories: [String] = ["Fun and Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
+    let categories: [String] = ["Fun a& Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
     var task: Task?
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0
@@ -46,7 +46,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         validationCheckBoxLabel.isHidden = true
         leadAmountTextField.isEnabled = false
         participateAmountTextField.isEnabled = false
-        endTimeTextField.isHidden = true
         
         startDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
         endDatePicker.datePickerMode = UIDatePickerMode.dateAndTime
@@ -162,9 +161,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     //MARK: Date Picker
     @objc func datePickerChanged(datePicker:UIDatePicker) {
         if datePicker == startDatePicker{
-            if endTimeTextField.isHidden == true{
-                endTimeTextField.isHidden = false
-            }
             eventTime = datePicker.date.timeIntervalSince1970
             endDatePicker.minimumDate = datePicker.date
             timeTextField.text = format(datePicker: datePicker)
@@ -256,6 +252,11 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         if (locationTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
             locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            valid = false
+        }
+        if (categoryTextField.text?.isEmpty)!{
+            // Change the placeholder color to red for textfield passWord
+            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
             valid = false
         }
         if !(leadCheck.isSelected) && !(participateCheck.isSelected){

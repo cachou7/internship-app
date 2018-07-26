@@ -49,6 +49,7 @@ PODS:
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - YNSearch (2.3.1)
 
 DEPENDENCIES:
   - Firebase
@@ -59,6 +60,7 @@ DEPENDENCIES:
   - FSCalendar
   - NavigationDropdownMenu (~> 4.0.0)
   - Presentr
+  - YNSearch
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -78,6 +80,7 @@ SPEC REPOS:
     - NavigationDropdownMenu
     - Presentr
     - SDWebImage
+    - YNSearch
 
 SPEC CHECKSUMS:
   Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
@@ -96,7 +99,8 @@ SPEC CHECKSUMS:
   NavigationDropdownMenu: 0d1b1266322f20d4908578011202fad266301c83
   Presentr: 797ae6ec8904eaba4ec58a4c2065bd66e31569ea
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  YNSearch: 3a6e0a69cfd34a7c5a7c77e0873f426de4437824
 
-PODFILE CHECKSUM: 46c8d44553faad742a9ae14750e13639337e0919
+PODFILE CHECKSUM: 6bae5a91f83c3a64b3674d4a5396ce33b7d599c7
 
 COCOAPODS: 1.5.3
