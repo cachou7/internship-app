@@ -202,44 +202,18 @@
 			isa = PBXGroup;
 			children = (
 				8365F91720E6BF0C0018BB43 /* PLC.entitlements */,
+				99F81EA4210A5BBA009821DE /* MyInitiatives */,
+				99F81EA2210A5BAC009821DE /* Leaderboard */,
+				99F81EA1210A5B22009821DE /* Initiatives */,
+				99F81EA5210A5C3E009821DE /* Profile */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
-				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
-				99F81E9F210A3AAB009821DE /* SearchViewController.swift */,
-				83DC45C520EC22780080B6A1 /* FavTasksViewController.swift */,
-				831CEC2520F69F77003CB892 /* CalendarViewController.swift */,
-				83D351DF20F67978006480F4 /* FavTasksTableViewController.swift */,
-				990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */,
-				99B367D620E668BE008EBF6F /* Constants.swift */,
-				8387316C20E55532001E1628 /* DetailTaskViewController.swift */,
-				99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */,
-				83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */,
-				99008FB72100DAE200F05899 /* InvolvementTableViewCell.swift */,
-				83ADA39820E1547400CD5F30 /* LeaderboardViewController.swift */,
-				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
-				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
-				99C9148820FD664300B8EEE5 /* RSVPViewController.swift */,
-				99919A7E20FFA39D008ED134 /* CheckInViewController.swift */,
-				995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */,
+				99B367D620E668BE008EBF6F /* Constants.swift */,
 				8365F91520E6B9C90018BB43 /* UserModel.swift */,
 				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
-				99008FB52100DA4500F05899 /* InvolvementViewController.swift */,
-				99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */,
-				99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */,
-				992AA0F92106374300F74B38 /* OfficeLeaderboardTableViewCell.swift */,
 				990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */,
-				99F81E9B210A168F009821DE /* SearchBarViewController.swift */,
-				990D7FEF21060ACB00549C6B /* DepartmentLeaderboardTableViewCell.swift */,
-				99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */,
-				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
-				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
 				83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */,
-				83165AF620E5423F005E9092 /* FavInitiatives.storyboard */,
-				99AB733120E42E8E00E00A2A /* Profile.storyboard */,
-				99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */,
-				99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */,
-				99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */,
 				83ADA39D20E1547900CD5F30 /* Assets.xcassets */,
 				83ADA39F20E1547900CD5F30 /* LaunchScreen.storyboard */,
 				83ADA3A220E1547900CD5F30 /* Info.plist */,
@@ -265,6 +239,72 @@
 				83ADA3B820E1547900CD5F30 /* Info.plist */,
 			);
 			path = PLCUITests;
+			sourceTree = "<group>";
+		};
+		99F81EA1210A5B22009821DE /* Initiatives */ = {
+			isa = PBXGroup;
+			children = (
+				99F81EA6210A5C74009821DE /* DetailInitiatives */,
+				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
+				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
+				83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */,
+				99F81E9B210A168F009821DE /* SearchBarViewController.swift */,
+				99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */,
+				99F81E9F210A3AAB009821DE /* SearchViewController.swift */,
+			);
+			path = Initiatives;
+			sourceTree = "<group>";
+		};
+		99F81EA2210A5BAC009821DE /* Leaderboard */ = {
+			isa = PBXGroup;
+			children = (
+				99AB732A20E42E2800E00A2A /* Leaderboard.storyboard */,
+				83ADA39820E1547400CD5F30 /* LeaderboardViewController.swift */,
+				995285DE20EBC268000E29B4 /* LeaderboardPageViewController.swift */,
+				99008FB921011FF500F05899 /* DepartmentLeaderboardViewController.swift */,
+				99008FBB2101200900F05899 /* OfficeLeaderboardViewController.swift */,
+				992AA0F92106374300F74B38 /* OfficeLeaderboardTableViewCell.swift */,
+				990D7FEF21060ACB00549C6B /* DepartmentLeaderboardTableViewCell.swift */,
+			);
+			path = Leaderboard;
+			sourceTree = "<group>";
+		};
+		99F81EA4210A5BBA009821DE /* MyInitiatives */ = {
+			isa = PBXGroup;
+			children = (
+				83D351DF20F67978006480F4 /* FavTasksTableViewController.swift */,
+				83DC45C520EC22780080B6A1 /* FavTasksViewController.swift */,
+				831CEC2520F69F77003CB892 /* CalendarViewController.swift */,
+				990D7FEB2101291300549C6B /* FavTaskTableViewCell.swift */,
+				83165AF620E5423F005E9092 /* FavInitiatives.storyboard */,
+			);
+			path = MyInitiatives;
+			sourceTree = "<group>";
+		};
+		99F81EA5210A5C3E009821DE /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				83ADA3C420E165D000CD5F30 /* ProfileViewController.swift */,
+				99AB733120E42E8E00E00A2A /* Profile.storyboard */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		99F81EA6210A5C74009821DE /* DetailInitiatives */ = {
+			isa = PBXGroup;
+			children = (
+				8387316C20E55532001E1628 /* DetailTaskViewController.swift */,
+				830E74B220E547B3005E629D /* DetailInitiatives.storyboard */,
+				99008FB52100DA4500F05899 /* InvolvementViewController.swift */,
+				99008FB72100DAE200F05899 /* InvolvementTableViewCell.swift */,
+				99C9148820FD664300B8EEE5 /* RSVPViewController.swift */,
+				99919A7E20FFA39D008ED134 /* CheckInViewController.swift */,
+				99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */,
+				99DFD1F520F64FB000129EEA /* EditInitiativeViewController.swift */,
+				99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */,
+				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
+			);
+			path = DetailInitiatives;
 			sourceTree = "<group>";
 		};
 		BE023412823A0EED87086F9F /* Frameworks */ = {
