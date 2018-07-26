@@ -29,6 +29,12 @@ class CheckInViewController: UIViewController {
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 3)
         
         Constants.refs.databaseUsers.child(currentUser.uid ).child("tasks_participated").child(task!.id).setValue(true)
+        let point = Points.init()
+        
+        
+        let addedPoints = point.getPoints(type: "Participant", category: task!.category, thisTask: task!)
+        
+        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
     }
     
     override func viewDidLoad() {

@@ -131,49 +131,16 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         taskTime.text = dayOfWeek! + ", " + String(startTime[0]) + " " + String(taskDayText[0]) + " at " + taskTimeFrame
         taskDescription.text = task_in.description
         let thisTask = task_in
+        
         taskParticipantPoints.text = "+ 0 pts"
         taskLeaderPoints.text = "+ 0 pts"
         
-        if thisTask!.category == "Fun and Games" {
-            if isLead{
-                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!)) + " pts"
-            }
-            if isParticipant{
-                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!)) + " pts"
-            }
+        let point = Points.init()
+        if isLead{
+            taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", category: thisTask!.category, thisTask: thisTask)) + " pts"
         }
-        else if thisTask!.category == "Philanthropy" {
-            if isLead{
-                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 7 / 4) + " pts"
-            }
-            if isParticipant{
-                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 7 / 4) + " pts"
-            }
-        }
-        else if thisTask!.category == "Shared Interests" {
-            if isLead{
-                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 3 / 2) + " pts"
-            }
-            if isParticipant{
-                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 3 / 2) + " pts"
-            }
-        }
-        else if thisTask!.category == "Skill Building" {
-            if isLead{
-                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 2) + " pts"
-            }
-            if isParticipant{
-                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 2) + " pts"
-            }
-        }
-        else {
-            if isLead{
-                taskLeaderPoints.text = "+" + String(getLeaderPoints(thisTask: thisTask!) * 5 / 4) + " pts"
-            }
-            if isParticipant{
-                taskParticipantPoints.text = "+" + String(getParticipantPoints(thisTask: thisTask!) * 5 / 4) + " pts"
-            }
-            
+        if isParticipant{
+            taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", category: thisTask!.category, thisTask: thisTask)) + " pts"
         }
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
@@ -326,34 +293,6 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     func setInvolvementCurrentTask() {
         InvolvementController?.task = task_in
         
-    }
-    
-    private func getLeaderPoints(thisTask: Task)-> Int{
-        var leaderPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 200)
-        if leaderPts / 10 < 35 {
-            leaderPts = 35
-        }
-        else {
-            leaderPts /= 10
-            if leaderPts > 100 {
-                leaderPts = 100
-            }
-        }
-        return leaderPts
-    }
-    
-    private func getParticipantPoints(thisTask: Task)-> Int{
-        var participantPts = Int((thisTask.endTimeMilliseconds - thisTask.timeMilliseconds) / 1000)
-        if participantPts / 10 < 5 {
-            participantPts = 5
-        }
-        else {
-            participantPts /= 10
-            if participantPts > 20 {
-                participantPts = 20
-            }
-        }
-        return participantPts
     }
     
     func getDayOfWeek(_ today:String) -> String? {

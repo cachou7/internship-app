@@ -20,6 +20,8 @@ class RSVPViewController: UIViewController {
     var task: Task?
     var leadersRSVP: [String] = []
     var participantsRSVP: [String] = []
+    var isLead = false
+    var isParticipant = false
     @IBOutlet weak var leadersNeededLabel: UILabel!
     @IBOutlet weak var partipantsNeededLabel: UILabel!
     @IBOutlet weak var leaderStack: UIStackView!
@@ -38,7 +40,18 @@ class RSVPViewController: UIViewController {
         
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
         
-            Constants.refs.databaseUsers.child(currentUser.uid ).child("tasks_lead").child(task!.id).setValue(true)
+            Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).setValue(true)
+        
+        let point = Points.init()
+        var addedPoints = 0
+        if isLead{
+            addedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
+        }
+        if isParticipant{
+            addedPoints = point.getPoints(type: "Participant", category: task!.category, thisTask: task!)
+        }
+        
+        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
         
     }
     
@@ -67,6 +80,7 @@ class RSVPViewController: UIViewController {
         let tagArray = tags?.components(separatedBy: " ")
         for tag in tagArray!{
             if tag == "#lead"{
+                isLead = true
                 Constants.refs.databaseTasks.child(task!.id).child("taskRSVP").child("leaders").observe(.value, with: { snapshot in
                     if (snapshot.exists()){
                         for child in snapshot.children {
@@ -94,6 +108,7 @@ class RSVPViewController: UIViewController {
                 })
             }
             if tag == "#participate"{
+                isParticipant = true
                 //Getting RSVP-ed participants
                 Constants.refs.databaseTasks.child(task!.id).child("taskRSVP").child("participants").observe(.value, with: { snapshot in
                     if (snapshot.exists()){
