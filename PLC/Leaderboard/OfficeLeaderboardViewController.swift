@@ -35,6 +35,12 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
                         self.users.append(user!)
                         self.sortUsers()
                     }
+                    else if containsUser{
+                        let index = self.users.index(where:{ $0.uid == user?.uid })
+                        self.users.remove(at: index!)
+                        self.users.append(user!)
+                        self.sortUsers()
+                    }
                     }
                 }
             })

@@ -31,25 +31,18 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         
         initData(database: database)
         
-        self.setYNCategoryButtonType(type: .background)
+        self.setYNCategoryButtonType(type: .border)
     }
     
     func configureDatabase(){
         for task in overallItems!{
-            var locationWords = task.location.components(separatedBy: " ")
-            for word in locationWords{
-                if database.contains(word){
-                    locationWords.remove(at: locationWords.index(of: word)!)
-                }
+            if !database.contains(task.location){
+                database.append(task.location)
             }
-            database.append(contentsOf: locationWords)
-            var titleWords = task.title.components(separatedBy: " ")
-            for word in titleWords{
-                if database.contains(word){
-                    titleWords.remove(at: titleWords.index(of: word)!)
-                }
+
+            if !database.contains(task.title){
+                database.append(task.title)
             }
-            database.append(contentsOf: titleWords)
         }
     }
 

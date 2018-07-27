@@ -215,7 +215,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
         let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
         childVC.navigationItem.title = sender.taskCategory.title(for: .normal)
-        childVC.overallItems = self.overallItems
+        childVC.overallItems = self.everyItemCreated
         
         self.present(vc, animated: true, completion: nil)
     }
@@ -306,37 +306,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             let selectedIndex = tableView.indexPathForSelectedRow?.row
             let itemRemoved = self.overallItems[selectedIndex!]
             self.overallItems.remove(at: selectedIndex!)
-            self.everyItemCreated.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            let index = deleteFromEveryItemCreated(array: everyItemCreated, left: 0, right: everyItemCreated.count-1, taskToRemove: itemRemoved)
-            everyItemCreated.remove(at: index)
+            let index = self.everyItemCreated.index(where: {$0.id == itemRemoved.id})
+            everyItemCreated.remove(at: index!)
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
         }
-    }
-    
-    private func deleteFromEveryItemCreated(array: [Task], left: Int, right: Int, taskToRemove: Task)->Int{
-        if right >= 1{
-            let mid = left + (right - left)/2
-            
-            // If the element is present at the
-            // middle itself
-            if array[mid].timeMilliseconds == taskToRemove.timeMilliseconds{
-                if array[mid].id == taskToRemove.id{
-                    return mid
-                }
-            }
-            
-            // If element is smaller than mid, then
-            // it can only be present in left subarray
-            if array[mid].timeMilliseconds > taskToRemove.timeMilliseconds{
-                return deleteFromEveryItemCreated(array: array, left: left, right: mid-1, taskToRemove: taskToRemove)
-            }
-            
-            // Else the element can only be present
-            // in right subarray
-            return deleteFromEveryItemCreated(array: array, left: mid+1, right: right, taskToRemove: taskToRemove)
-        }
-        return -1
     }
     
     private func getDayOfWeek(_ today:String) -> String? {

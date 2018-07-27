@@ -37,17 +37,17 @@ open class YNSearchViewController: UIViewController, UITextFieldDelegate {
         self.ynSearchTextfieldView.ynSearchTextField.clearButtonMode = UITextFieldViewMode.whileEditing
         
         self.view.addSubview(self.ynSearchTextfieldView)
-        
         self.ynSearchView = YNSearchView(frame: CGRect(x: 0, y: 70, width: width, height: height-70))
         self.view.addSubview(self.ynSearchView)
     }
     
     open func setYNCategoryButtonType(type: YNCategoryButtonType) {
-        self.ynSearchView.ynSearchMainView.setYNCategoryButtonType(type: .colorful)
+        self.ynSearchView.ynSearchMainView.setYNCategoryButtonType(type: type)
     }
     
     open func initData(database: [Any]) {
         self.ynSearchView.ynSearchListView.initData(database: database)
+        self.ynSearchView.ynSearchMainView.redrawSearchHistoryButtons()
     }
 
     

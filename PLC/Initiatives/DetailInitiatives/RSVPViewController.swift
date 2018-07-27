@@ -29,11 +29,21 @@ class RSVPViewController: UIViewController {
     @IBOutlet weak var signUpLeaderButton: UIButton!
     @IBOutlet weak var goingParticipantButton: UIButton!
     @IBOutlet weak var alreadyInvolvedLabel: UILabel!
+    @IBOutlet weak var undoSignUpButton: UIButton!
+    @IBOutlet weak var undoGoingButton: UIButton!
     
     @IBAction func goingParticipantButton(_ sender: UIButton) {
-        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
+    Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
+    }
+    @IBAction func undoGoingButton(_ sender: UIButton) {
+    Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).removeValue()
+        
+        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
+        
+        participantsRSVP.remove(at: participantsRSVP.index(of: currentUser.uid)!)
+        self.viewDidLoad()
     }
     @IBAction func signUpLeaderButton(_ sender: UIButton) {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).child("userID").setValue(currentUser.uid)
@@ -43,21 +53,31 @@ class RSVPViewController: UIViewController {
             Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).setValue(true)
         
         let point = Points.init()
-        var addedPoints = 0
-        if isLead{
-            addedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
-        }
-        if isParticipant{
-            addedPoints = point.getPoints(type: "Participant", category: task!.category, thisTask: task!)
-        }
+
+        let addedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
         
         Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
         
     }
     
+    @IBAction func undoSignUpButton(_ sender: UIButton) {
+        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).removeValue()
+        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
+        Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).removeValue()
+        let point = Points.init()
+        let subtractedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
+        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points - subtractedPoints)
+        
+        leadersRSVP.remove(at: leadersRSVP.index(of: currentUser.uid)!)
+        self.viewDidLoad()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         alreadyInvolvedLabel.isHidden = true
+        undoGoingButton.isHidden = true
+        undoSignUpButton.isHidden = true
+        goingParticipantButton.isEnabled = true
+        signUpLeaderButton.isEnabled = true
         configurePage()
     }
 
@@ -69,6 +89,15 @@ class RSVPViewController: UIViewController {
         signUpLeaderButton.isEnabled = false
         goingParticipantButton.isEnabled = false
         alreadyInvolvedLabel.isHidden = false
+        undoSignUpButton.isHidden = false
+        return
+    }
+    
+    private func userAlreadyGoing(){
+        signUpLeaderButton.isEnabled = false
+        goingParticipantButton.isEnabled = false
+        alreadyInvolvedLabel.isHidden = false
+        undoGoingButton.isHidden = false
         return
     }
 
@@ -118,7 +147,7 @@ class RSVPViewController: UIViewController {
                             if let snapshot = child as? DataSnapshot{
                                 let participantInfo = snapshot.value as! [String : String ]
                                 if (participantInfo["userID"]! == currentUser.uid){
-                                    self.userAlreadySignedUp()
+                                    self.userAlreadyGoing()
                                 }
                                 if !self.participantsRSVP.contains(participantInfo["userID"]!){
                                     self.participantsRSVP.append(participantInfo["userID"]!)

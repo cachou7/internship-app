@@ -382,58 +382,84 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7r-TW-IRI">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Sign Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7r-TW-IRI">
                                 <rect key="frame" x="20" y="20" width="210.66666666666666" height="70.666666666666671"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="59"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="WPB-LJ-TqH">
-                                <rect key="frame" x="20" y="118.33333333333331" width="374" height="92"/>
+                                <rect key="frame" x="20" y="118.33333333333331" width="374" height="100"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="X4v-1e-DAx" userLabel="LeaderStack">
-                                        <rect key="frame" x="0.0" y="0.0" width="247" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="296" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaders Needed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbX-Ex-uya">
-                                                <rect key="frame" x="0.0" y="0.0" width="157" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="164" height="40"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Az-80-uAH">
-                                                <rect key="frame" x="177" y="0.0" width="70" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Sign Up"/>
-                                                <connections>
-                                                    <action selector="signUpLeaderButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="gZm-RM-k1E"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="hyo-J4-tuj">
+                                                <rect key="frame" x="184" y="0.0" width="112" height="40"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Az-80-uAH">
+                                                        <rect key="frame" x="0.0" y="0.0" width="71" height="40"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                        <state key="normal" title="Sign Up"/>
+                                                        <connections>
+                                                            <action selector="signUpLeaderButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="gZm-RM-k1E"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL2-DQ-hrc">
+                                                        <rect key="frame" x="75" y="0.0" width="37" height="40"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <state key="normal" title="Undo"/>
+                                                        <connections>
+                                                            <action selector="undoSignUpButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="DFz-x2-DiS"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="4O6-yl-v0y" userLabel="ParticipateStack">
-                                        <rect key="frame" x="0.0" y="56.000000000000014" width="265.66666666666669" height="36"/>
+                                        <rect key="frame" x="0.0" y="60.000000000000014" width="317.66666666666669" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participants Needed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XoA-YM-w29">
-                                                <rect key="frame" x="0.0" y="0.0" width="192.66666666666666" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200.66666666666666" height="40"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GzU-JV-vME">
-                                                <rect key="frame" x="212.66666666666666" y="0.0" width="52.999999999999972" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Going"/>
-                                                <connections>
-                                                    <action selector="goingParticipantButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="CC8-w6-8ja"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="VhK-tz-K8n">
+                                                <rect key="frame" x="220.66666666666663" y="0.0" width="97" height="40"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GzU-JV-vME">
+                                                        <rect key="frame" x="0.0" y="0.0" width="56" height="40"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                        <state key="normal" title="Going"/>
+                                                        <connections>
+                                                            <action selector="goingParticipantButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="CC8-w6-8ja"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vxf-KL-Tzm">
+                                                        <rect key="frame" x="60.000000000000028" y="0.0" width="37" height="40"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <state key="normal" title="Undo"/>
+                                                        <connections>
+                                                            <action selector="undoGoingButton:" destination="H3i-44-i4n" eventType="touchUpInside" id="PzH-BZ-Cuf"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already involved ✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvs-RD-Y0y">
-                                <rect key="frame" x="249.66666666666663" y="48" width="144.33333333333337" height="20.333333333333329"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Already involved ✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dvs-RD-Y0y">
+                                <rect key="frame" x="249.66666666666652" y="48" width="144.33333333333337" height="22"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                 <color key="textColor" red="0.16984139303913137" green="0.83236025057231011" blue="0.21447906393921123" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -459,6 +485,8 @@
                         <outlet property="participateStack" destination="4O6-yl-v0y" id="L7L-sm-iq0"/>
                         <outlet property="partipantsNeededLabel" destination="XoA-YM-w29" id="FPZ-eE-P4D"/>
                         <outlet property="signUpLeaderButton" destination="1Az-80-uAH" id="Z0M-vL-jpM"/>
+                        <outlet property="undoGoingButton" destination="Vxf-KL-Tzm" id="Fqr-eB-h4w"/>
+                        <outlet property="undoSignUpButton" destination="XL2-DQ-hrc" id="Grj-7q-fyt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Txl-7s-yN2" userLabel="First Responder" sceneMemberID="firstResponder"/>

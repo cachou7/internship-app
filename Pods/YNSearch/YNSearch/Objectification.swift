@@ -22,13 +22,14 @@ public class Objectification {
         
         for object in objects {
             let mirror = Mirror(reflecting: object)
-
+            var wordsInObject: [String] = []
             switch type {
             case .properties:
                 stringObjects.append(self.properties(mirror: mirror))
                 break
             case .values:
-                stringObjects.append(self.values(mirror: mirror))
+                wordsInObject = (object as! String).components(separatedBy: " ")
+                stringObjects.append(wordsInObject)
                 break
             case .all:
                 stringObjects.append(self.all(mirror: mirror))

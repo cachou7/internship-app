@@ -30,7 +30,7 @@ open class YNSearchTextField: UITextField {
         
         self.leftView = searchImageViewWrapper
         self.returnKeyType = .search
-        self.placeholder = "Search libraries what you want"
+        self.placeholder = "Search all tasks"
         self.font = UIFont.systemFont(ofSize: 14)
     }
 }
