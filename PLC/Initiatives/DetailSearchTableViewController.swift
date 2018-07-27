@@ -200,6 +200,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
             
             destinationVC.task_in = self.filteredItems[myIndex]
             destinationVC.taskIndex = myIndex
+            destinationVC.segueFromController = "DetailSearchTableViewController"
         }
     }
     
@@ -232,6 +233,44 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         default:
             return "Yikes"
         }
+    }
+    
+    @IBAction func unwindToDetailSearch(segue:UIStoryboardSegue) {
+        if segue.identifier == "unwindToDetailSearch" {
+            let selectedIndex = tableView.indexPathForSelectedRow?.row
+            let itemRemoved = self.filteredItems[selectedIndex!]
+            self.filteredItems.remove(at: selectedIndex!)
+            self.overallItems!.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            let index = deleteFromEveryItemCreated(array: overallItems!, left: 0, right: (overallItems?.count)!-1, taskToRemove: itemRemoved)
+            overallItems!.remove(at: index)
+            tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func deleteFromEveryItemCreated(array: [Task], left: Int, right: Int, taskToRemove: Task)->Int{
+        if right >= 1{
+            let mid = left + (right - left)/2
+            
+            // If the element is present at the
+            // middle itself
+            if array[mid].timeMilliseconds == taskToRemove.timeMilliseconds{
+                if array[mid].id == taskToRemove.id{
+                    return mid
+                }
+            }
+            
+            // If element is smaller than mid, then
+            // it can only be present in left subarray
+            if array[mid].timeMilliseconds > taskToRemove.timeMilliseconds{
+                return deleteFromEveryItemCreated(array: array, left: left, right: mid-1, taskToRemove: taskToRemove)
+            }
+            
+            // Else the element can only be present
+            // in right subarray
+            return deleteFromEveryItemCreated(array: array, left: mid+1, right: right, taskToRemove: taskToRemove)
+        }
+        return -1
     }
     
 

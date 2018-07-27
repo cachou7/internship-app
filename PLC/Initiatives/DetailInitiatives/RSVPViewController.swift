@@ -89,14 +89,16 @@ class RSVPViewController: UIViewController {
                                 if (leaderInfo["userID"]! == currentUser.uid){
                                     self.userAlreadySignedUp()
                                 }
-                                self.leadersRSVP.append(leaderInfo["userID"]!)
+                                if !self.leadersRSVP.contains(leaderInfo["userID"]!){
+                                    self.leadersRSVP.append(leaderInfo["userID"]!)
+                                }
                             }
                             if self.task!.amounts["leaders"]! == self.leadersRSVP.count {
                                 self.signUpLeaderButton.isEnabled = false
                             }
-                            self.leaderStack.isHidden = false
-                            self.leadersNeededLabel.text = "\(String(describing: (self.task!.amounts["leaders"]!-self.leadersRSVP.count))) leader spots left"
                         }
+                        self.leaderStack.isHidden = false
+                        self.leadersNeededLabel.text = "\(String(describing: (self.task!.amounts["leaders"]!-self.leadersRSVP.count))) leader spots left"
                     }
                     else{
                         if self.task!.amounts["leaders"]! == self.leadersRSVP.count {
@@ -118,14 +120,17 @@ class RSVPViewController: UIViewController {
                                 if (participantInfo["userID"]! == currentUser.uid){
                                     self.userAlreadySignedUp()
                                 }
-                                self.participantsRSVP.append(participantInfo["userID"]!)
+                                if !self.participantsRSVP.contains(participantInfo["userID"]!){
+                                    self.participantsRSVP.append(participantInfo["userID"]!)
+                                }
+                                
                             }
                             if self.task!.amounts["participants"]! == self.participantsRSVP.count {
                                 self.goingParticipantButton.isEnabled = false
                             }
-                            self.participateStack.isHidden = false
-                            self.partipantsNeededLabel.text = "\(String(describing: (self.task!.amounts["participants"]!-self.participantsRSVP.count))) participant spots left"
                         }
+                        self.participateStack.isHidden = false
+                        self.partipantsNeededLabel.text = "\(String(describing: (self.task!.amounts["participants"]!-self.participantsRSVP.count))) participant spots left"
                     }
                     else{
                         if self.task!.amounts["participants"]! == self.participantsRSVP.count {

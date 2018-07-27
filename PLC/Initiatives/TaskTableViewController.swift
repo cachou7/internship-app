@@ -20,6 +20,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var myIndex = 0
     var currentDB: String = ""
     var overallItems: [Task] = []
+    var everyItemCreated: [Task] = []
     var passedTask:Task!
     var initialToolbar: UIView! = nil
     var presenter = Presentr(presentationType: .popup)
@@ -51,21 +52,44 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 
                 newOverallItems.append(task!)
             }
+            
             self.overallItems = newOverallItems
+            
+            Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
+                for child in snapshot.children {
+                    if let snap = child as? DataSnapshot{
+                        let taskInfo = snap.value as? [String : Any ] ?? [:]
+                        overallLoop: for i in 0...self.overallItems.count-1{
+                            if self.overallItems[i].id == taskInfo["taskID"] as! String{
+                                self.overallItems.remove(at: i)
+                                self.tableView.reloadData()
+                                break overallLoop
+                            }
+                        }
+                    }
+                }
+            })
+            
+            self.everyItemCreated = newOverallItems
             
             self.sortTasks()
             }})
         
-        /*
+        
         Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
             for child in snapshot.children {
                 if let snap = child as? DataSnapshot{
                     let taskInfo = snap.value as? [String : Any ] ?? [:]
-                    //self.overallItems.remove(at: self.overallItems.index(of: taskInfo["taskID"] as! Task))
+                    overallLoop: for i in 0...self.overallItems.count-1{
+                        if self.overallItems[i].id == taskInfo["taskID"] as! String{
+                            self.overallItems.remove(at: i)
+                            self.tableView.reloadData()
+                            break overallLoop
+                        }
+                    }
                 }
             }
         })
- */
     }
     
     
@@ -249,10 +273,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
             destinationVC.task_in = self.overallItems[myIndex]
             destinationVC.taskIndex = myIndex
+            destinationVC.segueFromController = "TaskTableViewController"
         }
         if segue.identifier == "toSearch",
             let destinationVC = segue.destination as? SearchViewController{
-            destinationVC.overallItems = self.overallItems
+            destinationVC.overallItems = self.everyItemCreated
         }
     }
     
@@ -275,11 +300,39 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
         if segue.identifier == "unwindToInitiatives" {
             let selectedIndex = tableView.indexPathForSelectedRow?.row
+            let itemRemoved = self.overallItems[selectedIndex!]
             self.overallItems.remove(at: selectedIndex!)
-
+            self.everyItemCreated.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+            let index = deleteFromEveryItemCreated(array: everyItemCreated, left: 0, right: everyItemCreated.count-1, taskToRemove: itemRemoved)
+            everyItemCreated.remove(at: index)
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
         }
+    }
+    
+    private func deleteFromEveryItemCreated(array: [Task], left: Int, right: Int, taskToRemove: Task)->Int{
+        if right >= 1{
+            let mid = left + (right - left)/2
+            
+            // If the element is present at the
+            // middle itself
+            if array[mid].timeMilliseconds == taskToRemove.timeMilliseconds{
+                if array[mid].id == taskToRemove.id{
+                    return mid
+                }
+            }
+            
+            // If element is smaller than mid, then
+            // it can only be present in left subarray
+            if array[mid].timeMilliseconds > taskToRemove.timeMilliseconds{
+                return deleteFromEveryItemCreated(array: array, left: left, right: mid-1, taskToRemove: taskToRemove)
+            }
+            
+            // Else the element can only be present
+            // in right subarray
+            return deleteFromEveryItemCreated(array: array, left: mid+1, right: right, taskToRemove: taskToRemove)
+        }
+        return -1
     }
     
     private func getDayOfWeek(_ today:String) -> String? {

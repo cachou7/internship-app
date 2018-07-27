@@ -253,6 +253,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow {
             destinationVC.task_in = self.dateInfo[datesList[myIndex.section]]![myIndex.row]
+            destinationVC.segueFromController = "FavTaskTableViewController"
         }
     }
     
@@ -280,18 +281,22 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
             return "Yikes"
         }
     }
-    
+
+
     @IBAction func unwindToFavInitiatives(segue:UIStoryboardSegue) {
         if segue.identifier == "unwindToFavInitiatives" {
-            /*
             let selectedIndex = tableView.indexPathForSelectedRow?.row
-            self.likedItems.remove(at: selectedIndex!)
-            
+            for i in 0..<self.datesList.count {
+                if (tableView.indexPathForSelectedRow?.section == i) {
+                    self.dateInfo[datesList[i]]!.remove(at: selectedIndex!)
+                }
+            }
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
- */
+            
             self.tableView.reloadData()
         }
     }
+ 
 }
 
 extension String {

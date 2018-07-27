@@ -355,8 +355,10 @@
                         <outlet property="taskPhoto" destination="fA5-dn-dEl" id="JP6-I9-Avu"/>
                         <outlet property="taskTime" destination="MTD-Mq-WwM" id="Th0-fc-dyT"/>
                         <outlet property="taskTitle" destination="QNe-YU-6Qn" id="9fS-WV-so1"/>
-                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToInitiatives" unwindAction="unwindToInitiativesWithSegue:" id="mWp-GE-qLW"/>
-                        <segue destination="4pC-DU-pgK" kind="unwind" unwindAction="unwindToFavInitiativesWithSegue:" id="Gl1-aP-KxA"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToFavInitiatives" unwindAction="unwindToFavInitiativesWithSegue:" id="1ZJ-sz-zcs"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToInitiatives" unwindAction="unwindToInitiativesWithSegue:" id="3Vr-IE-st6"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToProfile" unwindAction="unwindToProfileWithSegue:" id="lYs-ls-9Ai"/>
+                        <segue destination="4pC-DU-pgK" kind="unwind" identifier="unwindToDetailSearch" unwindAction="unwindToDetailSearchWithSegue:" id="J4M-aR-yoy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PFz-BW-E7A" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -638,6 +640,6 @@
         <image name="iconPin" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QfG-gP-tQO"/>
+        <segue reference="PjY-bO-hAu"/>
     </inferredMetricsTieBreakers>
 </document>

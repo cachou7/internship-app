@@ -62,15 +62,17 @@ class CheckInViewController: UIViewController {
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         let checkedInInfo = snapshot.value as! [String : String ]
-                        self.usersCheckedIn.append(checkedInInfo["userID"]!)
+                        if !self.usersCheckedIn.contains(checkedInInfo["userID"]!){
+                            self.usersCheckedIn.append(checkedInInfo["userID"]!)
+                        }
                     
                         if (checkedInInfo["userID"]! == currentUser.uid){
                             self.alreadyCheckedInLabel.isHidden = false
                             self.checkInButton.isEnabled = false
                         }
                     }
-                    self.usersCheckedInLabel.text = "\(String(describing: self.usersCheckedIn.count)) people already checked in"
                 }
+                  self.usersCheckedInLabel.text = "\(String(describing: self.usersCheckedIn.count)) people already checked in"
             }
             else{
                 self.usersCheckedInLabel.text = "\(String(describing: self.usersCheckedIn.count)) people already checked in"

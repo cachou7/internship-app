@@ -25,6 +25,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var RSVPController : RSVPViewController?
     var CheckInController : CheckInViewController?
     var InvolvementController : InvolvementViewController?
+    var segueFromController: String?
     var isLead = false
     var isParticipant = false
     
@@ -225,8 +226,18 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
             Constants.refs.databaseTasks.child(self.task_in.id).removeValue()
             
-            self.performSegue(withIdentifier: "unwindToInitiatives", sender: self)
-           
+                if self.segueFromController == "TaskTableViewController"{
+                     self.performSegue(withIdentifier: "unwindToInitiatives", sender: self)
+                }
+                else if self.segueFromController == "ProfileViewController"{
+                    self.performSegue(withIdentifier: "unwindToProfile", sender: self)
+                }
+                else if self.segueFromController == "FavTaskTableViewController"{
+                    self.performSegue(withIdentifier: "unwindToFavInitiatives", sender: self)
+                }
+                else if self.segueFromController == "DetailSearchTableViewController"{
+                    self.performSegue(withIdentifier: "unwindToDetailSearch", sender: self)
+                }
             
             })
         

@@ -22,6 +22,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     var sections: [String] = []
     var sectionArrays: [String:[Task]] = [:]
+    var leadTasks: [String] = []
+    var participateTasks: [String] = []
+    var createTasks: [String] = []
     var user: User?
     var myIndex = 0
     
@@ -69,12 +72,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                                 amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                             }
                             let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Lead"] != nil{
+                            if self.sectionArrays["Lead"] != nil && !self.leadTasks.contains((task?.id)!){
                                 (self.sectionArrays["Lead"]!).append(task!)
+                                self.leadTasks.append((task?.id)!)
                             }
                             else{
                                 self.sections.append("Lead")
                                 self.sectionArrays["Lead"] = [task!]
+                                self.leadTasks.append((task?.id)!)
                             }
                             self.sortTasks()
                         })
@@ -98,12 +103,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                                 amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                             }
                             let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Created"] != nil{
+                            if self.sectionArrays["Created"] != nil && !self.createTasks.contains((task?.id)!){
                                 (self.sectionArrays["Created"]!).append(task!)
+                                self.createTasks.append((task?.id)!)
                             }
                             else{
                                 self.sections.append("Created")
                                 self.sectionArrays["Created"] = [task!]
+                                self.createTasks.append((task?.id)!)
                             }
                             self.sortTasks()
                         })
@@ -127,12 +134,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                                 }
                                 let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                                if self.sectionArrays["Participated"] != nil{
+                                if self.sectionArrays["Participated"] != nil && !self.participateTasks.contains((task?.id)!){
                                     (self.sectionArrays["Participated"]!).append(task!)
+                                    self.participateTasks.append((task?.id)!)
                                 }
                                 else{
                                     self.sections.append("Participated")
                                     self.sectionArrays["Participated"] = [task!]
+                                    self.participateTasks.append((task?.id)!)
                                 }
                                 self.sortTasks()
                             })
@@ -308,7 +317,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.sectionArrays[sections[i]]?.remove(at: selectedIndex!)
                 }
             }
-            //self.overallItems.remove(at: selectedIndex!)
             
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
@@ -328,6 +336,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
             destinationVC.taskIndex = myIndex
+            destinationVC.segueFromController = "ProfileViewController"
         }
     }
     func getDayOfWeek(_ today:String) -> String? {
