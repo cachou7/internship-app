@@ -12,6 +12,7 @@ import SDWebImage
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TaskTableViewCellDelegate {
     
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var departmentLabel: UILabel!
     @IBOutlet weak var jobTitleLabel: UILabel!
@@ -41,7 +42,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         jobTitleLabel.text = (user?.jobTitle)!
         departmentLabel.text = (user?.department)!
         pointsLabel.text = String((user?.points)!)
-        
+        emailLabel.text = String((user?.email)!)
         
         profilePhoto.layer.cornerRadius = profilePhoto.frame.size.width/2
         profilePhoto.layer.borderWidth = 0.1
@@ -264,8 +265,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
         }
-        cell.taskParticipantPoints.text = "+ 0 pts"
-        cell.taskLeaderPoints.text = "+ 0 pts"
+        cell.taskParticipantPoints.text = " None"
+        cell.taskLeaderPoints.text = " None"
         
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
         

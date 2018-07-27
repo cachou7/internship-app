@@ -20,6 +20,7 @@ class User{
     let department: String
     let currentProjects: String
     let points: Int
+    let email: String
     
     init(authData: Firebase.User, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int) {
         self.uid = authData.uid
@@ -29,10 +30,11 @@ class User{
         self.department = department
         self.currentProjects = currentProjects
         self.points = points
+        self.email = authData.email!
     }
     
     //MARK: Initialization
-    init?(uid: String, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int) {
+    init?(uid: String, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int, email: String) {
         // Initialize stored properties.
         self.uid = uid
         self.firstName = firstName
@@ -41,5 +43,6 @@ class User{
         self.department = department
         self.currentProjects = currentProjects
         self.points = points
+        self.email = email
     }
 }

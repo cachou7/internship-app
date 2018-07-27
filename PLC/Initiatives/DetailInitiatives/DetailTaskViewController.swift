@@ -261,7 +261,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             destinationVC.signOutButton.tintColor = UIColor.clear
             Constants.refs.databaseUsers.child(self.task_in.createdBy).observe(.value, with: {(snapshot) in
                 let userSnap = snapshot.value as? [String : Any ] ?? [:]
-                let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
+                let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)
                 destinationVC.user = user
                 
             })
