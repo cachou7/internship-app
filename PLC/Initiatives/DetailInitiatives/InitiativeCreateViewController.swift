@@ -31,7 +31,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
     let categoryPickerView = UIPickerView()
-    let categories: [String] = ["Fun a& Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
+    let categories: [String] = ["Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
     var task: Task?
     var eventTime: TimeInterval = 0.0
     var eventEndTime: TimeInterval = 0.0

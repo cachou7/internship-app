@@ -133,8 +133,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         taskDescription.text = task_in.description
         let thisTask = task_in
         
-        taskParticipantPoints.text = "+ 0 pts"
-        taskLeaderPoints.text = "+ 0 pts"
+        taskParticipantPoints.text = " None"
+        taskLeaderPoints.text = " None"
         
         let point = Points.init()
         if isLead{
