@@ -59,7 +59,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 for child in snapshot.children {
                     if let snap = child as? DataSnapshot{
                         let taskInfo = snap.value as? [String : Any ] ?? [:]
-                        overallLoop: for i in 0...self.overallItems.count-1{
+                        var upperBound = 0
+                        if self.overallItems.count > 0{
+                            upperBound = self.overallItems.count-1
+                        }
+                        overallLoop: for i in 0...upperBound{
                             if self.overallItems[i].id == taskInfo["taskID"] as! String{
                                 self.overallItems.remove(at: i)
                                 self.tableView.reloadData()
@@ -80,7 +84,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             for child in snapshot.children {
                 if let snap = child as? DataSnapshot{
                     let taskInfo = snap.value as? [String : Any ] ?? [:]
-                    overallLoop: for i in 0...self.overallItems.count-1{
+                    var upperBound = 0
+                    if self.overallItems.count > 0{
+                        upperBound = self.overallItems.count-1
+                    }
+                    overallLoop: for i in 0...upperBound{
                         if self.overallItems[i].id == taskInfo["taskID"] as! String{
                             self.overallItems.remove(at: i)
                             self.tableView.reloadData()

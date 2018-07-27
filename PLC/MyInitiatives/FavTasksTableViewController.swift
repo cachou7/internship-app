@@ -32,42 +32,44 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         // Set up listener to get liked tasks and detect when tasks are liked
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
-                let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
-                var amounts = Dictionary<String, Int>()
-                if tasksInfo["participantAmount"]! as! Int != 0 {
-                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
-                }
-                if tasksInfo["leaderAmount"]! as! Int != 0{
-                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                }
-                let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                
-                //self.likedItems.append(likedTask!)
-                print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
-                //self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-                self.tableView.rowHeight = 90.0
-                
-                let date = NSDate(timeIntervalSince1970: tasksInfo["taskTimeMilliseconds"] as! TimeInterval)
-                let dateString = self.dateFormatter.string(from: date as Date)
-                let keyExists = self.dateInfo[dateString] != nil
-                if !keyExists {
-                    self.dateInfo[dateString] = ([likedTask] as! [Task])
-                }
-                else {
-                    var currTasks = self.dateInfo[dateString] as! [Task]
-                    currTasks.append(likedTask!)
-                    currTasks.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-                    self.dateInfo[dateString] = currTasks
-                }
-                
-                for key in self.dateInfo.keys {
-                    if !self.datesList.contains(key) {
-                        self.datesList.append(key)
+                if snapshot.exists(){
+                    let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
+                    var amounts = Dictionary<String, Int>()
+                    if tasksInfo["participantAmount"]! as! Int != 0 {
+                        amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                     }
+                    if tasksInfo["leaderAmount"]! as! Int != 0{
+                        amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                    }
+                    let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                    
+                    //self.likedItems.append(likedTask!)
+                    print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
+                    //self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                    self.tableView.rowHeight = 90.0
+                    
+                    let date = NSDate(timeIntervalSince1970: tasksInfo["taskTimeMilliseconds"] as! TimeInterval)
+                    let dateString = self.dateFormatter.string(from: date as Date)
+                    let keyExists = self.dateInfo[dateString] != nil
+                    if !keyExists {
+                        self.dateInfo[dateString] = ([likedTask] as! [Task])
+                    }
+                    else {
+                        var currTasks = self.dateInfo[dateString] as! [Task]
+                        currTasks.append(likedTask!)
+                        currTasks.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+                        self.dateInfo[dateString] = currTasks
+                    }
+                    
+                    for key in self.dateInfo.keys {
+                        if !self.datesList.contains(key) {
+                            self.datesList.append(key)
+                        }
+                    }
+                    
+                    self.datesList = self.datesList.sorted(by: { $0.compare($1) == .orderedAscending })
+                    self.tableView.reloadData()
                 }
-                
-                self.datesList = self.datesList.sorted(by: { $0.compare($1) == .orderedAscending })
-                self.tableView.reloadData()
             })
             
             Constants.refs.databaseTasks.child(taskId.key).observe(.childChanged, with: { snapshot in
@@ -288,7 +290,12 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
             let selectedIndex = tableView.indexPathForSelectedRow?.row
             for i in 0..<self.datesList.count {
                 if (tableView.indexPathForSelectedRow?.section == i) {
-                    self.dateInfo[datesList[i]]!.remove(at: selectedIndex!)
+                    let elementRemoved = self.dateInfo[datesList[i]]!.remove(at: selectedIndex!)
+                    print(elementRemoved.id)
+                    if dateInfo[datesList[i]]!.count == 0{
+                        dateInfo.removeValue(forKey: datesList[i])
+                        datesList.remove(at: i)
+                    }
                 }
             }
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)

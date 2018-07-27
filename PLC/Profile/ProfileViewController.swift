@@ -63,25 +63,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 for child in snapshot.children {
                     if let snapshot = child as? DataSnapshot{
                         Constants.refs.databaseTasks.child(snapshot.key).observe(.value, with: { (snap) in
-                            let tasksInfo = snap.value as? [String : Any ] ?? [:]
-                            var amounts = Dictionary<String, Int>()
-                            if tasksInfo["participantAmount"]! as! Int != 0{
-                                amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                            if snap.exists(){
+                                let tasksInfo = snap.value as? [String : Any ] ?? [:]
+                                var amounts = Dictionary<String, Int>()
+                                if tasksInfo["participantAmount"]! as! Int != 0{
+                                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                }
+                                if tasksInfo["leaderAmount"]! as! Int != 0{
+                                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                                }
+                                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                                if self.sectionArrays["Lead"] != nil && !self.leadTasks.contains((task?.id)!){
+                                    (self.sectionArrays["Lead"]!).append(task!)
+                                    self.leadTasks.append((task?.id)!)
+                                }
+                                else{
+                                    self.sections.append("Lead")
+                                    self.sectionArrays["Lead"] = [task!]
+                                    self.leadTasks.append((task?.id)!)
+                                }
+                                self.sortTasks()
                             }
-                            if tasksInfo["leaderAmount"]! as! Int != 0{
-                                amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                            }
-                            let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Lead"] != nil && !self.leadTasks.contains((task?.id)!){
-                                (self.sectionArrays["Lead"]!).append(task!)
-                                self.leadTasks.append((task?.id)!)
-                            }
-                            else{
-                                self.sections.append("Lead")
-                                self.sectionArrays["Lead"] = [task!]
-                                self.leadTasks.append((task?.id)!)
-                            }
-                            self.sortTasks()
                         })
                         
                     }
@@ -94,25 +96,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if let snapshot = child as? DataSnapshot{
                         print(snapshot.key)
                         Constants.refs.databaseTasks.child(snapshot.key).observe(.value, with: { (snap) in
-                            let tasksInfo = snap.value as? [String : Any ] ?? [:]
-                            var amounts = Dictionary<String, Int>()
-                            if tasksInfo["participantAmount"]! as! Int != 0{
-                                amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                            if snap.exists(){
+                                let tasksInfo = snap.value as? [String : Any ] ?? [:]
+                                var amounts = Dictionary<String, Int>()
+                                if tasksInfo["participantAmount"]! as! Int != 0{
+                                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                }
+                                if tasksInfo["leaderAmount"]! as! Int != 0{
+                                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                                }
+                                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                                if self.sectionArrays["Created"] != nil && !self.createTasks.contains((task?.id)!){
+                                    (self.sectionArrays["Created"]!).append(task!)
+                                    self.createTasks.append((task?.id)!)
+                                }
+                                else{
+                                    self.sections.append("Created")
+                                    self.sectionArrays["Created"] = [task!]
+                                    self.createTasks.append((task?.id)!)
+                                }
+                                self.sortTasks()
                             }
-                            if tasksInfo["leaderAmount"]! as! Int != 0{
-                                amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                            }
-                            let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                            if self.sectionArrays["Created"] != nil && !self.createTasks.contains((task?.id)!){
-                                (self.sectionArrays["Created"]!).append(task!)
-                                self.createTasks.append((task?.id)!)
-                            }
-                            else{
-                                self.sections.append("Created")
-                                self.sectionArrays["Created"] = [task!]
-                                self.createTasks.append((task?.id)!)
-                            }
-                            self.sortTasks()
                         })
                     }
                 }
@@ -125,25 +129,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     for child in snapshot.children {
                         if let snapshot = child as? DataSnapshot{
                             Constants.refs.databaseTasks.child(snapshot.key).observe(.value, with: { (snap) in
-                                let tasksInfo = snap.value as? [String : Any ] ?? [:]
-                                var amounts = Dictionary<String, Int>()
-                                if tasksInfo["participantAmount"]! as! Int != 0{
-                                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                if snap.exists(){
+                                    let tasksInfo = snap.value as? [String : Any ] ?? [:]
+                                    var amounts = Dictionary<String, Int>()
+                                    if tasksInfo["participantAmount"]! as! Int != 0{
+                                        amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                    }
+                                    if tasksInfo["leaderAmount"]! as! Int != 0{
+                                        amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                                    }
+                                    let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                                    if self.sectionArrays["Participated"] != nil && !self.participateTasks.contains((task?.id)!){
+                                        (self.sectionArrays["Participated"]!).append(task!)
+                                        self.participateTasks.append((task?.id)!)
+                                    }
+                                    else{
+                                        self.sections.append("Participated")
+                                        self.sectionArrays["Participated"] = [task!]
+                                        self.participateTasks.append((task?.id)!)
+                                    }
+                                    self.sortTasks()
                                 }
-                                if tasksInfo["leaderAmount"]! as! Int != 0{
-                                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
-                                }
-                                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
-                                if self.sectionArrays["Participated"] != nil && !self.participateTasks.contains((task?.id)!){
-                                    (self.sectionArrays["Participated"]!).append(task!)
-                                    self.participateTasks.append((task?.id)!)
-                                }
-                                else{
-                                    self.sections.append("Participated")
-                                    self.sectionArrays["Participated"] = [task!]
-                                    self.participateTasks.append((task?.id)!)
-                                }
-                                self.sortTasks()
                             })
                             
                         }
