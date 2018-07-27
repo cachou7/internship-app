@@ -26,7 +26,7 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
                 print(child)
                 if let snapshot = child as? DataSnapshot{
                     let userSnap = snapshot.value as? [String : Any ] ?? [:]
-                    let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int)
+                    let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)
                     print("User added to newUsers " + (user?.uid)!)
                     let containsUser = self.users.contains { (person) -> Bool in
                         return person.uid == user!.uid
