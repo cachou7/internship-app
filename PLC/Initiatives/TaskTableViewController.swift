@@ -80,7 +80,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             for child in snapshot.children {
                 if let snap = child as? DataSnapshot{
                     let taskInfo = snap.value as? [String : Any ] ?? [:]
-                    overallLoop: for i in 0...self.overallItems.count-1{
+                    overallLoop: for i in 0..<self.overallItems.count{
                         if self.overallItems[i].id == taskInfo["taskID"] as! String{
                             self.overallItems.remove(at: i)
                             self.tableView.reloadData()
@@ -189,8 +189,8 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }
             
         }
-        cell.taskParticipantPoints.text = "+ 0 pts"
-        cell.taskLeaderPoints.text = "+ 0 pts"
+        cell.taskParticipantPoints.text = " None"
+        cell.taskLeaderPoints.text = " None"
         
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
         
