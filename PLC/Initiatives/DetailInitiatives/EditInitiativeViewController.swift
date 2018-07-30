@@ -289,7 +289,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                 if (locationChanged){
                     currentTask.child("taskLocation").setValue(locationTextField.text!)
                 }
-                if (locationChanged){
+                if (categoryChanged){
                     currentTask.child("category").setValue(categoryTextField.text!)
                 }
                 if (photoChanged){

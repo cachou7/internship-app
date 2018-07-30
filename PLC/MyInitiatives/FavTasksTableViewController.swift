@@ -298,7 +298,6 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                     }
                 }
             }
-            //tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             
             self.tableView.reloadData()
         }
