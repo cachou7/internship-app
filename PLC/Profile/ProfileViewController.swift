@@ -412,18 +412,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func unwindToProfile(segue:UIStoryboardSegue) {
-        if segue.identifier == "unwindToProfile" {
-            let selectedIndex = tableView.indexPathForSelectedRow?.row
-            
-            for i in 0..<self.sectionArrays.count{
-                if (tableView.indexPathForSelectedRow?.section == i) {
-                    self.sectionArrays[sections[i]]?.remove(at: selectedIndex!)
-                }
-            }
-            
-            tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
-            self.tableView.reloadData()
-        }
     }
     
     // Set myIndex for detailed view
