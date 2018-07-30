@@ -148,6 +148,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                 
                 let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
                 tasksCreated.child(key).setValue(true)
+                let point = Points()
+                Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + point.getPoints(type: "Create", thisTask: task))
             }
             
             if (addImageLabel.text != "Add Image"){
@@ -164,8 +166,6 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                     
                 }
             }
-            let point = Points()
-            Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + point.getPoints(type: "Create", thisTask: task))
             dismiss()
             
             
