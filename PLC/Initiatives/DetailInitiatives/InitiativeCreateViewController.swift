@@ -164,6 +164,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                     
                 }
             }
+            let point = Points()
+            Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + point.getPoints(type: "Create", thisTask: task))
             dismiss()
             
             

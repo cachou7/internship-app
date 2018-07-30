@@ -32,7 +32,7 @@ class CheckInViewController: UIViewController {
         let point = Points.init()
         
         
-        let addedPoints = point.getPoints(type: "Participant", category: task!.category, thisTask: task!)
+        let addedPoints = point.getPoints(type: "Participant", thisTask: task!)
         
         Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
     }

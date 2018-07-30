@@ -19,7 +19,7 @@ class User{
     let jobTitle: String
     let department: String
     let currentProjects: String
-    let points: Int
+    var points: Int
     let email: String
     
     init(authData: Firebase.User, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int) {

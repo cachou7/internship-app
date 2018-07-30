@@ -61,6 +61,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         }
         
+        Constants.refs.databaseUsers.child((user?.uid)!).child("points").observe(.childChanged, with: {(snap) in
+            let changedPoints = snap.value
+            self.user?.points = changedPoints as! Int
+            self.pointsLabel.text = String((self.user?.points)!)
+        })
+        
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
             var newOverallItems: [Task] = []
             
@@ -370,10 +376,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let point = Points.init()
         if isLead{
-            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
         }
         if isParticipant{
-            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
         }
         cell.delegate = self
         return cell

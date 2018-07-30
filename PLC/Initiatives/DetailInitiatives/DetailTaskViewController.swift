@@ -147,10 +147,10 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         
         let point = Points.init()
         if isLead{
-            taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead",  thisTask: thisTask)) + " pts"
         }
         if isParticipant{
-            taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
         }
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
@@ -239,6 +239,13 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                         for user in (child as! DataSnapshot).children{
                             let userInfo = user as! DataSnapshot
                             print(userInfo.key)
+                            Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
+                                let currentPoints = snap.value as! Int
+                                let point = Points()
+                                Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Lead", thisTask: self.task_in))
+                                
+                            })
+                            Constants.refs.databaseUsers.child(userInfo.key).child("tasks_lead").child(self.task_in.id).removeValue()
                             Constants.refs.databaseUsers.child(userInfo.key).child("tasks_lead").child(self.task_in.id).removeValue()
                         }
                     }
@@ -246,6 +253,12 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                         for user in (child as! DataSnapshot).children{
                             let userInfo = user as! DataSnapshot
                             print(userInfo.key)
+                            Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
+                                let currentPoints = snap.value as! Int
+                                let point = Points()
+                                Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Participate", thisTask: self.task_in))
+                                
+                            })
                             Constants.refs.databaseUsers.child(userInfo.key).child("tasks_participated").child(self.task_in.id).removeValue()
                         }
                     }
@@ -253,6 +266,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             }
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
             Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue()
+                let point = Points()
+                Constants.refs.databaseUsers.child(self.task_in.createdBy).child("points").setValue(currentUser.points - point.getPoints(type: "Create", thisTask: self.task_in))
             Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue()
             Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue()
             Constants.refs.databasePastTasks.child(self.task_in.id).removeValue()

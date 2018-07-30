@@ -54,7 +54,7 @@ class RSVPViewController: UIViewController {
         
         let point = Points.init()
 
-        let addedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
+        let addedPoints = point.getPoints(type: "Lead", thisTask: task!)
         
         Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
         
@@ -65,7 +65,7 @@ class RSVPViewController: UIViewController {
         Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
         Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).removeValue()
         let point = Points.init()
-        let subtractedPoints = point.getPoints(type: "Lead", category: task!.category, thisTask: task!)
+        let subtractedPoints = point.getPoints(type: "Lead", thisTask: task!)
         Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points - subtractedPoints)
         
         leadersRSVP.remove(at: leadersRSVP.index(of: currentUser.uid)!)

@@ -200,10 +200,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         let point = Points.init()
         if isLead{
-            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
         }
         if isParticipant{
-            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", category: thisTask!.category, thisTask: thisTask)) + " pts"
+            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
         }
         
         cell.delegate = self

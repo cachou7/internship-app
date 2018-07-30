@@ -7,12 +7,16 @@
 //
 
 struct Points{
-    func getPoints(type: String, category: String, thisTask: Task!)->Int{
+    func getPoints(type: String, thisTask: Task!)->Int{
         var isLead = false
         var isParticipant = false
+        var isCreate = false
         var points =  Int()
         if type == "Lead"{
             isLead = true
+        }
+        else if type == "Create"{
+            isCreate = true
         }
         else{
             isParticipant = true
@@ -25,6 +29,9 @@ struct Points{
             if isParticipant{
                 points = getParticipantPoints(thisTask: thisTask)
             }
+            if isCreate{
+                points = 100
+            }
         }
         else if thisTask!.category == "Philanthropy" {
             if isLead{
@@ -32,6 +39,9 @@ struct Points{
             }
             if isParticipant{
                 points = getParticipantPoints(thisTask: thisTask) * 7 / 4
+            }
+            if isCreate{
+                points = 100 * 7 / 4
             }
         }
         else if thisTask!.category == "Shared Interests" {
@@ -41,6 +51,9 @@ struct Points{
             if isParticipant{
                 points = getParticipantPoints(thisTask: thisTask) * 3 / 2
             }
+            if isCreate{
+                points = 100 * 3 / 2
+            }
         }
         else if thisTask!.category == "Skill Building" {
             if isLead{
@@ -49,6 +62,9 @@ struct Points{
             if isParticipant{
                 points = getParticipantPoints(thisTask: thisTask) * 2
             }
+            if isCreate{
+                points = 100 * 2
+            }
         }
         else {
             if isLead{
@@ -56,6 +72,9 @@ struct Points{
             }
             if isParticipant{
                 points = getParticipantPoints(thisTask: thisTask) * 5 / 4
+            }
+            if isCreate{
+                points = 100 * 5 / 4
             }
         }
         return points
