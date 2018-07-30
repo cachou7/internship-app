@@ -44,7 +44,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         super.viewDidLoad()
         
         taskPhotoImageView.isHidden = true
-        validationCheckBoxLabel.isHidden = true
+        validationCheckBoxLabel.text = ""
         leadAmountTextField.isEnabled = false
         participateAmountTextField.isEnabled = false
         
@@ -272,15 +272,17 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             valid = false
         }
         if !(leadCheck.isSelected) && !(participateCheck.isSelected){
-            validationCheckBoxLabel.isHidden = false
+            validationCheckBoxLabel.textColor = UIColor.red
+            validationCheckBoxLabel.text =  "'#lead' and/or '#participate' not complete"
             valid = false
         }
         else{
             if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-                validationCheckBoxLabel.isHidden = false
+                validationCheckBoxLabel.textColor = UIColor.red
+                validationCheckBoxLabel.text =  "'#lead' and/or '#participate' not complete"
             }
             else{
-                validationCheckBoxLabel.isHidden = true
+                validationCheckBoxLabel.text = ""
             }
         }
         return valid

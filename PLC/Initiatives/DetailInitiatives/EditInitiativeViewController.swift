@@ -52,7 +52,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         super.viewDidLoad()
         configureTask()
         
-        validationCheckBoxLabel.isHidden = true
+        validationCheckBoxLabel.text = ""
         taskImageView.isHidden = true
         
         categoryPickerView.delegate = self
@@ -125,6 +125,11 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         // Dispose of any resources that can be recreated.
     }
     // MARK: Actions
+    @IBAction func createButton(_ sender: UIButton) {
+        if validate(){
+            self.performSegue(withIdentifier: "unwindToDetail", sender: self)
+        }
+    }
     @IBAction func addImageButton(_ sender: UIButton) {
         photoChanged = true
         let imagePicker = UIImagePickerController()
@@ -244,15 +249,18 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
             valid = false
         }
         if !(leadCheckBox.isSelected) && !(participateCheckBox.isSelected){
-            validationCheckBoxLabel.isHidden = false
+            validationCheckBoxLabel.textColor = UIColor.red
+            validationCheckBoxLabel.text = "'#lead' and/or '#participate' not complete"
             valid = false
         }
         else{
             if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-                validationCheckBoxLabel.isHidden = false
+                validationCheckBoxLabel.textColor = UIColor.red
+                validationCheckBoxLabel.text = "'#lead' and/or '#participate' not complete"
+                valid = false
             }
             else{
-                validationCheckBoxLabel.isHidden = true
+                validationCheckBoxLabel.text = ""
             }
         }
         return valid
@@ -265,8 +273,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     }
     
     private func handleTaskChange(){
-        let valid = validate()
-        if (valid){
             
             
             if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || photoChanged || photoRemoved || categoryChanged){
@@ -361,7 +367,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                     currentTask.child("participantAmount").setValue(participantAmount)
                     currentTask.child("leaderAmount").setValue(leaderAmount)
                 }
-            }
         }
     }
     // MARK: - UIImagePickerControllerDelegate Methods
