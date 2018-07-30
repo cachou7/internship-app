@@ -23,7 +23,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var everyItemCreated: [Task] = []
     var passedTask:Task!
     var initialToolbar: UIView! = nil
-    var presenter = Presentr(presentationType: .popup)
+    var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
     
     override func viewDidLoad() {
         super.viewDidLoad()

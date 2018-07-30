@@ -28,6 +28,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     var segueFromController: String?
     var isLead = false
     var isParticipant = false
+    var isPending = false
     
     @IBOutlet weak var taskParticipantPoints: UILabel!
     @IBOutlet weak var taskLeaderPoints: UILabel!
@@ -103,6 +104,14 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 if self.isParticipant && !(self.task_in.createdBy == currentUser.uid){
                     self.checkInButton.isHidden = false
                 }
+            }
+        })
+        
+        Constants.refs.databasePendingTasks.observe(.value, with: { snapshot in
+            if snapshot.hasChild(self.task_in.id){
+                self.RSVPButton.isHidden = true
+                self.involvementButton.isHidden = true
+                self.checkInButton.isHidden = true
             }
         })
         

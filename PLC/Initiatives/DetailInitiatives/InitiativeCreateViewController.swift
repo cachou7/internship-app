@@ -27,6 +27,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
     @IBOutlet weak var validationCheckBoxLabel: UILabel!
     @IBOutlet weak var taskPhotoImageView: UIImageView!
     
+    @IBOutlet weak var fundingCheck: UIButton!
     //MARK: Variables
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
@@ -56,6 +57,8 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         timeTextField.inputView = startDatePicker
         endTimeTextField.inputView = endDatePicker
         categoryTextField.inputView = categoryPickerView
+        
+        fundingCheck.setImage(#imageLiteral(resourceName: "iconCheckedBox"), for: .selected)
         
         startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
@@ -94,6 +97,9 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             participateAmountTextField.isEnabled = false
         }
     }
+    @IBAction func fundingCheckBox(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+    }
     @IBAction func cancelButton(_ sender: UIButton) {
         dismiss()
     }
@@ -129,14 +135,20 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
             task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0, category: categoryTextField.text!)
             
             let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category as Any] as [String : Any]
-        Constants.refs.databaseTasks.child(key).setValue(taskDB)
+            if fundingCheck.isSelected{
+                Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_pending").child(key).setValue(true)
+                Constants.refs.databasePendingTasks.child(key).setValue(taskDB)
+            }
             
-            Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
-            
-            Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
-            
-            let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
-            tasksCreated.child(key).setValue(true)
+            else{
+                Constants.refs.databaseTasks.child(key).setValue(taskDB)
+                
+                Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
+                Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
+                
+                let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
+                tasksCreated.child(key).setValue(true)
+            }
             
             if (addImageLabel.text != "Add Image"){
                 let imageName:String = String("\(key).png")

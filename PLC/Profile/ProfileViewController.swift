@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var leadTasks: [String] = []
     var participateTasks: [String] = []
     var createTasks: [String] = []
+    var pendingTasks: [String] = []
     var everyItemCreated: [Task] = []
     var user: User?
     var myIndex = 0
@@ -98,8 +99,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                                     self.leadTasks.append(task.id)
                                 }
                                 self.sortTasks()
-                            //}
-                        //})
             }
         })
             Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_lead").observe(.childRemoved, with: { snapshot in
@@ -121,7 +120,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         }
                     }
                 }
-                //}
                 self.sections = newArr
                 self.tableView.reloadData()
             }
@@ -160,7 +158,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                             }
                         }
                     }
-                    //}
                     self.sections = newArr
                     self.tableView.reloadData()
                 }
@@ -201,7 +198,58 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                                 }
                             }
                         }
-                        //}
+                        self.sections = newArr
+                        self.tableView.reloadData()
+                    }
+                })
+                
+                Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_pending").observe(.childAdded, with: { snapshot in
+                    if (snapshot.exists()){
+                        Constants.refs.databasePendingTasks.child(snapshot.key).observeSingleEvent(of: .value, with: {(snap) in
+                            if (snap.exists()){
+                                let tasksInfo = snap.value as? [String : Any ] ?? [:]
+                                var amounts = Dictionary<String, Int>()
+                                if tasksInfo["participantAmount"]! as! Int != 0 {
+                                    amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                                }
+                                if tasksInfo["leaderAmount"]! as! Int != 0{
+                                    amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                                }
+                                let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                                if self.sectionArrays["Pending"] != nil && !self.pendingTasks.contains((task?.id)!){
+                                    (self.sectionArrays["Pending"]!).append(task!)
+                                    self.pendingTasks.append((task?.id)!)
+                                }
+                                else{
+                                    self.sections.append("Pending")
+                                    self.sectionArrays["Pending"] = ([task] as! [Task]) 
+                                    self.pendingTasks.append((task?.id)!)
+                                }
+                                self.sortTasks()
+                            }
+                            
+                        })
+                    }
+                })
+                Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_pending").observe(.childRemoved, with: { snapshot in
+                    if (snapshot.exists()){
+                        var newArr = self.sections
+                        for section in self.sections {
+                            for i in 0..<self.sectionArrays[section]!.count {
+                                if self.sectionArrays[section]![i].id == snapshot.key {
+                                    self.pendingTasks.remove(at: self.pendingTasks.index(of: snapshot.key)!)
+                                    if self.sectionArrays[section]!.count == 1 {
+                                        newArr = self.sections.filter( {$0 != section })
+                                        self.sectionArrays.removeValue(forKey: section)
+                                        break
+                                    }
+                                    else {
+                                        self.sectionArrays[section]!.remove(at: i)
+                                        break
+                                    }
+                                }
+                            }
+                        }
                         self.sections = newArr
                         self.tableView.reloadData()
                     }
