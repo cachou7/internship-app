@@ -305,6 +305,8 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                     }
                     
                     SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
+                    SDImageCache.shared().clearMemory()
+                    SDImageCache.shared().clearDisk()
 
                     if let uploadData = UIImageJPEGRepresentation(taskPhoto, CGFloat(0.50)){
                         storageRef.putData(uploadData, metadata: nil

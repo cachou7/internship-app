@@ -42,7 +42,7 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <segue destination="q9O-ZZ-pwU" kind="unwind" unwindAction="unwindToDetailWithSegue:" id="QRr-VB-0H7"/>
+                                            <segue destination="q9O-ZZ-pwU" kind="unwind" identifier="unwindToDetail" unwindAction="unwindToDetailWithSegue:" id="QRr-VB-0H7"/>
                                         </connections>
                                     </button>
                                 </subviews>

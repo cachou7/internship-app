@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var leadTasks: [String] = []
     var participateTasks: [String] = []
     var createTasks: [String] = []
+    var everyItemCreated: [Task] = []
     var user: User?
     var myIndex = 0
     
@@ -58,6 +59,28 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
         }
+        
+        Constants.refs.databaseTasks.observe(.value, with: { snapshot in
+            var newOverallItems: [Task] = []
+            
+            for child in snapshot.children {
+                if let snapshot = child as? DataSnapshot{
+                    let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
+                    var amounts = Dictionary<String, Int>()
+                    if tasksInfo["participantAmount"]! as! Int != 0{
+                        amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
+                    }
+                    if tasksInfo["leaderAmount"]! as! Int != 0{
+                        amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
+                    }
+                    let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
+                    
+                    newOverallItems.append(task!)
+                }
+                self.everyItemCreated = newOverallItems
+                
+                self.sortTasks()
+            }})
         
         Constants.refs.databaseUsers.child((user?.uid)!).child("tasks_lead").observe(.value, with: { snapshot in
             if (snapshot.exists()){
@@ -287,9 +310,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let vc = storyboard.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
         let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
         childVC.navigationItem.title = sender.taskCategory.title(for: .normal)
-        
-         let taskController = storyboard.instantiateViewController(withIdentifier: "TaskTableViewController") as! TaskTableViewController
-        childVC.overallItems = taskController.overallItems
+        childVC.overallItems = self.everyItemCreated
         
         self.present(vc, animated: true, completion: nil)
     }

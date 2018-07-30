@@ -223,7 +223,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue();
             Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue();
             Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
-            Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
+            Constants.refs.databasePastTasks.child(self.task_in.id).removeValue();
             Constants.refs.databaseTasks.child(self.task_in.id).removeValue()
             
                 if self.segueFromController == "TaskTableViewController"{
@@ -265,7 +265,6 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 destinationVC.user = user
                 
             })
-            //self.show(destinationVC, sender: Any?.self)
         }
     }
     
