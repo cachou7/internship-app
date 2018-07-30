@@ -290,8 +290,23 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("# of sections is "+String(self.sections.count))
-        return self.sections.count
+        var numOfSections: Int = 0
+        if self.sections.count > 0
+        {
+            tableView.separatorStyle = .singleLine
+            numOfSections = self.sections.count
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = "No initiatives available"
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView = noDataLabel
+            tableView.separatorStyle = .none
+        }
+        return numOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

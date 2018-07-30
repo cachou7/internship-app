@@ -156,7 +156,23 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return datesList.count
+        var numOfSections: Int = 0
+        if datesList.count > 0
+        {
+            tableView.separatorStyle = .singleLine
+            numOfSections = datesList.count
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = "No favorites"
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView = noDataLabel
+            tableView.separatorStyle = .none
+        }
+        return numOfSections
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {

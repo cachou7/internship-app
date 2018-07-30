@@ -69,6 +69,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = task_in.title
+        
         presenter.dismissOnSwipe = true
         presenter.dismissOnSwipeDirection = .bottom
         presenter.dismissAnimated = true

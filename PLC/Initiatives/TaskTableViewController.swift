@@ -24,6 +24,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var passedTask:Task!
     var initialToolbar: UIView! = nil
     var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
+    var dataIsAvailable = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +128,23 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     //TABLEVIEW DELEGATES
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        var numOfSections: Int = 0
+        if overallItems.count > 0
+        {
+            tableView.separatorStyle = .singleLine
+            numOfSections = 1
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = "No initiatives available"
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView = noDataLabel
+            tableView.separatorStyle = .none
+        }
+        return numOfSections
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -209,6 +226,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.delegate = self
         return cell
     }
+    
     //END TABLEVIEW DELEGATES
 
     func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell){
