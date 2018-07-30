@@ -62,8 +62,8 @@
                                     <action selector="loginDidTouch:" destination="hOv-9g-aEn" eventType="touchUpInside" id="jx2-tj-8DN"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EventsPortal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uh8-vc-DKx">
-                                <rect key="frame" x="122" y="210" width="131" height="25"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hatch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uh8-vc-DKx">
+                                <rect key="frame" x="157.5" y="210" width="60" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="xM6-tW-LCh"/>
                                 </constraints>
@@ -271,7 +271,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Ase-gx-gee" userLabel="Profile Photo Stack">
                                         <rect key="frame" x="0.0" y="492" width="345" height="80"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconProfile" translatesAutoresizingMaskIntoConstraints="NO" id="7X9-3R-gUV">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconProfile" translatesAutoresizingMaskIntoConstraints="NO" id="7X9-3R-gUV">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="80" id="ENX-vA-wie"/>

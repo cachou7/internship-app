@@ -65,7 +65,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                     let key = currentUser.uid
                     Constants.refs.databaseUsers.observe(.value, with: { snapshot in
                         if !snapshot.hasChild(key) {
-                            Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "tasks_created": [], "tasks_liked": []])
+                            Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "email": currentUser.email, "tasks_created": [], "tasks_liked": []])
                             if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
                                 let imageName:String = String("\(key).png")
                                 

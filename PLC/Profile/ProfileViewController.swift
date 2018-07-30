@@ -61,10 +61,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         }
         
-        Constants.refs.databaseUsers.child((user?.uid)!).child("points").observe(.childChanged, with: {(snap) in
-            let changedPoints = snap.value
-            self.user?.points = changedPoints as! Int
-            self.pointsLabel.text = String((self.user?.points)!)
+        Constants.refs.databaseUsers.child((user?.uid)!).observe(.childChanged, with: {(snap) in
+            if snap.key == "points"{
+                self.user?.points = snap.value as! Int
+                self.pointsLabel.text = String((self.user?.points)!)
+            }
         })
         
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
@@ -278,6 +279,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive) { _ in
             self.performSegue(withIdentifier: "unwindToLogin", sender: self)
+            try! Auth.auth().signOut()
         })
         
         self.present(alert, animated: true, completion: nil)

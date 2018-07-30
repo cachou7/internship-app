@@ -96,7 +96,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="64.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="7bb-pk-i99">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="7bb-pk-i99">
                                                     <rect key="frame" x="44.5" y="5" width="55" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="55" id="HQl-BM-qlo"/>
@@ -202,7 +202,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="64.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Ux3-iI-DKl">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Ux3-iI-DKl">
                                                     <rect key="frame" x="44.5" y="5" width="55" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="55" id="36q-wq-4YI"/>
