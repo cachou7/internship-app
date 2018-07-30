@@ -219,12 +219,36 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 let userInfo = user as! DataSnapshot
                     print(userInfo.key)
                 Constants.refs.databaseUsers.child(userInfo.key).child("tasks_liked").child(self.task_in.id).removeValue()
-                }});
-            Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue();
-            Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue();
-            Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue();
-            Constants.refs.databasePastTasks.child(self.task_in.id).removeValue();
+                }})
+            let deadlineTime = DispatchTime.now() + .seconds(1)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            Constants.refs.databaseTasks.child(self.task_in.id).child("taskRSVP").observeSingleEvent(of: .value, with: { snapshot in
+                for child in snapshot.children{
+                    let userType = (child as! DataSnapshot).key
+                    print(userType)
+                    if userType == "leaders"{
+                        for user in (child as! DataSnapshot).children{
+                            let userInfo = user as! DataSnapshot
+                            print(userInfo.key)
+                            Constants.refs.databaseUsers.child(userInfo.key).child("tasks_lead").child(self.task_in.id).removeValue()
+                        }
+                    }
+                    else{
+                        for user in (child as! DataSnapshot).children{
+                            let userInfo = user as! DataSnapshot
+                            print(userInfo.key)
+                            Constants.refs.databaseUsers.child(userInfo.key).child("tasks_participated").child(self.task_in.id).removeValue()
+                        }
+                    }
+                }})
+            }
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue()
+            Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue()
+            Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue()
+            Constants.refs.databasePastTasks.child(self.task_in.id).removeValue()
             Constants.refs.databaseTasks.child(self.task_in.id).removeValue()
+            }
             
                 if self.segueFromController == "TaskTableViewController"{
                      self.performSegue(withIdentifier: "unwindToInitiatives", sender: self)
