@@ -161,7 +161,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         taskPhoto.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if error != nil {
-                self.taskPhoto.image = #imageLiteral(resourceName: "merchMart")
+                self.taskPhoto.image = #imageLiteral(resourceName: "psheader")
                 
                 self.taskPhoto.contentMode = UIViewContentMode.scaleAspectFill
                 self.taskPhoto.clipsToBounds = true
