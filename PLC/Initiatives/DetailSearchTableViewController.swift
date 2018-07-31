@@ -104,7 +104,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         SDImageCache.shared().removeImage(forKey: storageRef.fullPath)
         cell.taskImage.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if error != nil {
-                cell.taskImage.image = #imageLiteral(resourceName: "merchMart")
+                cell.taskImage.image = #imageLiteral(resourceName: "psheader")
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
                 cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
