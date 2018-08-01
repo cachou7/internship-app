@@ -43,6 +43,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.delegate = self
         calendar.swipeToChooseGesture.isEnabled = true
         calendar.backgroundColor = UIColor.white
+        calendar.appearance.headerTitleColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
+        calendar.appearance.selectionColor = UIColor(red: 248.0/255.0, green: 176.0/255.0, blue: 179.0/255.0, alpha: 1.0)
+        calendar.appearance.weekdayTextColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
+        calendar.appearance.todaySelectionColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
         //calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
         //calendar.appearance.caseOptions = FSCalendarCaseOptions.weekdayUsesSingleUpperCase
         calendar.appearance.calendar.scrollEnabled = true

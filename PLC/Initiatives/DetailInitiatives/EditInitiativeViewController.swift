@@ -220,42 +220,42 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         var valid:Bool = true
         if (titleTextField.text?.isEmpty)! {
             //Change the placeholder color to red for textfield email if
-            titleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            titleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (descriptionTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield userName
-            descriptionTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Description", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            descriptionTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Description", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (timeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (endTimeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (categoryTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if !(leadCheckBox.isSelected) && !(participateCheckBox.isSelected){
-            validationCheckBoxLabel.textColor = UIColor.red
+            validationCheckBoxLabel.textColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
             validationCheckBoxLabel.text = "'#lead' and/or '#participate' not complete"
             valid = false
         }
         else{
             if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-                validationCheckBoxLabel.textColor = UIColor.red
+                validationCheckBoxLabel.textColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
                 validationCheckBoxLabel.text = "'#lead' and/or '#participate' not complete"
                 valid = false
             }

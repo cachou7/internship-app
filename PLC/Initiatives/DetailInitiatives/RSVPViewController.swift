@@ -78,6 +78,8 @@ class RSVPViewController: UIViewController {
         undoSignUpButton.isHidden = true
         goingParticipantButton.isEnabled = true
         signUpLeaderButton.isEnabled = true
+        signUpLeaderButton.setTitleColor(UIColor.lightGray, for: .disabled)
+        goingParticipantButton.setTitleColor(UIColor.lightGray, for: .disabled)
         configurePage()
     }
 
@@ -124,6 +126,7 @@ class RSVPViewController: UIViewController {
                             }
                             if self.task!.amounts["leaders"]! == self.leadersRSVP.count {
                                 self.signUpLeaderButton.isEnabled = false
+                                self.signUpLeaderButton.setTitleColor(UIColor.lightGray, for: .disabled)
                             }
                         }
                         self.leaderStack.isHidden = false
@@ -132,6 +135,7 @@ class RSVPViewController: UIViewController {
                     else{
                         if self.task!.amounts["leaders"]! == self.leadersRSVP.count {
                             self.signUpLeaderButton.isEnabled = false
+                            self.signUpLeaderButton.setTitleColor(UIColor.lightGray, for: .disabled)
                         }
                         self.leaderStack.isHidden = false
                         self.leadersNeededLabel.text = "\(String(describing: (self.task!.amounts["leaders"]!-self.leadersRSVP.count))) leader spots left"
@@ -156,6 +160,7 @@ class RSVPViewController: UIViewController {
                             }
                             if self.task!.amounts["participants"]! == self.participantsRSVP.count {
                                 self.goingParticipantButton.isEnabled = false
+                                self.goingParticipantButton.setTitleColor(UIColor.lightGray, for: .disabled)
                             }
                         }
                         self.participateStack.isHidden = false
@@ -164,6 +169,7 @@ class RSVPViewController: UIViewController {
                     else{
                         if self.task!.amounts["participants"]! == self.participantsRSVP.count {
                             self.goingParticipantButton.isEnabled = false
+                             self.goingParticipantButton.setTitleColor(UIColor.lightGray, for: .disabled)
                         }
                         self.participateStack.isHidden = false
                         self.partipantsNeededLabel.text = "\(String(describing: (self.task!.amounts["participants"]!-self.participantsRSVP.count))) participant spots left"

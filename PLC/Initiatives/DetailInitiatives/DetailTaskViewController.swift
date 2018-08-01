@@ -69,7 +69,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = task_in.title
+        //self.navigationItem.title = task_in.title
         
         presenter.dismissOnSwipe = true
         presenter.dismissOnSwipeDirection = .bottom
@@ -230,6 +230,7 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 Constants.refs.databasePendingTasks.child(self.task_in.id).removeValue()
                 Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_pending").child(self.task_in.id).removeValue()
                 
+                /*
                 if self.segueFromController == "TaskTableViewController"{
                     self.performSegue(withIdentifier: "unwindToInitiatives", sender: self)
                 }
@@ -242,8 +243,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                 else if self.segueFromController == "DetailSearchTableViewController"{
                     self.performSegue(withIdentifier: "unwindToDetailSearch", sender: self)
                 }
+ */
             }
-            else{
             
                 Constants.refs.databaseTasks.child(self.task_in.id).child("users_liked").observeSingleEvent(of: .value, with: { snapshot in
                 for user in snapshot.children{
@@ -261,12 +262,14 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                             for user in (child as! DataSnapshot).children{
                                 let userInfo = user as! DataSnapshot
                                 print(userInfo.key)
-                                Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
-                                    let currentPoints = snap.value as! Int
-                                    let point = Points()
-                                    Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Lead", thisTask: self.task_in))
-                                    
-                                })
+                                
+                                if !self.isPending{
+                                    Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
+                                        let currentPoints = snap.value as! Int
+                                        let point = Points()
+                                        Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Lead", thisTask: self.task_in))
+                                    })
+                                }
                                 Constants.refs.databaseUsers.child(userInfo.key).child("tasks_lead").child(self.task_in.id).removeValue()
                                 Constants.refs.databaseUsers.child(userInfo.key).child("tasks_lead").child(self.task_in.id).removeValue()
                             }
@@ -275,21 +278,25 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
                             for user in (child as! DataSnapshot).children{
                                 let userInfo = user as! DataSnapshot
                                 print(userInfo.key)
-                                Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
-                                    let currentPoints = snap.value as! Int
-                                    let point = Points()
-                                    Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Participate", thisTask: self.task_in))
-                                    
-                                })
+                                if !self.isPending{
+                                    Constants.refs.databaseUsers.child(userInfo.key).child("points").observeSingleEvent(of: .value, with: {(snap) in
+                                        let currentPoints = snap.value as! Int
+                                        let point = Points()
+                                        Constants.refs.databaseUsers.child(userInfo.key).child("points").setValue(currentPoints - point.getPoints(type: "Participate", thisTask: self.task_in))
+                                        
+                                    })
+                                }
                                 Constants.refs.databaseUsers.child(userInfo.key).child("tasks_participated").child(self.task_in.id).removeValue()
                             }
                         }
                     }})
-                }
                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 Constants.refs.databaseUsers.child(self.task_in.createdBy).child("tasks_created").child(self.task_in.id).removeValue()
-                    let point = Points()
-                    Constants.refs.databaseUsers.child(self.task_in.createdBy).child("points").setValue(currentUser.points - point.getPoints(type: "Create", thisTask: self.task_in))
+                    
+                    if !self.isPending{
+                        let point = Points()
+                        Constants.refs.databaseUsers.child(self.task_in.createdBy).child("points").setValue(currentUser.points - point.getPoints(type: "Create", thisTask: self.task_in))
+                    }
                 Constants.refs.databaseUpcomingTasks.child(self.task_in.id).removeValue()
                 Constants.refs.databaseCurrentTasks.child(self.task_in.id).removeValue()
                 Constants.refs.databasePastTasks.child(self.task_in.id).removeValue()

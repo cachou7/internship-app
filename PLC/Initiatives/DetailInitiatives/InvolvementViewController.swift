@@ -141,7 +141,7 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
         cell.layer.cornerRadius = 20
         //Cell ImageView Formatting
         cell.userProfilePhoto.layer.cornerRadius = cell.userProfilePhoto.frame.size.width/2
-        cell.userProfilePhoto.layer.borderWidth = 0.5
+        cell.userProfilePhoto.layer.borderWidth = 0.1
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
         cell.userProfilePhoto.clipsToBounds = true
         

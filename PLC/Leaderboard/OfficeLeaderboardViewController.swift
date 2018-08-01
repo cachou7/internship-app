@@ -100,7 +100,7 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         
         cell.rankLabel.text = String(indexPath.row+1)
         cell.userProfileLink.text = "\(thisUser.firstName) \(thisUser.lastName)" 
-        cell.userPoints.text = String(thisUser.points)
+        cell.userPoints.text = String(thisUser.points) + " pts"
         
         let storageRef = Constants.refs.storage.child("userPhotos/\(thisUser.uid).png")
         // Load the image using SDWebImage
@@ -123,11 +123,12 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toProfile"{
-            let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
+            let vc = segue.destination as! UINavigationController
+            vc.navigationBar.barTintColor = UIColor(red: 189.0/255.0, green: 229.0/255.0, blue: 239.0/255.0, alpha: 1.0)
+            let destinationVC = vc.childViewControllers[0] as! ProfileViewController
             destinationVC.signOutButton.isEnabled = false
             destinationVC.signOutButton.tintColor = UIColor.clear
             destinationVC.user = self.users[(tableView.indexPathForSelectedRow?.row)!]
-            //self.show(destinationVC, sender: Any?.self)
         }
     }
     

@@ -131,21 +131,30 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                 amounts["participants"] = participantAmount
             }
             let key = Constants.refs.databaseTasks.childByAutoId().key
-            
-            task = Task(title: titleTextField.text!, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0, category: categoryTextField.text!)
-            
-            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category as Any] as [String : Any]
+            var taskTitle: String
             if fundingCheck.isSelected{
                 Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_pending").child(key).setValue(true)
-                Constants.refs.databasePendingTasks.child(key).setValue(taskDB)
+                
+                Constants.refs.databasePendingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
+                taskTitle = titleTextField.text! + " ⏳"
+            }
+            else{
+                taskTitle = titleTextField.text!
             }
             
-            else{
+            task = Task(title: taskTitle, description: descriptionTextField.text!, tag: tagResult, startTime: timeTextField.text!, endTime: endTimeTextField.text!, location: locationTextField.text!, timestamp: NSDate().timeIntervalSince1970, id: key, createdBy: currentUser.uid, ranking: 0, timeMilliseconds: eventTime, endTimeMilliseconds: eventEndTime, amounts: amounts, usersLikedAmount: 0, category: categoryTextField.text!)
+            
+            
+            let taskDB = ["taskId": key, "taskTitle": task?.title as Any, "taskDescription": task?.description as Any, "taskTag": task?.tag as Any, "taskTime": task?.startTime as Any, "taskEndTime": task?.endTime as Any, "taskLocation": task?.location as Any as Any, "timestamp": task?.timestamp as Any, "createdBy" : task?.createdBy as Any, "ranking": task?.ranking as Any, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any, "participantAmount": participantAmount, "leaderAmount": leaderAmount, "usersLikedAmount": task?.usersLikedAmount as Any, "category": task?.category as Any] as [String : Any]
+            
                 Constants.refs.databaseTasks.child(key).setValue(taskDB)
-                
+            
+            if fundingCheck.isSelected{
+                Constants.refs.databasePendingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
+            }
+            else{
                 Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
                 Constants.refs.databaseUpcomingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
-                
                 let tasksCreated = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_created")
                 tasksCreated.child(key).setValue(true)
                 let point = Points()
@@ -245,42 +254,42 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
         var valid:Bool = true
         if (titleTextField.text?.isEmpty)! {
             //Change the placeholder color to red for textfield email if
-            titleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            titleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (descriptionTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield userName
-            descriptionTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Description", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            descriptionTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Description", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (timeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a start time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (endTimeTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an end time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (categoryTextField.text?.isEmpty)!{
             // Change the placeholder color to red for textfield passWord
-            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a category", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if !(leadCheck.isSelected) && !(participateCheck.isSelected){
-            validationCheckBoxLabel.textColor = UIColor.red
+            validationCheckBoxLabel.textColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
             validationCheckBoxLabel.text =  "'#lead' and/or '#participate' not complete"
             valid = false
         }
         else{
             if ((leadAmountTextField.isEnabled) && (leadAmountTextField.text?.isEmpty)!) || ((participateAmountTextField.isEnabled) && (participateAmountTextField.text?.isEmpty)!){
-                validationCheckBoxLabel.textColor = UIColor.red
+                validationCheckBoxLabel.textColor = UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)
                 validationCheckBoxLabel.text =  "'#lead' and/or '#participate' not complete"
             }
             else{
