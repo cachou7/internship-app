@@ -136,7 +136,7 @@ class InitiativeCreateViewController: UIViewController, UITextFieldDelegate, UIN
                 Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_pending").child(key).setValue(true)
                 
                 Constants.refs.databasePendingTasks.child(key).setValue(["taskID": key, "taskTimeMilliseconds": task?.timeMilliseconds as Any, "taskEndTimeMilliseconds": task?.endTimeMilliseconds as Any])
-                taskTitle = titleTextField.text! + " ⏳"
+                taskTitle = titleTextField.text!
             }
             else{
                 taskTitle = titleTextField.text!
