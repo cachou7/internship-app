@@ -314,28 +314,46 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="265.66666666666669"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16M-dI-3P6">
+                                            <rect key="frame" x="348" y="187" width="25" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="25" id="bJo-nl-EWe"/>
+                                            </constraints>
+                                            <state key="normal" image="heartIcon">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="heartButton:" destination="QoY-kJ-wON" eventType="touchUpInside" id="fo2-XU-Ci8"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdo-aM-IIn">
+                                            <rect key="frame" x="376" y="189" width="28" height="21"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KZ3-5d-gKn">
-                                            <rect key="frame" x="20" y="7" width="374" height="166"/>
+                                            <rect key="frame" x="20" y="13" width="374" height="166"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wed, Jun 22 · 6:00 PM · Main Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yn9-6d-pJG">
-                                            <rect key="frame" x="20" y="181" width="314" height="23"/>
+                                            <rect key="frame" x="20" y="187" width="314" height="23"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="13"/>
                                             <color key="textColor" red="0.85490196080000003" green="0.28627450980000002" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gggggggggggggggggggg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8N4-8q-btJ">
-                                            <rect key="frame" x="20" y="203" width="314" height="22"/>
+                                            <rect key="frame" x="20" y="209" width="314" height="22"/>
                                             <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconLine" translatesAutoresizingMaskIntoConstraints="NO" id="eNv-Lo-rcm">
-                                            <rect key="frame" x="0.0" y="251" width="414" height="8"/>
+                                            <rect key="frame" x="0.0" y="257" width="414" height="8"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="8" id="ocj-b2-cpu"/>
                                             </constraints>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfq-fF-f0I">
-                                            <rect key="frame" x="20" y="227" width="109" height="16"/>
+                                            <rect key="frame" x="20" y="233" width="109" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="OZy-JV-rBb"/>
                                                 <constraint firstAttribute="width" constant="109" id="Q7j-dR-JbH"/>
@@ -348,24 +366,6 @@
                                                 <action selector="categoryButton:" destination="QoY-kJ-wON" eventType="touchUpInside" id="TCB-od-oa2"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16M-dI-3P6">
-                                            <rect key="frame" x="348" y="181" width="25" height="25"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="25" id="bJo-nl-EWe"/>
-                                            </constraints>
-                                            <state key="normal" image="heartIcon">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="heartButton:" destination="QoY-kJ-wON" eventType="touchUpInside" id="fo2-XU-Ci8"/>
-                                            </connections>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdo-aM-IIn">
-                                            <rect key="frame" x="376" y="183" width="28" height="21"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
@@ -389,8 +389,8 @@
                                         <constraint firstItem="16M-dI-3P6" firstAttribute="centerY" secondItem="qdo-aM-IIn" secondAttribute="centerY" id="lhJ-jW-ID3"/>
                                         <constraint firstItem="yn9-6d-pJG" firstAttribute="top" secondItem="KZ3-5d-gKn" secondAttribute="bottom" constant="8" symbolic="YES" id="lto-Me-Ngb"/>
                                         <constraint firstItem="eNv-Lo-rcm" firstAttribute="leading" secondItem="YkK-vZ-qGV" secondAttribute="leading" id="m6N-3A-HD5"/>
-                                        <constraint firstItem="KZ3-5d-gKn" firstAttribute="top" secondItem="YkK-vZ-qGV" secondAttribute="topMargin" constant="-4" id="oY1-7n-82R"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="eNv-Lo-rcm" secondAttribute="bottom" constant="-4" id="pfp-2A-epK"/>
+                                        <constraint firstItem="KZ3-5d-gKn" firstAttribute="top" secondItem="YkK-vZ-qGV" secondAttribute="topMargin" constant="2" id="oY1-7n-82R"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="eNv-Lo-rcm" secondAttribute="bottom" constant="-10" id="pfp-2A-epK"/>
                                         <constraint firstAttribute="trailing" secondItem="eNv-Lo-rcm" secondAttribute="trailing" id="xmG-8A-BQN"/>
                                     </constraints>
                                 </tableViewCellContentView>
