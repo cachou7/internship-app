@@ -15,9 +15,7 @@ class InitiativesPageViewController: UIPageViewController, InitiativesPageViewCo
     
     private(set) lazy var orderedViewControllers: [UINavigationController] = {
         return [self.newInitiativesViewController(pageType: "FavInitiatives"),
-                self.newInitiativesViewController(pageType: "RecentlyCreated"),
-                self.newInitiativesViewController(pageType: "MostPopular"),
-                self.newInitiativesViewController(pageType: "Upcoming")]
+                self.newInitiativesViewController(pageType: "RecentlyCreated")]
     }()
     
     private func newInitiativesViewController(pageType: String) -> UINavigationController {
@@ -27,7 +25,7 @@ class InitiativesPageViewController: UIPageViewController, InitiativesPageViewCo
         }
         else{
             let destinationNC = (storyboard?.instantiateViewController(withIdentifier: "\(pageType)NavigationController"))! as! UINavigationController
-            (destinationNC.childViewControllers[0] as! TaskTableViewController).currentView = pageType
+            //(destinationNC.childViewControllers[0] as! TaskTableViewController).currentView = pageType
             return destinationNC
             
         }

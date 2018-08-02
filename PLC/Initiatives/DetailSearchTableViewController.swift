@@ -18,8 +18,37 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateSearchResults()
-        
+        if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming"{
+            filteredItems = overallItems!
+            Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
+                for child in snapshot.children {
+                    if let snap = child as? DataSnapshot{
+                        let taskInfo = snap.value as? [String : Any ] ?? [:]
+                        overallLoop: for i in 0..<self.filteredItems.count{
+                            if self.filteredItems[i].id == taskInfo["taskID"] as! String{
+                                self.filteredItems.remove(at: i)
+                                self.tableView.reloadData()
+                                break overallLoop
+                            }
+                        }
+                    }
+                }
+            })
+            sortTasks()
+        }
+        else{
+            updateSearchResults()
+        }
+    }
+    
+    func sortTasks() -> Void {
+        if self.navigationItem.title! == "Most Popular"{
+            self.filteredItems.sort(by: {$0.ranking > $1.ranking})
+         }
+         else{
+            self.filteredItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+         }
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,7 +77,23 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     
     //TABLEVIEW DELEGATES
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        var numOfSections: Int = 0
+        if filteredItems.count > 0
+        {
+            tableView.separatorStyle = .singleLine
+            numOfSections = 1
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text = "No initiatives available"
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView = noDataLabel
+            tableView.separatorStyle = .none
+        }
+        return numOfSections
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,8 +101,6 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var isLead = false
-        var isParticipant = false
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
@@ -65,28 +108,24 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         
         thisTask = self.filteredItems[indexPath.row]
         
-        let tags = thisTask.tag
-        let tagArray = tags.components(separatedBy: " ")
-        for tag in tagArray{
-            if tag == "#lead"{
-                isLead = true            }
-            if tag == "#participate"{
-                isParticipant = true
-            }
-        }
         
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        cell.taskMonth.text = String(startTime[0]).uppercased()
-        let taskDay = String(startTime[1]).split(separator: ",")
-        cell.taskDay.text = String(taskDay[0])
+        //cell.taskMonth.text = String(startTime[0]).uppercased()
+        //let taskDay = String(startTime[1]).split(separator: ",")
+        //cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
-        let dayOfWeek = getDayOfWeek(dateString)
-        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " · " + thisTask!.location
+        let dayOfWeek = getDayOfWeek(dateString)!
+        let taskLocation = thisTask!.location
+        var taskTimeInfo = ""
+        taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
+        taskTimeInfo += " · " + String(startTime[4]) + " "
+        taskTimeInfo += String(startTime[5]) + " · " + taskLocation
+        cell.taskTime.text = String(taskTimeInfo)
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
             if !snapshot.hasChild(thisTask!.id) {
@@ -107,27 +146,16 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
                 cell.taskImage.image = #imageLiteral(resourceName: "psheader")
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             else{
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             
         }
-        cell.taskParticipantPoints.text = "+ 0 pts"
-        cell.taskLeaderPoints.text = "+ 0 pts"
-        
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
-        
-        let point = Points.init()
-        if isLead{
-            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
-        }
-        if isParticipant{
-            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
-        }
         
         cell.delegate = self
         return cell

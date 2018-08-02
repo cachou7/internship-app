@@ -24,7 +24,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var initialToolbar: UIView! = nil
     var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
     var dataIsAvailable = false
-    var currentView: String = ""
+    //var currentView: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,22 +146,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var isLead = false
-        var isParticipant = false
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        var thisTask: Task! = self.overallItems[indexPath.row]
-        
-        let tags = thisTask.tag
-        let tagArray = tags.components(separatedBy: " ")
-        for tag in tagArray{
-            if tag == "#lead"{
-                isLead = true            }
-            if tag == "#participate"{
-                isParticipant = true
-            }
-        }
+        let thisTask: Task! = self.overallItems[indexPath.row]
         
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
@@ -208,19 +196,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }
             
         }
-        //cell.taskParticipantPoints.text = " None"
-        //cell.taskLeaderPoints.text = " None"
-        
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
-        
-        /*let point = Points.init()
-        if isLead{
-            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
-        }
-        if isParticipant{
-            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
-        }
-        */
         cell.delegate = self
         return cell
     }
@@ -304,15 +280,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
     func sortTasks() -> Void {
         //OVERALL
-            if currentView == "RecentlyCreated"{
-                self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
-            }
+            self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
+            /*}
             else if currentView == "MostPopular"{
                 self.overallItems.sort(by: {$0.ranking > $1.ranking})
             }
             else{
                 self.overallItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
             }
+ */
         //END OVERALL
         self.tableView.reloadData()
     }
