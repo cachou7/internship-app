@@ -162,6 +162,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let dayOfWeek = getDayOfWeek(dateString)!
         let taskLocation = thisTask!.location
         var taskTimeInfo = ""
+        let currentTime = Date().timeIntervalSince1970
         if currentTime > thisTask.timeMilliseconds && currentTime < thisTask.endTimeMilliseconds {
             taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
             taskTimeInfo += " · Happening Now · " + taskLocation
