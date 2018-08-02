@@ -19,7 +19,7 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         
         configureDatabase()
         
-        let categories = ["Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other", "Lead", "Participate"]
+        let categories = ["Most Popular", "Upcoming", "Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other", "Lead", "Participate"]
         database.append(contentsOf: categories)
         
         ynSearch.setCategories(value: categories)

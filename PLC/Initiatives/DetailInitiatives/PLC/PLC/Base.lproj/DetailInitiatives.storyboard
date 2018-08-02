@@ -324,13 +324,13 @@
                     <navigationItem key="navigationItem" id="pfC-Iy-z38">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="trash" id="oXG-EZ-kSe">
-                                <color key="tintColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="deleteButton:" destination="sbj-2x-T3s" id="oWm-0Z-CzD"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="rx3-xB-HG9">
-                                <color key="tintColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="editButton:" destination="sbj-2x-T3s" id="v6V-A5-D66"/>
                                     <segue destination="tni-49-Cak" kind="presentation" identifier="editTask" id="B8C-2Q-Bwk"/>
