@@ -168,13 +168,17 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskTitle.text = thisTask!.title
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        cell.taskMonth.text = String(startTime[0]).uppercased()
-        let taskDay = String(startTime[1]).split(separator: ",")
-        cell.taskDay.text = String(taskDay[0])
+        //cell.taskMonth.text = String(startTime[0]).uppercased()
+        //cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
-        let dayOfWeek = getDayOfWeek(dateString)
-        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " · " + thisTask!.location
+        let dayOfWeek = getDayOfWeek(dateString)!
+        let taskLocation = thisTask!.location
+        var taskTimeInfo = ""
+        taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
+        taskTimeInfo += " · " + String(startTime[4]) + " "
+        taskTimeInfo += String(startTime[5]) + " · " + taskLocation
+        cell.taskTime.text = String(taskTimeInfo)
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
             if !snapshot.hasChild(thisTask!.id) {
@@ -195,28 +199,28 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 cell.taskImage.image = #imageLiteral(resourceName: "psheader")
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             else{
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
+                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             
         }
-        cell.taskParticipantPoints.text = " None"
-        cell.taskLeaderPoints.text = " None"
+        //cell.taskParticipantPoints.text = " None"
+        //cell.taskLeaderPoints.text = " None"
         
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
         
-        let point = Points.init()
+        /*let point = Points.init()
         if isLead{
             cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
         }
         if isParticipant{
             cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
         }
-        
+        */
         cell.delegate = self
         return cell
     }
