@@ -149,6 +149,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
+        let pendingTasks = Constants.refs.databasePendingTasks
         let thisTask: Task! = self.overallItems[indexPath.row]
         
         cell.taskTitle.numberOfLines = 1
@@ -161,9 +162,15 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let dayOfWeek = getDayOfWeek(dateString)!
         let taskLocation = thisTask!.location
         var taskTimeInfo = ""
-        taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
-        taskTimeInfo += " · " + String(startTime[4]) + " "
-        taskTimeInfo += String(startTime[5]) + " · " + taskLocation
+        if currentTime > thisTask.timeMilliseconds && currentTime < thisTask.endTimeMilliseconds {
+            taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
+            taskTimeInfo += " · Happening Now · " + taskLocation
+        }
+        else {
+            taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
+            taskTimeInfo += " · " + String(startTime[4]) + " "
+            taskTimeInfo += String(startTime[5]) + " · " + taskLocation
+        }
         cell.taskTime.text = String(taskTimeInfo)
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
@@ -195,6 +202,27 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
         }
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
+        
+        var createdByUser = false
+        if thisTask.createdBy == currentUser.uid {
+            createdByUser = true
+            cell.taskFirstIcon.image = UIImage(named: "iconChicken")
+        }
+        pendingTasks.observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.hasChild(thisTask.id) {
+                if createdByUser {
+                    cell.taskFirstIcon.image = UIImage(named: "iconChicken")
+                    cell.taskSecondIcon.image = UIImage(named: "iconPending")
+                }
+                else {
+                    cell.taskFirstIcon.image = UIImage(named: "iconPending")
+                }
+            }
+            else {
+                cell.taskFirstIcon.image = UIImage(named: "iconChicken")
+            }
+        })
+        
         cell.delegate = self
         return cell
     }
