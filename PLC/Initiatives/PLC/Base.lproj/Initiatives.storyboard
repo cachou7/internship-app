@@ -338,10 +338,10 @@
                                             </constraints>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfq-fF-f0I">
-                                            <rect key="frame" x="20" y="227" width="264" height="16"/>
+                                            <rect key="frame" x="20" y="227" width="109" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="OZy-JV-rBb"/>
-                                                <constraint firstAttribute="width" constant="264" id="Q7j-dR-JbH"/>
+                                                <constraint firstAttribute="width" constant="109" id="Q7j-dR-JbH"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                             <state key="normal" title="Fun &amp; Games">
