@@ -336,27 +336,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
-        cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
+        //cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        cell.taskMonth.text = String(startTime[0]).uppercased()
-        let taskDay = String(startTime[1]).split(separator: ",")
-        cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
         let dayOfWeek = getDayOfWeek(dateString)
-        cell.taskTime.text = dayOfWeek! + " · " + String(startTime[4]) + " " + String(startTime[5]) + " · " + thisTask!.location
-        //Check if user has liked the task and display correct heart
-        cell.taskLiked.isEnabled = false
-        currentTasks.observeSingleEvent(of: .value, with: { snapshot in
-            if !snapshot.hasChild(thisTask!.id) {
-                let unlikedIcon = UIImage(named: "heartIcon")
-                cell.taskLiked.setImage(unlikedIcon, for: .normal)
-            }
-            else {
-                let likedIcon = UIImage(named: "redHeart")
-                cell.taskLiked.setImage(likedIcon, for: .normal)
-            }
-        })
+        var taskTimeInfo = ""
+        taskTimeInfo = dayOfWeek! + ", " + String(startTime[0])
+        taskTimeInfo += " " + String(startTime[1]).dropLast() + " at "
+        taskTimeInfo += String(startTime[4]) + " " + String(startTime[5])
+        cell.taskTime.numberOfLines = 1
+        cell.taskTime.adjustsFontSizeToFitWidth = true
+        cell.taskTime.text = String(taskTimeInfo)
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(thisTask.id).png")
         // Load the image using SDWebImage
@@ -375,18 +366,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
         }
-        cell.taskParticipantPoints.text = " None"
-        cell.taskLeaderPoints.text = " None"
-        
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
-        
-        let point = Points.init()
-        if isLead{
-            cell.taskLeaderPoints.text = "+" + String(point.getPoints(type: "Lead", thisTask: thisTask)) + " pts"
-        }
-        if isParticipant{
-            cell.taskParticipantPoints.text = "+" + String(point.getPoints(type: "Participant", thisTask: thisTask)) + " pts"
-        }
+    
         cell.delegate = self
         return cell
     }
@@ -455,19 +436,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         switch weekDay {
         case 1:
-            return "Sun"
+            return "Sunday"
         case 2:
-            return "Mon"
+            return "Monday"
         case 3:
-            return "Tue"
+            return "Tuesday"
         case 4:
-            return "Wed"
+            return "Wednesday"
         case 5:
-            return "Thu"
+            return "Thursday"
         case 6:
-            return "Fri"
+            return "Friday"
         case 7:
-            return "Sat"
+            return "Saturday"
         default:
             return "Yikes"
         }
