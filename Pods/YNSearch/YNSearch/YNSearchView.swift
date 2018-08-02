@@ -59,6 +59,10 @@ open class YNSearchView: UIView, YNSearchMainViewDelegate, YNSearchListViewDeleg
         self.delegate?.ynCategoryButtonClicked(text: text)
     }
     
+    open func ynFilterButtonClicked(text: String) {
+        self.delegate?.ynFilterButtonClicked(text: text)
+    }
+    
     open func ynSearchHistoryButtonClicked(text: String) {
         self.delegate?.ynSearchHistoryButtonClicked(text: text)
     }

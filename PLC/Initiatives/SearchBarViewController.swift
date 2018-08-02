@@ -19,10 +19,13 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         
         configureDatabase()
         
-        let categories = ["Most Popular", "Upcoming", "Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other", "Lead", "Participate"]
+        let categories = ["Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
+        let filters = ["Most Popular", "Upcoming", "Lead", "Participate"]
         database.append(contentsOf: categories)
+        database.append(contentsOf: filters)
         
         ynSearch.setCategories(value: categories)
+        ynSearch.setFilters(value: filters)
         ynSearch.setSearchHistories(value: categories)
         
         self.ynSearchinit()
@@ -32,6 +35,7 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         initData(database: database)
         
         self.setYNCategoryButtonType(type: .colorful)
+        self.setYNFilterButtonType(type: .colorful)
     }
     
     func configureDatabase(){
@@ -61,6 +65,12 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
     }
     
     func ynCategoryButtonClicked(text: String) {
+        self.ynSearchView.ynSearchListView.ynSearch.appendSearchHistories(value: text)
+        self.pushViewController(text: text)
+        print(text)
+    }
+    
+    func ynFilterButtonClicked(text: String) {
         self.ynSearchView.ynSearchListView.ynSearch.appendSearchHistories(value: text)
         self.pushViewController(text: text)
         print(text)

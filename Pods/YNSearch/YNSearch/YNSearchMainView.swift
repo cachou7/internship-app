@@ -13,7 +13,9 @@ open class YNSearchMainView: UIView {
     let height = UIScreen.main.bounds.height
 
     open var categoryLabel: UILabel!
+    open var filterLabel: UILabel!
     open var ynCategoryButtons = [YNCategoryButton]()
+    open var ynFilterButtons = [YNCategoryButton]()
     
     open var searchHistoryLabel: UILabel!
     open var ynSearchHistoryViews = [YNSearchHistoryView]()
@@ -30,7 +32,8 @@ open class YNSearchMainView: UIView {
         super.init(frame: frame)
         
         guard let categories = YNSearch.shared.getCategories() else { return }
-        self.initView(categories: categories)
+        guard let filters = YNSearch.shared.getFilters() else { return }
+        self.initView(categories: categories, filters: filters)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -44,10 +47,22 @@ open class YNSearchMainView: UIView {
         }
     }
     
+    open func setYNFilterButtonType(type: YNCategoryButtonType) {
+        for ynFilterButton in self.ynFilterButtons {
+            ynFilterButton.type = type
+        }
+    }
+    
     @objc open func ynCategoryButtonClicked(_ sender: UIButton) {
         guard let text = ynCategoryButtons[sender.tag].titleLabel?.text else { return }
         ynSearch.appendSearchHistories(value: text)
         self.delegate?.ynCategoryButtonClicked(text: text)
+    }
+    
+    @objc open func ynFilterButtonClicked(_ sender: UIButton) {
+        guard let text = ynFilterButtons[sender.tag].titleLabel?.text else { return }
+        ynSearch.appendSearchHistories(value: text)
+        self.delegate?.ynFilterButtonClicked(text: text)
     }
     
     @objc open func ynSearchHistoryButtonClicked(_ sender: UIButton) {
@@ -65,12 +80,12 @@ open class YNSearchMainView: UIView {
         self.redrawSearchHistoryButtons()
     }
     
-    open func initView(categories: [String]) {
-        self.categoryLabel = UILabel(frame: CGRect(x: margin, y: 0, width: width - 40, height: 50))
-        self.categoryLabel.text = "Categories"
-        self.categoryLabel.font = UIFont.systemFont(ofSize: 13)
-        self.categoryLabel.textColor = UIColor.darkGray
-        self.addSubview(self.categoryLabel)
+    open func initView(categories: [String], filters: [String]) {
+        self.filterLabel = UILabel(frame: CGRect(x: margin, y: 0, width: width - 40, height: 50))
+        self.filterLabel.text = "Filters"
+        self.filterLabel.font = UIFont.systemFont(ofSize: 13)
+        self.filterLabel.textColor = UIColor.darkGray
+        self.addSubview(self.filterLabel)
         
         let font = UIFont.systemFont(ofSize: 12)
         let userAttributes = [NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor: UIColor.gray]
@@ -78,6 +93,35 @@ open class YNSearchMainView: UIView {
         var formerWidth: CGFloat = margin
         var formerHeight: CGFloat = 50
         
+        for i in 0..<filters.count {
+            let size = filters[i].size(withAttributes: userAttributes)
+            if i > 0 {
+                formerWidth = ynFilterButtons[i-1].frame.size.width + ynFilterButtons[i-1].frame.origin.x + 10
+                if formerWidth + size.width + margin > UIScreen.main.bounds.width {
+                    formerHeight += ynFilterButtons[i-1].frame.size.height + 10
+                    formerWidth = margin
+                }
+            }
+            let button = YNCategoryButton(frame: CGRect(x: formerWidth, y: formerHeight, width: size.width + 10, height: size.height + 10))
+            button.addTarget(self, action: #selector(ynFilterButtonClicked(_:)), for: .touchUpInside)
+            button.setTitle(filters[i], for: .normal)
+            button.tag = i
+            
+            ynFilterButtons.append(button)
+            self.addSubview(button)
+            
+        }
+        
+        guard let originYCategory = ynFilterButtons.last?.frame.origin.y else { return }
+        formerWidth = margin
+        formerHeight = originYCategory + 80
+        
+        self.categoryLabel = UILabel(frame: CGRect(x: margin, y: originYCategory+30, width: width - 40, height: 50))
+        self.categoryLabel.text = "Categories"
+        self.categoryLabel.font = UIFont.systemFont(ofSize: 13)
+        self.categoryLabel.textColor = UIColor.darkGray
+        self.addSubview(self.categoryLabel)
+
         for i in 0..<categories.count {
             let size = categories[i].size(withAttributes: userAttributes)
             if i > 0 {

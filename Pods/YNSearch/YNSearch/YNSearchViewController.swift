@@ -45,6 +45,10 @@ open class YNSearchViewController: UIViewController, UITextFieldDelegate {
         self.ynSearchView.ynSearchMainView.setYNCategoryButtonType(type: type)
     }
     
+    open func setYNFilterButtonType(type: YNCategoryButtonType) {
+        self.ynSearchView.ynSearchMainView.setYNFilterButtonType(type: type)
+    }
+    
     open func initData(database: [Any]) {
         self.ynSearchView.ynSearchListView.initData(database: database)
         self.ynSearchView.ynSearchMainView.redrawSearchHistoryButtons()

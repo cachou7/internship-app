@@ -195,8 +195,8 @@
                     <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="0qA-Nk-Zb4">
                         <color key="badgeColor" red="0.85490196080000003" green="0.28627450980000002" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" title="Recently Created Eggs" id="Mys-yE-DkB" userLabel="Task Board">
-                        <barButtonItem key="backBarButtonItem" title="Recently Created" id="tmi-sa-sTO"/>
+                    <navigationItem key="navigationItem" title="Eggs" id="Mys-yE-DkB" userLabel="Task Board">
+                        <barButtonItem key="backBarButtonItem" title="Eggs" id="tmi-sa-sTO"/>
                         <rightBarButtonItems>
                             <barButtonItem title="Create" image="iconCreate" id="B3W-aE-x7s">
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -443,6 +443,6 @@
         <image name="iconTask" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MDb-IF-1Gt"/>
+        <segue reference="B0t-fQ-o6H"/>
     </inferredMetricsTieBreakers>
 </document>

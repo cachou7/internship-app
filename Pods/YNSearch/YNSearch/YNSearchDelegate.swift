@@ -13,6 +13,8 @@ public protocol YNSearchDelegate: YNSearchMainViewDelegate, YNSearchListViewDele
 public protocol YNSearchMainViewDelegate {
     func ynCategoryButtonClicked(text: String)
     
+    func ynFilterButtonClicked(text: String)
+    
     func ynSearchHistoryButtonClicked(text: String)
 
     func ynSearchMainViewSearchHistoryChanged()

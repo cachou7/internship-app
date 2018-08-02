@@ -21,6 +21,15 @@ open class YNSearch: NSObject {
         pref.set(value, forKey: "categories")
     }
     
+    open func setFilters(value: [String]) {
+        pref.set(value, forKey: "filters")
+    }
+    
+    open func getFilters() -> [String]? {
+        guard let filters = pref.object(forKey: "filters") as? [String] else { return nil }
+        return filters
+    }
+    
     open func getCategories() -> [String]? {
         guard let categories = pref.object(forKey: "categories") as? [String] else { return nil }
         return categories
