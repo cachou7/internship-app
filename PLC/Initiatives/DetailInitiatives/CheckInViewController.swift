@@ -39,8 +39,8 @@ class CheckInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(task!.id)
         alreadyCheckedInLabel.isHidden = true
+        checkInButton.setTitleColor(UIColor.lightGray, for: .disabled)
         configurePage()
     }
     

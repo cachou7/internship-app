@@ -15,7 +15,6 @@ import SDWebImage
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
     
     //MARK: Variables
-    @IBOutlet weak var segmentedBarOutlet: UISegmentedControl!
     var searchController: UISearchController!
     var myIndex = 0
     var currentDB: String = ""
@@ -25,6 +24,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var initialToolbar: UIView! = nil
     var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
     var dataIsAvailable = false
+    var currentView: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,12 +108,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         formatter.dateFormat = "MM-dd-yyyy"
         return formatter
     }()
-    
-    //SEGMENTED BAR
-    @IBAction func segmentedBar(_ sender: UISegmentedControl) {
-        self.sortTasks()
-    }
-    //END SEGMENTED BAR
     
     //COMPOSE BUTTON
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
@@ -306,10 +300,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
     func sortTasks() -> Void {
         //OVERALL
-            if self.segmentedBarOutlet.selectedSegmentIndex == 0{
+            if currentView == "RecentlyCreated"{
                 self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
             }
-            else if self.segmentedBarOutlet.selectedSegmentIndex == 1{
+            else if currentView == "MostPopular"{
                 self.overallItems.sort(by: {$0.ranking > $1.ranking})
             }
             else{

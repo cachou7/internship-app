@@ -53,6 +53,8 @@
 		99F81E9E210A1844009821DE /* DetailSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */; };
 		99F81EA0210A3AAB009821DE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81E9F210A3AAB009821DE /* SearchViewController.swift */; };
 		99F81EA8210A5DD4009821DE /* PointsStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81EA7210A5DD4009821DE /* PointsStructure.swift */; };
+		99F81EAA2112690A009821DE /* InitiativesPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81EA92112690A009821DE /* InitiativesPageViewController.swift */; };
+		99F81EAC211269AF009821DE /* InitiativesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F81EAB211269AF009821DE /* InitiativesViewController.swift */; };
 		FF68A459AA8A35490CDACE98 /* Pods_PLC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E156B58806FAE17D15096 /* Pods_PLC.framework */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,8 @@
 		99F81E9D210A1844009821DE /* DetailSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchTableViewController.swift; sourceTree = "<group>"; };
 		99F81E9F210A3AAB009821DE /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		99F81EA7210A5DD4009821DE /* PointsStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsStructure.swift; sourceTree = "<group>"; };
+		99F81EA92112690A009821DE /* InitiativesPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativesPageViewController.swift; sourceTree = "<group>"; };
+		99F81EAB211269AF009821DE /* InitiativesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiativesViewController.swift; sourceTree = "<group>"; };
 		A39E332087E068BEECDDDE60 /* Pods-PLC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PLC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PLC/Pods-PLC.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -248,6 +252,8 @@
 			isa = PBXGroup;
 			children = (
 				99AB732720E42E0000E00A2A /* Initiatives.storyboard */,
+				99F81EAB211269AF009821DE /* InitiativesViewController.swift */,
+				99F81EA92112690A009821DE /* InitiativesPageViewController.swift */,
 				83ADA39620E1547400CD5F30 /* TaskTableViewController.swift */,
 				83BD2FDF20E2C7D400260BAC /* TaskTableViewCell.swift */,
 				99F81E9B210A168F009821DE /* SearchBarViewController.swift */,
@@ -563,6 +569,7 @@
 			files = (
 				831CEC2620F69F77003CB892 /* CalendarViewController.swift in Sources */,
 				990D7FEE21022D4700549C6B /* CreateNewAccountViewController.swift in Sources */,
+				99F81EAC211269AF009821DE /* InitiativesViewController.swift in Sources */,
 				99AB732620E4269E00E00A2A /* InitiativeCreateViewController.swift in Sources */,
 				83ADA39920E1547400CD5F30 /* LeaderboardViewController.swift in Sources */,
 				83ADA39520E1547400CD5F30 /* AppDelegate.swift in Sources */,
@@ -576,6 +583,7 @@
 				99008FB62100DA4500F05899 /* InvolvementViewController.swift in Sources */,
 				8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */,
 				99F81E9C210A168F009821DE /* SearchBarViewController.swift in Sources */,
+				99F81EAA2112690A009821DE /* InitiativesPageViewController.swift in Sources */,
 				99DFD1F620F64FB000129EEA /* EditInitiativeViewController.swift in Sources */,
 				99F81EA8210A5DD4009821DE /* PointsStructure.swift in Sources */,
 				83ADA39720E1547400CD5F30 /* TaskTableViewController.swift in Sources */,
