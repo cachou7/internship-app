@@ -184,7 +184,7 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
                 if (tableView.indexPathForSelectedRow?.section == i) {
                     Constants.refs.databaseUsers.child((sectionArrays[sections[i]]?[(tableView.indexPathForSelectedRow?.row)!])!).observe(.value, with: {(snapshot) in
                     let userSnap = snapshot.value as? [String : Any ] ?? [:]
-                        let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, currentProjects: userSnap["currentProjects"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)
+                        let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, funFact: userSnap["funFact"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)
                     destinationVC.user = user
                     
                 })

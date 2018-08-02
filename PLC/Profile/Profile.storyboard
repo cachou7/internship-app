@@ -54,24 +54,6 @@
                                     <constraint firstAttribute="width" constant="125" id="uzo-Lx-Gqm"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaU-zQ-XGd">
-                                <rect key="frame" x="45" y="257" width="128" height="20"/>
-                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Department" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-Kp-eMf">
-                                <rect key="frame" x="45" y="279" width="128" height="20"/>
-                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViS-G7-35G">
-                                <rect key="frame" x="45" y="304" width="150" height="16"/>
-                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QTG-hF-cfL">
                                 <rect key="frame" x="16" y="327" width="343" height="287"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -261,18 +243,96 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconJob" translatesAutoresizingMaskIntoConstraints="NO" id="xZd-HE-QCc">
-                                <rect key="frame" x="16" y="260" width="15" height="15"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="15" id="L7d-IE-gWa"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconDepartment" translatesAutoresizingMaskIntoConstraints="NO" id="Iq4-PC-T6U">
-                                <rect key="frame" x="16" y="282" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconEmail" translatesAutoresizingMaskIntoConstraints="NO" id="KdD-Ns-Zu3">
-                                <rect key="frame" x="16" y="304" width="15" height="15"/>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="k2Q-Wd-fih">
+                                <rect key="frame" x="16" y="262" width="343" height="55"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="53C-Oe-36O">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="55"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2SD-pB-1Sl">
+                                                <rect key="frame" x="0.0" y="0.0" width="88.5" height="20"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconJob" translatesAutoresizingMaskIntoConstraints="NO" id="xZd-HE-QCc">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="20" id="L7d-IE-gWa"/>
+                                                            <constraint firstAttribute="height" constant="20" id="p5P-dV-b28"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaU-zQ-XGd">
+                                                        <rect key="frame" x="30" y="0.0" width="58.5" height="20"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IDc-vb-035">
+                                                <rect key="frame" x="0.0" y="35" width="111" height="20"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconDepartment" translatesAutoresizingMaskIntoConstraints="NO" id="Iq4-PC-T6U">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="bVP-3n-YQj"/>
+                                                            <constraint firstAttribute="width" constant="20" id="leG-jk-YVe"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Department" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-Kp-eMf">
+                                                        <rect key="frame" x="30" y="0.0" width="81" height="20"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="150" id="rlW-0s-iXg"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="I0A-F3-egv">
+                                        <rect key="frame" x="170" y="0.0" width="173" height="55"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4sB-UK-siv">
+                                                <rect key="frame" x="0.0" y="0.0" width="173" height="20"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconEmail" translatesAutoresizingMaskIntoConstraints="NO" id="KdD-Ns-Zu3">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="7cM-xt-xCa"/>
+                                                            <constraint firstAttribute="width" constant="20" id="cR5-ZF-mrq"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViS-G7-35G">
+                                                        <rect key="frame" x="30" y="0.0" width="143" height="20"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="DgQ-ag-9rs">
+                                                <rect key="frame" x="0.0" y="35" width="173" height="20"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconFact" translatesAutoresizingMaskIntoConstraints="NO" id="IeM-Lg-1Da">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="jam-qC-m33"/>
+                                                            <constraint firstAttribute="width" constant="20" id="ndb-bS-ykE"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fun Fact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJa-nD-Q5M">
+                                                        <rect key="frame" x="30" y="0.0" width="143" height="20"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                        <color key="textColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconPoints" translatesAutoresizingMaskIntoConstraints="NO" id="OUV-NV-qKl">
                                 <rect key="frame" x="187" y="167" width="50" height="50"/>
                                 <constraints>
@@ -289,39 +349,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="xZd-HE-QCc" firstAttribute="top" secondItem="Lmd-rT-A3j" secondAttribute="bottom" constant="6" id="0RZ-v6-2BF"/>
-                            <constraint firstItem="Lmd-rT-A3j" firstAttribute="trailing" secondItem="aaU-zQ-XGd" secondAttribute="trailing" constant="-36" id="1oU-TG-gz7"/>
                             <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="WeN-aG-y6R" secondAttribute="bottom" constant="110" id="4hY-Er-Lgc"/>
-                            <constraint firstItem="xZd-HE-QCc" firstAttribute="trailing" secondItem="Iq4-PC-T6U" secondAttribute="trailing" id="5fl-gN-QTW"/>
-                            <constraint firstItem="xZd-HE-QCc" firstAttribute="bottom" secondItem="aaU-zQ-XGd" secondAttribute="bottom" constant="-2" id="9IG-Uf-OTR"/>
+                            <constraint firstItem="k2Q-Wd-fih" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" constant="16" id="86W-5a-eXC"/>
                             <constraint firstItem="QTG-hF-cfL" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" constant="16" id="CIQ-ek-ThB"/>
-                            <constraint firstItem="dAA-Kp-eMf" firstAttribute="leading" secondItem="ViS-G7-35G" secondAttribute="leading" id="H2S-ZM-FYX"/>
                             <constraint firstItem="UUE-Q1-HoN" firstAttribute="bottom" secondItem="QTG-hF-cfL" secondAttribute="bottom" constant="9" id="Ny3-cQ-Hvz"/>
-                            <constraint firstItem="Lmd-rT-A3j" firstAttribute="leading" secondItem="xZd-HE-QCc" secondAttribute="leading" constant="-4" id="QrD-NN-gca"/>
-                            <constraint firstItem="xZd-HE-QCc" firstAttribute="leading" secondItem="Iq4-PC-T6U" secondAttribute="leading" id="R3s-g4-Hrf"/>
+                            <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="k2Q-Wd-fih" secondAttribute="bottom" constant="10" id="OXf-KE-K1f"/>
+                            <constraint firstItem="UUE-Q1-HoN" firstAttribute="trailing" secondItem="k2Q-Wd-fih" secondAttribute="trailing" constant="16" id="QYr-1R-Kx8"/>
                             <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="UUE-Q1-HoN" secondAttribute="top" constant="211" id="SPf-3G-xB5"/>
                             <constraint firstItem="OUV-NV-qKl" firstAttribute="top" secondItem="Lmd-rT-A3j" secondAttribute="bottom" constant="-87" id="UqG-Xq-JwP"/>
-                            <constraint firstItem="Iq4-PC-T6U" firstAttribute="trailing" secondItem="KdD-Ns-Zu3" secondAttribute="trailing" id="VQL-D8-USO"/>
                             <constraint firstItem="Lmd-rT-A3j" firstAttribute="leading" secondItem="UUE-Q1-HoN" secondAttribute="leading" constant="12" id="XSG-Bj-GR2"/>
-                            <constraint firstItem="UUE-Q1-HoN" firstAttribute="trailing" secondItem="ViS-G7-35G" secondAttribute="trailing" constant="180" id="XnT-mT-1aL"/>
                             <constraint firstItem="OUV-NV-qKl" firstAttribute="leading" secondItem="Lmd-rT-A3j" secondAttribute="trailing" constant="50" id="YIx-xB-3so"/>
                             <constraint firstItem="Lmd-rT-A3j" firstAttribute="top" secondItem="UUE-Q1-HoN" secondAttribute="top" constant="13" id="YKv-E9-Q0p"/>
                             <constraint firstItem="WeN-aG-y6R" firstAttribute="leading" secondItem="OUV-NV-qKl" secondAttribute="trailing" constant="1" id="ZNd-sV-Thm"/>
-                            <constraint firstItem="aaU-zQ-XGd" firstAttribute="leading" secondItem="dAA-Kp-eMf" secondAttribute="leading" id="bja-2y-D7P"/>
-                            <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="ViS-G7-35G" secondAttribute="bottom" constant="7" id="cmF-j7-wDn"/>
-                            <constraint firstItem="KdD-Ns-Zu3" firstAttribute="top" secondItem="Iq4-PC-T6U" secondAttribute="bottom" constant="7" id="crO-b9-8JW"/>
-                            <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="KdD-Ns-Zu3" secondAttribute="bottom" constant="8" id="d55-Je-V6D"/>
                             <constraint firstItem="UUE-Q1-HoN" firstAttribute="trailing" secondItem="QTG-hF-cfL" secondAttribute="trailing" constant="16" id="dWZ-a3-m1B"/>
-                            <constraint firstItem="Iq4-PC-T6U" firstAttribute="bottom" secondItem="dAA-Kp-eMf" secondAttribute="bottom" constant="-2" id="eSt-ns-wK2"/>
-                            <constraint firstItem="aaU-zQ-XGd" firstAttribute="leading" secondItem="xZd-HE-QCc" secondAttribute="trailing" constant="14" id="fzF-Y0-76f"/>
-                            <constraint firstItem="Iq4-PC-T6U" firstAttribute="leading" secondItem="KdD-Ns-Zu3" secondAttribute="leading" id="gfj-p4-ONQ"/>
-                            <constraint firstItem="aaU-zQ-XGd" firstAttribute="trailing" secondItem="dAA-Kp-eMf" secondAttribute="trailing" id="kX6-hl-fUt"/>
-                            <constraint firstItem="Iq4-PC-T6U" firstAttribute="top" secondItem="xZd-HE-QCc" secondAttribute="bottom" constant="7" id="md3-KZ-bVL"/>
                             <constraint firstItem="QTG-hF-cfL" firstAttribute="top" secondItem="OUV-NV-qKl" secondAttribute="bottom" constant="110" id="r2M-3z-IB4"/>
-                            <constraint firstItem="xZd-HE-QCc" firstAttribute="top" secondItem="aaU-zQ-XGd" secondAttribute="top" constant="3" id="rHi-Nl-LpA"/>
                             <constraint firstItem="OUV-NV-qKl" firstAttribute="top" secondItem="WeN-aG-y6R" secondAttribute="top" constant="4" id="tKV-YX-kGa"/>
-                            <constraint firstItem="ViS-G7-35G" firstAttribute="top" secondItem="OUV-NV-qKl" secondAttribute="bottom" constant="87" id="uMF-T3-ffD"/>
-                            <constraint firstItem="Iq4-PC-T6U" firstAttribute="top" secondItem="dAA-Kp-eMf" secondAttribute="top" constant="3" id="yy1-lM-f2f"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UUE-Q1-HoN"/>
                     </view>
@@ -350,6 +392,7 @@
                         <outlet property="backToLeaderboardButton" destination="z7I-Oq-hoH" id="7lo-L3-pkf"/>
                         <outlet property="departmentLabel" destination="dAA-Kp-eMf" id="dhM-d4-Dur"/>
                         <outlet property="emailLabel" destination="ViS-G7-35G" id="sMO-77-vnu"/>
+                        <outlet property="funFactLabel" destination="TJa-nD-Q5M" id="xEy-Fd-pgj"/>
                         <outlet property="jobTitleLabel" destination="aaU-zQ-XGd" id="kcV-Aj-cxT"/>
                         <outlet property="pointsLabel" destination="WeN-aG-y6R" id="BnH-mB-O9l"/>
                         <outlet property="profilePhoto" destination="Lmd-rT-A3j" id="a6w-7G-qDL"/>
@@ -378,6 +421,7 @@
         <image name="iconCrown" width="25" height="25"/>
         <image name="iconDepartment" width="25" height="25"/>
         <image name="iconEmail" width="25" height="25"/>
+        <image name="iconFact" width="24" height="24"/>
         <image name="iconJob" width="25" height="25"/>
         <image name="iconPerson" width="25" height="25"/>
         <image name="iconPoints" width="30" height="30"/>

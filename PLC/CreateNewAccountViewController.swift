@@ -18,7 +18,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var jobTitleTextField: UITextField!
     @IBOutlet weak var departmentTextField: UITextField!
-    @IBOutlet weak var currentProjectsTextField: UITextField!
+    @IBOutlet weak var funFactTextField: UITextField!
     
     var profilePic: UIImage = UIImage()
     let departmentPickerView = UIPickerView()
@@ -61,11 +61,11 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
             Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { user, error in
                 if error == nil {
                     guard let user = Auth.auth().currentUser else { return }
-                    currentUser = User(authData: user, firstName: self.firstNameTextField.text!, lastName: self.lastNameTextField.text!, jobTitle: self.jobTitleTextField.text!, department: self.departmentTextField.text!, currentProjects: self.currentProjectsTextField.text!, points: 0)
+                    currentUser = User(authData: user, firstName: self.firstNameTextField.text!, lastName: self.lastNameTextField.text!, jobTitle: self.jobTitleTextField.text!, department: self.departmentTextField.text!, funFact: self.funFactTextField.text!, points: 0)
                     let key = currentUser.uid
                     Constants.refs.databaseUsers.observe(.value, with: { snapshot in
                         if !snapshot.hasChild(key) {
-                            Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "currentProjects": currentUser.currentProjects, "points": 0, "email": currentUser.email, "tasks_created": [], "tasks_liked": []])
+                            Constants.refs.databaseUsers.child(key).setValue(["uid": key, "firstName": currentUser.firstName, "lastName": currentUser.lastName, "jobTitle": currentUser.jobTitle, "department": currentUser.department, "funFact": currentUser.funFact, "points": 0, "email": currentUser.email, "tasks_created": [], "tasks_liked": []])
                             if (self.profilePhoto.image != #imageLiteral(resourceName: "iconProfile")){
                                 let imageName:String = String("\(key).png")
                                 
@@ -155,39 +155,39 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
         var valid:Bool = true
         if (emailTextField.text?.isEmpty)! || !((emailTextField.text?.contains("@"))!) || !((emailTextField.text?.contains(".com"))!) {
             emailTextField.text = nil
-            emailTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a valid email", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            emailTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a valid Email", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (passwordTextField.text?.isEmpty)!{
-            passwordTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a valid password", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            passwordTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a valid Password", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (reEnterPasswordTextField.text?.isEmpty)!{
-            reEnterPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Please re-enter your password", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            reEnterPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Please re-enter your Password", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (reEnterPasswordTextField.text! != passwordTextField.text!){
-            reEnterPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Password doesn't match", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            reEnterPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Password doesn't match", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (firstNameTextField.text?.isEmpty)!{
-            firstNameTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your first name", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            firstNameTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your First Name", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (lastNameTextField.text?.isEmpty)!{
-            lastNameTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your last name", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            lastNameTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your Last Name", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (jobTitleTextField.text?.isEmpty)!{
-            jobTitleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your job title", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            jobTitleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your Job Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (departmentTextField.text?.isEmpty)!{
-            departmentTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your department", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+            departmentTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your Department", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
-        if (currentProjectsTextField.text?.isEmpty)!{
-            currentProjectsTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your current project(s)", attributes: [NSAttributedStringKey.foregroundColor: UIColor.red])
+        if (funFactTextField.text?.isEmpty)!{
+            funFactTextField.attributedPlaceholder = NSAttributedString(string: "Please enter your Fun Fact", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         return valid

@@ -98,12 +98,12 @@ extension InitiativesPageViewController: UIPageViewControllerDataSource {
             return nil
         }
         
-        let previousIndex = viewControllerIndex - 1
+        let previousIndex = viewControllerIndex + 1
         
         // User is on the first view controller and swiped left to loop to
         // the last view controller.
-        guard previousIndex >= 0 else {
-            return orderedViewControllers.last
+        guard orderedViewControllers.count != previousIndex else {
+            return orderedViewControllers.first
         }
         
         guard orderedViewControllers.count > previousIndex else {
@@ -119,16 +119,15 @@ extension InitiativesPageViewController: UIPageViewControllerDataSource {
             return nil
         }
         
-        let nextIndex = viewControllerIndex + 1
-        let orderedViewControllersCount = orderedViewControllers.count
+        let nextIndex = viewControllerIndex - 1
         
         // User is on the last view controller and swiped right to loop to
         // the first view controller.
-        guard orderedViewControllersCount != nextIndex else {
-            return orderedViewControllers.first
+        guard nextIndex >= 0 else {
+            return orderedViewControllers.last
         }
         
-        guard orderedViewControllersCount > nextIndex else {
+        guard orderedViewControllers.count > nextIndex else {
             return nil
         }
         

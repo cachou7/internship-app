@@ -18,30 +18,30 @@ class User{
     let lastName: String
     let jobTitle: String
     let department: String
-    let currentProjects: String
+    let funFact: String
     var points: Int
     let email: String
     
-    init(authData: Firebase.User, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int) {
+    init(authData: Firebase.User, firstName: String, lastName: String, jobTitle: String, department: String, funFact: String, points: Int) {
         self.uid = authData.uid
         self.firstName = firstName
         self.lastName = lastName
         self.jobTitle = jobTitle
         self.department = department
-        self.currentProjects = currentProjects
+        self.funFact = funFact
         self.points = points
         self.email = authData.email!
     }
     
     //MARK: Initialization
-    init?(uid: String, firstName: String, lastName: String, jobTitle: String, department: String, currentProjects: String, points: Int, email: String) {
+    init?(uid: String, firstName: String, lastName: String, jobTitle: String, department: String, funFact: String, points: Int, email: String) {
         // Initialize stored properties.
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.jobTitle = jobTitle
         self.department = department
-        self.currentProjects = currentProjects
+        self.funFact = funFact
         self.points = points
         self.email = email
     }

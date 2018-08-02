@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var departmentLabel: UILabel!
+    @IBOutlet weak var funFactLabel: UILabel!
     @IBOutlet weak var jobTitleLabel: UILabel!
     @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
@@ -43,6 +44,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.title = (user?.firstName)! + " " + (user?.lastName)!
         jobTitleLabel.text = (user?.jobTitle)!
         departmentLabel.text = (user?.department)!
+        funFactLabel.text = (user?.funFact)!
         pointsLabel.text = String((user?.points)!)
         emailLabel.text = String((user?.email)!)
         

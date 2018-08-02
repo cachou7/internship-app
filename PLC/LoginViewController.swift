@@ -104,7 +104,7 @@ class LoginViewController: UIViewController {
                         let uidSnapshot = snapshot.childSnapshot(forPath: user.uid)
                         
                         currentUser = User(authData: user, firstName:
-                            uidSnapshot.childSnapshot(forPath: "firstName").value as! String, lastName: uidSnapshot.childSnapshot(forPath: "lastName").value as! String, jobTitle: uidSnapshot.childSnapshot(forPath: "jobTitle").value as! String, department: uidSnapshot.childSnapshot(forPath: "department").value as! String, currentProjects: uidSnapshot.childSnapshot(forPath: "currentProjects").value as! String, points: uidSnapshot.childSnapshot(forPath: "points").value as! Int)
+                            uidSnapshot.childSnapshot(forPath: "firstName").value as! String, lastName: uidSnapshot.childSnapshot(forPath: "lastName").value as! String, jobTitle: uidSnapshot.childSnapshot(forPath: "jobTitle").value as! String, department: uidSnapshot.childSnapshot(forPath: "department").value as! String, funFact: uidSnapshot.childSnapshot(forPath: "funFact").value as! String, points: uidSnapshot.childSnapshot(forPath: "points").value as! Int)
                         
                     }
                 })
