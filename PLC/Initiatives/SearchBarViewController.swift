@@ -31,7 +31,7 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         
         initData(database: database)
         
-        self.setYNCategoryButtonType(type: .border)
+        self.setYNCategoryButtonType(type: .colorful)
     }
     
     func configureDatabase(){
