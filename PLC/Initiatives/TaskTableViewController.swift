@@ -15,6 +15,7 @@ import SDWebImage
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
     
     //MARK: Variables
+    var pendingTasks: [String] = []
     var searchController: UISearchController!
     var myIndex = 0
     var currentDB: String = ""
@@ -95,6 +96,18 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 }
             }
         })
+        
+        Constants.refs.databasePendingTasks.observe(.value, with: { snapshot in
+            var newPendingTasks: [String] = []
+            
+            for child in snapshot.children {
+                if let snapshot = child as? DataSnapshot{
+                    newPendingTasks.append(snapshot.key)
+                }
+                
+                self.pendingTasks = newPendingTasks
+            }
+        })
     }
     
     
@@ -149,7 +162,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        let pendingTasks = Constants.refs.databasePendingTasks
+        //let pendingTasks = Constants.refs.databasePendingTasks
         let thisTask: Task! = self.overallItems[indexPath.row]
         
         cell.taskTitle.numberOfLines = 1
@@ -205,24 +218,27 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskCategory.setTitle(thisTask!.category, for: .normal)
         
         var createdByUser = false
-        if thisTask.createdBy == currentUser.uid {
+        var pendingTask = false
+        
+        if thisTask.createdBy == Auth.auth().currentUser!.uid {
             createdByUser = true
+        }
+        for id in self.pendingTasks {
+            if thisTask.id == id {
+                pendingTask = true
+            }
+        }
+        
+        if createdByUser && pendingTask {
+            cell.taskFirstIcon.image = UIImage(named: "iconChicken")
+            cell.taskSecondIcon.image = UIImage(named: "iconPending")
+        }
+        else if createdByUser && !pendingTask {
             cell.taskFirstIcon.image = UIImage(named: "iconChicken")
         }
-        pendingTasks.observeSingleEvent(of: .value, with: { snapshot in
-            if snapshot.hasChild(thisTask.id) {
-                if createdByUser {
-                    cell.taskFirstIcon.image = UIImage(named: "iconChicken")
-                    cell.taskSecondIcon.image = UIImage(named: "iconPending")
-                }
-                else {
-                    cell.taskFirstIcon.image = UIImage(named: "iconPending")
-                }
-            }
-            else {
-                cell.taskFirstIcon.image = UIImage(named: "iconChicken")
-            }
-        })
+        else if !createdByUser && pendingTask {
+            cell.taskFirstIcon.image = UIImage(named: "iconPending")
+        }
         
         cell.delegate = self
         return cell
