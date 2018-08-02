@@ -156,8 +156,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         cell.taskTitle.text = thisTask!.title
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        //cell.taskMonth.text = String(startTime[0]).uppercased()
-        //cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
         let dayOfWeek = getDayOfWeek(dateString)!
@@ -279,17 +277,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     
     // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
     func sortTasks() -> Void {
-        //OVERALL
-            self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
-            /*}
-            else if currentView == "MostPopular"{
-                self.overallItems.sort(by: {$0.ranking > $1.ranking})
-            }
-            else{
-                self.overallItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-            }
- */
-        //END OVERALL
+        self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
         self.tableView.reloadData()
     }
     

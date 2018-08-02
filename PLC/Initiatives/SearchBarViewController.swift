@@ -20,7 +20,7 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         configureDatabase()
         
         let categories = ["Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
-        let filters = ["Most Popular", "Upcoming", "Lead", "Participate"]
+        let filters = ["New", "Most Popular", "Upcoming", "Lead", "Participate"]
         database.append(contentsOf: categories)
         database.append(contentsOf: filters)
         

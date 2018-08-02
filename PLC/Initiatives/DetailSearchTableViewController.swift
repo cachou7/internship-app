@@ -18,7 +18,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming"{
+        if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming" || self.navigationItem.title! == "New"{
             filteredItems = overallItems!
             Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
                 for child in snapshot.children {
@@ -45,9 +45,12 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         if self.navigationItem.title! == "Most Popular"{
             self.filteredItems.sort(by: {$0.ranking > $1.ranking})
          }
-         else{
+         else if self.navigationItem.title! == "Upcoming"{
             self.filteredItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
          }
+        else{
+            self.filteredItems.sort(by: {$0.timestamp > $1.timestamp})
+        }
         self.tableView.reloadData()
     }
 
