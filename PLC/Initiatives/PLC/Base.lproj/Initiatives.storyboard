@@ -148,10 +148,10 @@
                                             </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0jx-Yv-Wui">
-                                            <rect key="frame" x="351" y="227" width="22" height="22"/>
+                                            <rect key="frame" x="372" y="227" width="22" height="22"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mXM-8N-TQa">
-                                            <rect key="frame" x="318" y="227" width="22" height="22"/>
+                                            <rect key="frame" x="339" y="227" width="22" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="22" id="Wil-GK-z3Z"/>
                                             </constraints>
@@ -168,7 +168,7 @@
                                         <constraint firstItem="16M-dI-3P6" firstAttribute="leading" secondItem="8N4-8q-btJ" secondAttribute="trailing" constant="38" id="Edf-Tk-8Tw"/>
                                         <constraint firstItem="qdo-aM-IIn" firstAttribute="leading" secondItem="16M-dI-3P6" secondAttribute="trailing" constant="3" id="FWd-nU-Dxv"/>
                                         <constraint firstItem="mXM-8N-TQa" firstAttribute="top" secondItem="16M-dI-3P6" secondAttribute="bottom" constant="15" id="GVJ-AY-aZc"/>
-                                        <constraint firstItem="mXM-8N-TQa" firstAttribute="leading" secondItem="8N4-8q-btJ" secondAttribute="trailing" constant="8" id="HN8-lc-m9g"/>
+                                        <constraint firstItem="mXM-8N-TQa" firstAttribute="leading" secondItem="8N4-8q-btJ" secondAttribute="trailing" constant="29" id="HN8-lc-m9g"/>
                                         <constraint firstItem="mXM-8N-TQa" firstAttribute="bottom" secondItem="0jx-Yv-Wui" secondAttribute="bottom" id="Jjl-OO-6Qr"/>
                                         <constraint firstItem="KZ3-5d-gKn" firstAttribute="centerX" secondItem="eNv-Lo-rcm" secondAttribute="centerX" id="QmL-Wf-Usd"/>
                                         <constraint firstItem="KZ3-5d-gKn" firstAttribute="leading" secondItem="yn9-6d-pJG" secondAttribute="leading" id="TJl-lV-R7e"/>
@@ -187,7 +187,7 @@
                                         <constraint firstItem="eNv-Lo-rcm" firstAttribute="leading" secondItem="YkK-vZ-qGV" secondAttribute="leading" id="m6N-3A-HD5"/>
                                         <constraint firstItem="KZ3-5d-gKn" firstAttribute="top" secondItem="YkK-vZ-qGV" secondAttribute="topMargin" constant="2" id="oY1-7n-82R"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="eNv-Lo-rcm" secondAttribute="bottom" constant="-10" id="pfp-2A-epK"/>
-                                        <constraint firstItem="KZ3-5d-gKn" firstAttribute="trailing" secondItem="0jx-Yv-Wui" secondAttribute="trailing" constant="21" id="wxn-HO-Mlf"/>
+                                        <constraint firstItem="KZ3-5d-gKn" firstAttribute="trailing" secondItem="0jx-Yv-Wui" secondAttribute="trailing" id="wxn-HO-Mlf"/>
                                         <constraint firstAttribute="trailing" secondItem="eNv-Lo-rcm" secondAttribute="trailing" id="xmG-8A-BQN"/>
                                     </constraints>
                                 </tableViewCellContentView>
