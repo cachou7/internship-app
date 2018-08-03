@@ -42,10 +42,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         self.navigationItem.title = (user?.firstName)! + " " + (user?.lastName)!
+        jobTitleLabel.numberOfLines = 1
+        jobTitleLabel.adjustsFontSizeToFitWidth = true
         jobTitleLabel.text = (user?.jobTitle)!
+        departmentLabel.numberOfLines = 1
+        departmentLabel.adjustsFontSizeToFitWidth = true
         departmentLabel.text = (user?.department)!
+        funFactLabel.numberOfLines = 1
+        funFactLabel.adjustsFontSizeToFitWidth = true
         funFactLabel.text = (user?.funFact)!
         pointsLabel.text = String((user?.points)!)
+        emailLabel.numberOfLines = 1
+        emailLabel.adjustsFontSizeToFitWidth = true
         emailLabel.text = String((user?.email)!)
         
         profilePhoto.layer.cornerRadius = profilePhoto.frame.size.width/2
