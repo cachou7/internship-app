@@ -109,9 +109,12 @@ class LoginViewController: UIViewController {
                     }
                 })
                 
-                self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
-                self.textFieldLoginEmail.text = nil
-                self.textFieldLoginPassword.text = nil
+                let deadlineTime = DispatchTime.now() + .seconds(3)
+                DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                    self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
+                    self.textFieldLoginEmail.text = nil
+                    self.textFieldLoginPassword.text = nil
+                }
             }
         }
     }
