@@ -217,7 +217,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                 cell.startTime.text = String(startTime[4]) + " " + String(startTime[5])
                 cell.endTime.text = String(endTime[4]) + " " + String(endTime[5])
                 cell.taskLiked.setImage(likedIcon, for: .normal)
-                if myTask.category == "Fun and Games" {
+                if myTask.category == "Fun & Games" {
                     cell.taskCategoryIcon.image = UIImage(named: "iconParty")
                     cell.taskCategory.text = "Fun & Games"
                 }

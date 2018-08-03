@@ -147,10 +147,10 @@
                                                 <action selector="categoryButton:" destination="QoY-kJ-wON" eventType="touchUpInside" id="TCB-od-oa2"/>
                                             </connections>
                                         </button>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0jx-Yv-Wui">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconChicken" translatesAutoresizingMaskIntoConstraints="NO" id="0jx-Yv-Wui" userLabel="taskFirstIcon">
                                             <rect key="frame" x="372" y="227" width="22" height="22"/>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mXM-8N-TQa">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconPending" translatesAutoresizingMaskIntoConstraints="NO" id="mXM-8N-TQa">
                                             <rect key="frame" x="339" y="227" width="22" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="22" id="Wil-GK-z3Z"/>
@@ -456,8 +456,10 @@
     </scenes>
     <resources>
         <image name="heartIcon" width="25" height="25"/>
+        <image name="iconChicken" width="25" height="25"/>
         <image name="iconCreate" width="25" height="25"/>
         <image name="iconLine" width="25" height="25"/>
+        <image name="iconPending" width="25" height="25"/>
         <image name="iconTask" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
