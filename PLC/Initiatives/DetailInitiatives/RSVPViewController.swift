@@ -35,12 +35,12 @@ class RSVPViewController: UIViewController {
     @IBAction func goingParticipantButton(_ sender: UIButton) {
     Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
-        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
+        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
     }
     @IBAction func undoGoingButton(_ sender: UIButton) {
     Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).removeValue()
         
-        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
+        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
         
         participantsRSVP.remove(at: participantsRSVP.index(of: currentUser.uid)!)
         self.viewDidLoad()
@@ -48,7 +48,7 @@ class RSVPViewController: UIViewController {
     @IBAction func signUpLeaderButton(_ sender: UIButton) {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
-        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
+        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
         
             Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).setValue(true)
         
@@ -62,7 +62,7 @@ class RSVPViewController: UIViewController {
     
     @IBAction func undoSignUpButton(_ sender: UIButton) {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).removeValue()
-        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
+        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
         Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).removeValue()
         let point = Points.init()
         let subtractedPoints = point.getPoints(type: "Lead", thisTask: task!)

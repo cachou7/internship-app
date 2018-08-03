@@ -26,7 +26,7 @@ class CheckInViewController: UIViewController {
     @IBAction func checkInButton(_ sender: UIButton) {
         Constants.refs.databaseTasks.child((task?.id)!).child("taskCheckIn").child(currentUser.uid).child("userID").setValue(currentUser.uid)
         
-        Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 3)
+        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 3)
         
         Constants.refs.databaseUsers.child(currentUser.uid ).child("tasks_participated").child(task!.id).setValue(true)
         let point = Points.init()

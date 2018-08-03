@@ -101,8 +101,8 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
         
         let thisUser = self.users[indexPath.row]
         
-        cell.layer.borderWidth = 0.1
-        cell.layer.borderColor = UIColor.lightGray.cgColor
+        //cell.layer.borderWidth = 0.1
+        //cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.cornerRadius = 20
         //Cell ImageView Formatting
         cell.userProfilePhoto.layer.cornerRadius = cell.userProfilePhoto.frame.size.width/2
