@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
                     }
                 })
                 
-                let deadlineTime = DispatchTime.now() + .seconds(1)
+                let deadlineTime = DispatchTime.now() + .seconds(2)
                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                     self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
                     self.textFieldLoginEmail.text = nil

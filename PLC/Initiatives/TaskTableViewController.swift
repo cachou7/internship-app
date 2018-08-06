@@ -19,22 +19,21 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     var searchController: UISearchController!
     var myIndex = 0
     var currentDB: String = ""
+    //All items that will be shown on the feed. No past tasks included
     var overallItems: [Task] = []
+    //Every task in the database. Including upcoming, current, pending, and past tasks
     var everyItemCreated: [Task] = []
-    var passedTask:Task!
-    var initialToolbar: UIView! = nil
+    //Presentr for Initiative Create form to be presented as a popover when the compose button is clicked
     var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
     var dataIsAvailable = false
-    //var currentView: String = ""
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Presentr
         presenter.roundCorners = true
         presenter.cornerRadius = 20
         presenter.dismissOnTap = false
-        
-        initialToolbar = tableView.tableHeaderView
         
         //Tasks Loaded From DB
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
@@ -44,12 +43,17 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             if let snapshot = child as? DataSnapshot{
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
+                /*Parses amount of participants needed and puts it in a dictionary if the amount needed
+                    is greater than 0*/
                 if tasksInfo["participantAmount"]! as! Int != 0{
                     amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                 }
+                /*Parses amount of leaders needed and puts it in a dictionary if the amount needed
+                 is greater than 0*/
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
+                //Creates a new Task object
                 let task = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
                 
                 newOverallItems.append(task!)
@@ -57,6 +61,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
             self.overallItems = newOverallItems
             
+            //Retrieves past tasks from the database and removes those tasks from overallItems
             Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
                 for child in snapshot.children {
                     if let snap = child as? DataSnapshot{
@@ -78,6 +83,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             
             self.everyItemCreated = newOverallItems
             
+            //Sorts tasks by timestamp
             self.sortTasks()
             }})
         
@@ -110,18 +116,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         })
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
     
     //MARK: Actions
-    fileprivate lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        return formatter
-    }()
-    
     //COMPOSE BUTTON
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
         // get a reference to the view controller for the popover
@@ -343,6 +343,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             self.tableView.reloadData()
         }
     }
+    
+    // Date Formatting for date label for task
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
     private func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }

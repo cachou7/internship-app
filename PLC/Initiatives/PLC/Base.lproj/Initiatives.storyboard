@@ -213,7 +213,7 @@
                     <tabBarItem key="tabBarItem" title="Initiatives" image="iconTask" id="0qA-Nk-Zb4">
                         <color key="badgeColor" red="0.85490196080000003" green="0.28627450980000002" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" title="Eggs" id="Mys-yE-DkB" userLabel="Task Board">
+                    <navigationItem key="navigationItem" title="Fresh Eggs" id="Mys-yE-DkB" userLabel="Task Board">
                         <barButtonItem key="backBarButtonItem" title="Eggs" id="tmi-sa-sTO"/>
                         <rightBarButtonItems>
                             <barButtonItem title="Create" image="iconCreate" id="B3W-aE-x7s">

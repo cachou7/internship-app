@@ -18,7 +18,8 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming" || self.navigationItem.title! == "New"{
+        if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming" || self.navigationItem.title! == "Fresh"{
+            self.navigationItem.title = self.navigationItem.title! + " Eggs"
             filteredItems = overallItems!
             Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
                 for child in snapshot.children {

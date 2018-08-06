@@ -11,7 +11,7 @@ import UIKit
 class LeaderboardViewController: UIViewController {
     var leaderboardPageViewController: LeaderboardPageViewController? {
         didSet {
-            leaderboardPageViewController?.leaderboardDelegate = self as! LeaderboardPageViewControllerDelegate
+            leaderboardPageViewController?.leaderboardDelegate = self as? LeaderboardPageViewControllerDelegate
         }
     }
 

@@ -12,6 +12,7 @@ import SDWebImage
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TaskTableViewCellDelegate {
     
+    //MARK: Properties
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var departmentLabel: UILabel!
@@ -22,26 +23,41 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var signOutButton: UIBarButtonItem!
     @IBOutlet weak var backToLeaderboardButton: UIBarButtonItem!
 
+    //The titles of each section
     var sections: [String] = []
+    //Dictionary where title sections are the key and an array of tasks corresponding with the section are the values
     var sectionArrays: [String:[Task]] = [:]
+    //Array of taskIDs of each lead task
     var leadTasks: [String] = []
+    //Array of taskIDs of each participate task
     var participateTasks: [String] = []
+    //Array of taskIDs of each create task
     var createTasks: [String] = []
+    //Array of taskIDs of each pending task
     var pendingTasks: [String] = []
     var everyItemCreated: [Task] = []
     var user: User?
     var myIndex = 0
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Checks to see if the user is nil and if it is, the profile is being accessed from profile tab and no user is passed in. If it isn't, the profile is being accessed from another view controller and a User object is passed in.
         if user == nil{
             user = currentUser!
             backToLeaderboardButton.tintColor = UIColor.clear
             backToLeaderboardButton.isEnabled = false
         }
         
+        //Sets navigation title to the name of the user
         self.navigationItem.title = (user?.firstName)! + " " + (user?.lastName)!
+        
+        //Configures and sets labels and images in profile
         jobTitleLabel.numberOfLines = 1
         jobTitleLabel.adjustsFontSizeToFitWidth = true
         jobTitleLabel.text = (user?.jobTitle)!
@@ -71,6 +87,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         }
         
+        //Updates user's points label in realtime
         Constants.refs.databaseUsers.child((user?.uid)!).observe(.childChanged, with: {(snap) in
             if snap.key == "points"{
                 self.user?.points = snap.value as! Int
@@ -78,6 +95,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         })
         
+        
+        //Loads all tasks held in database and stores as everyItemCreated
         Constants.refs.databaseTasks.observe(.value, with: { snapshot in
             var newOverallItems: [Task] = []
             
@@ -99,24 +118,26 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 self.sortTasks()
             }})
+        
+        //Waits for all tasks to be stored in everyItemCreated
         let deadlineTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
         
+            //
             Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_lead").observe(.childAdded, with: { snapshot in
-            if (snapshot.exists()){
-                        print(snapshot.key)
-                        let task = self.everyItemCreated[self.everyItemCreated.index(where: {$0.id == snapshot.key})!]
-                                if self.sectionArrays["Lead"] != nil && !self.leadTasks.contains(task.id){
-                                    (self.sectionArrays["Lead"]!).append(task)
-                                    self.leadTasks.append(task.id)
-                                }
-                                else{
-                                    self.sections.append("Lead")
-                                    self.sectionArrays["Lead"] = [task]
-                                    self.leadTasks.append(task.id)
-                                }
-                                self.sortTasks()
-            }
+                if (snapshot.exists()){
+                    let task = self.everyItemCreated[self.everyItemCreated.index(where: {$0.id == snapshot.key})!]
+                    if self.sectionArrays["Lead"] != nil && !self.leadTasks.contains(task.id){
+                        (self.sectionArrays["Lead"]!).append(task)
+                        self.leadTasks.append(task.id)
+                    }
+                    else{
+                        self.sections.append("Lead")
+                        self.sectionArrays["Lead"] = [task]
+                        self.leadTasks.append(task.id)
+                    }
+                    self.sortTasks()
+                }
         })
             Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_lead").observe(.childRemoved, with: { snapshot in
             if (snapshot.exists()){
@@ -271,6 +292,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK: Actions
     @IBAction func signOutButton(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -285,8 +308,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         dismiss(animated: true, completion: nil)
     }
     
-    
+    //MARK: TableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
+        //Loads number of sections, if section count is 0, tableview displays "No eggs available"
         var numOfSections: Int = 0
         if self.sections.count > 0
         {
@@ -297,7 +321,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         else
         {
             let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text = "No initiatives available"
+            noDataLabel.text = "No eggs available"
             noDataLabel.textColor = UIColor.black
             noDataLabel.textAlignment = .center
             tableView.backgroundView = noDataLabel
@@ -307,44 +331,30 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Number of rows is "+String((self.sectionArrays[sections[section]]?.count)!))
         return (self.sectionArrays[sections[section]]?.count)!
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        print("The section is "+sections[section])
         return sections[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Table view cells are reused and should be dequeued using a cell identifier.
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
-        let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         var thisTask: Task!
-        var isLead = false
-        var isParticipant = false
-
         
+        //Checks each section until it finds the corresponding task and stores the task in thisTask
         for i in 0..<self.sectionArrays.count{
             if (indexPath.section == i) {
                 thisTask = (sectionArrays[sections[i]]?[indexPath.row])!
             }
         }
         
-        let tags = thisTask.tag
-        let tagArray = tags.components(separatedBy: " ")
-        for tag in tagArray{
-            if tag == "#lead"{
-                isLead = true            }
-            if tag == "#participate"{
-                isParticipant = true
-            }
-        }
-        
+        //Configures cell
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
-        //cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
@@ -356,6 +366,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.taskTime.numberOfLines = 1
         cell.taskTime.adjustsFontSizeToFitWidth = true
         cell.taskTime.text = String(taskTimeInfo)
+        cell.taskCategory.setTitle(thisTask!.category, for: .normal)
+        cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
+        cell.taskImage.clipsToBounds = true
+        cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
         
         let storageRef = Constants.refs.storage.child("taskPhotos/\(thisTask.id).png")
         // Load the image using SDWebImage
@@ -363,67 +377,46 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.taskImage.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
             if error != nil {
                 cell.taskImage.image = #imageLiteral(resourceName: "psheader")
-                cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
-                cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
-            else{
-                cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
-                cell.taskImage.clipsToBounds = true
-                cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
-            }
-            
         }
-        cell.taskCategory.setTitle(thisTask!.category, for: .normal)
-    
+
+        //TaskTableViewCellDelegate
         cell.delegate = self
+        
         return cell
     }
     
-    //TASK TABLE VIEW CELL DELEGATE
+    //MARK: TaskTableViewCellDelegate
     func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell){
         let storyboard = UIStoryboard(name: "Initiatives", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
+        
+        //Set's the navigation color scheme to the previous view controller's navigation bar color
         if backToLeaderboardButton.isEnabled{
             vc.navigationBar.barTintColor = UIColor(red: 189.0/255.0, green: 229.0/255.0, blue: 239.0/255.0, alpha: 1.0)
         }
         else{
             vc.navigationBar.barTintColor = UIColor(red: 222.0/255.0, green: 237.0/255.0, blue: 125.0/255.0, alpha: 1.0)
         }
+        
+        //Root View Controller of the Navigation Conroller
         let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
         childVC.navigationItem.title = sender.taskCategory.title(for: .normal)
         childVC.overallItems = self.everyItemCreated
         
         self.present(vc, animated: true, completion: nil)
     }
-    
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         return
     }
-    //END TASK TABLE VIEW CELL DELEGATE
-    
-    fileprivate lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        return formatter
-    }()
-    
-    func sortTasks() -> Void {
-        if sectionArrays["Created"] != nil{
-            self.sectionArrays["Created"]!.sort(by: {$0.timeMilliseconds > $1.timeMilliseconds})
-        }
-        if sectionArrays["Lead"] != nil{
-            self.sectionArrays["Lead"]!.sort(by: {$0.timeMilliseconds > $1.timeMilliseconds})
-        }
-        self.tableView.reloadData()
-    }
-    
-    @IBAction func unwindToProfile(segue:UIStoryboardSegue) {
-    }
-    
-    // Set myIndex for detailed view
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Set myIndex for detailed view
         myIndex = indexPath.row
+    }
+    
+    //MARK: Segue Functions
+    @IBAction func unwindToProfile(segue:UIStoryboardSegue) {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -437,7 +430,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             destinationVC.segueFromController = "ProfileViewController"
         }
     }
-    func getDayOfWeek(_ today:String) -> String? {
+    
+    //MARK: Helper Functions
+    //Sort tasks by created timestamp
+    private func sortTasks() -> Void {
+        if sectionArrays["Created"] != nil{
+            self.sectionArrays["Created"]!.sort(by: {$0.timeMilliseconds > $1.timeMilliseconds})
+        }
+        if sectionArrays["Lead"] != nil{
+            self.sectionArrays["Lead"]!.sort(by: {$0.timeMilliseconds > $1.timeMilliseconds})
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }
         let myCalendar = Calendar(identifier: .gregorian)
         let weekDay = myCalendar.component(.weekday, from: todayDate)
