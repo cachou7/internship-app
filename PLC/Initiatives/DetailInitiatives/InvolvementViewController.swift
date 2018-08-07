@@ -180,6 +180,9 @@ class InvolvementViewController: UIViewController, UITableViewDelegate, UITableV
             let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
             destinationVC.signOutButton.isEnabled = false
             destinationVC.signOutButton.tintColor = UIColor.clear
+            destinationVC.tutorialButton.isEnabled = false
+            destinationVC.tutorialButton.tintColor = UIColor.clear
+
             for i in 0..<self.sectionArrays.count{
                 if (tableView.indexPathForSelectedRow?.section == i) {
                     Constants.refs.databaseUsers.child((sectionArrays[sections[i]]?[(tableView.indexPathForSelectedRow?.row)!])!).observe(.value, with: {(snapshot) in

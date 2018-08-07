@@ -21,6 +21,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var signOutButton: UIBarButtonItem!
+    @IBOutlet weak var tutorialButton: UIButton!
     @IBOutlet weak var backToLeaderboardButton: UIBarButtonItem!
 
     //The titles of each section
@@ -429,6 +430,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             destinationVC.taskIndex = myIndex
             destinationVC.segueFromController = "ProfileViewController"
         }
+        else if segue.identifier == "toTutorial",
+        let destinationVC = segue.destination as? TutorialPageViewController{
+            destinationVC.segueFromController = "ProfileViewController"
+        }
+
     }
     
     //MARK: Helper Functions

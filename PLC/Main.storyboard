@@ -383,11 +383,20 @@
                         <outlet property="passwordTextField" destination="h4a-EX-kBV" id="Kjy-KR-O7Q"/>
                         <outlet property="profilePhoto" destination="7X9-3R-gUV" id="Mj9-EP-S8k"/>
                         <outlet property="reEnterPasswordTextField" destination="QqL-k8-d5B" id="jGS-Kx-Tbc"/>
+                        <segue destination="aq2-LS-7d1" kind="show" identifier="toTutorial" id="Umz-Ap-rbD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dD6-oO-VKF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-119.2" y="449.32533733133437"/>
+        </scene>
+        <!--Tutorial-->
+        <scene sceneID="D9I-eA-0UT">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Tutorial" id="aq2-LS-7d1" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="utK-5z-N8d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="438" y="383"/>
         </scene>
     </scenes>
     <resources>

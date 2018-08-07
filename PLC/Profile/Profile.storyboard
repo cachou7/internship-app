@@ -269,12 +269,23 @@
                             </barButtonItem>
                             <barButtonItem id="qZ4-72-CEU"/>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" title="Sign Out" id="gTv-f6-oot">
-                            <color key="tintColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="signOutButton:" destination="acc-KK-lwb" id="f46-GS-zjA"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Sign Out" id="gTv-f6-oot">
+                                <color key="tintColor" red="0.2274509804" green="0.2274509804" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="signOutButton:" destination="acc-KK-lwb" id="f46-GS-zjA"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="plain" id="oKh-YN-QyU">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" id="OjX-og-ykT">
+                                    <rect key="frame" x="262.5" y="11" width="22" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <connections>
+                                        <segue destination="UBF-My-9y9" kind="presentation" identifier="toTutorial" id="grF-LI-X3F"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -287,6 +298,7 @@
                         <outlet property="profilePhoto" destination="Lmd-rT-A3j" id="a6w-7G-qDL"/>
                         <outlet property="signOutButton" destination="gTv-f6-oot" id="NQa-98-dob"/>
                         <outlet property="tableView" destination="QTG-hF-cfL" id="Ryt-LO-5MA"/>
+                        <outlet property="tutorialButton" destination="OjX-og-ykT" id="3ow-XE-ufb"/>
                         <segue destination="0gv-zU-p2o" kind="unwind" identifier="unwindToLogin" unwindAction="unwindToLoginWithSegue:" id="Gla-y0-qf4"/>
                     </connections>
                 </viewController>
@@ -294,6 +306,14 @@
                 <exit id="0gv-zU-p2o" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="844" y="1075.4122938530736"/>
+        </scene>
+        <!--Tutorial-->
+        <scene sceneID="gku-HM-QOG">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Tutorial" id="UBF-My-9y9" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="10W-we-dn8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1546" y="956"/>
         </scene>
         <!--DetailInitiatives-->
         <scene sceneID="SvC-Tc-HK8">

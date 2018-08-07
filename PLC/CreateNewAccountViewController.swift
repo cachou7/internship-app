@@ -24,6 +24,9 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     let departmentPickerView = UIPickerView()
     let departments: [String] = ["Engineering", "Strategy & Consulting", "Marketing & Experience"]
     
+    // MARK: Constants
+    let loginToTasks = "LoginToTasks"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,7 +103,9 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
                 
                 
             }
-            dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "toTutorial", sender: nil)
+            
+            //dismiss(animated: true, completion: nil)
         }
     }
     @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
@@ -191,6 +196,10 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
             valid = false
         }
         return valid
+    }
+    
+    @IBAction func unwindToCreateNewAccount(segue:UIStoryboardSegue){
+        dismiss(animated: true, completion: nil)
     }
     
 }

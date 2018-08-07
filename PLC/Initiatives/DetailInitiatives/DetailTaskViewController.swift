@@ -337,6 +337,8 @@ class DetailTaskViewController: UIViewController, RSVPViewControllerDelegate, Ch
             let destinationVC = segue.destination.childViewControllers[0] as! ProfileViewController
             destinationVC.signOutButton.isEnabled = false
             destinationVC.signOutButton.tintColor = UIColor.clear
+            destinationVC.tutorialButton.isEnabled = false
+            destinationVC.tutorialButton.tintColor = UIColor.clear
             Constants.refs.databaseUsers.child(self.task_in.createdBy).observe(.value, with: {(snapshot) in
                 let userSnap = snapshot.value as? [String : Any ] ?? [:]
                 let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, funFact: userSnap["funFact"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)

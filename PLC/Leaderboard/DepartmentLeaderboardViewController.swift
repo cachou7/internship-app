@@ -140,6 +140,9 @@ class DepartmentLeaderboardViewController: UIViewController, UITableViewDelegate
             let destinationVC = vc.childViewControllers[0] as! ProfileViewController
             destinationVC.signOutButton.isEnabled = false
             destinationVC.signOutButton.tintColor = UIColor.clear
+            destinationVC.tutorialButton.isEnabled = false
+            destinationVC.tutorialButton.tintColor = UIColor.clear
+
             destinationVC.user = self.users[(tableView.indexPathForSelectedRow?.row)!]
         }
     }
