@@ -235,17 +235,16 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
         else if createdByUser && !pendingTask {
             cell.taskFirstIcon.image = UIImage(named: "iconChicken")
-            cell.taskSecondIcon.isHidden = true
+            cell.taskSecondIcon.image = nil
         }
         else if !createdByUser && pendingTask {
             cell.taskFirstIcon.image = UIImage(named: "iconPending")
-            cell.taskSecondIcon.isHidden = true
+            cell.taskSecondIcon.image = nil
         }
         else {
-            cell.taskFirstIcon.isHidden = true
-            cell.taskSecondIcon.isHidden = true
+            cell.taskFirstIcon.image = nil
+            cell.taskSecondIcon.image = nil
         }
-        
         cell.delegate = self
         return cell
     }
