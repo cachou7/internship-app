@@ -43,10 +43,11 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     }
     
     func sortTasks() -> Void {
-        if self.navigationItem.title! == "Most Popular"{
+        print(self.navigationItem.title!)
+        if self.navigationItem.title! == "Most Popular Eggs"{
             self.filteredItems.sort(by: {$0.ranking > $1.ranking})
          }
-         else if self.navigationItem.title! == "Upcoming"{
+         else if self.navigationItem.title! == "Upcoming Eggs"{
             self.filteredItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
          }
         else{
