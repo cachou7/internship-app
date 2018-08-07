@@ -218,6 +218,7 @@
 				99F81EA2210A5BAC009821DE /* Leaderboard */,
 				99F81EA1210A5B22009821DE /* Initiatives */,
 				99F81EA5210A5C3E009821DE /* Profile */,
+				99F81EB32119E8B4009821DE /* Tutorial */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
 				99AB733720E54FEB00E00A2A /* Task.swift */,
 				99F81EA7210A5DD4009821DE /* PointsStructure.swift */,
@@ -226,9 +227,6 @@
 				8365F91820E6C1640018BB43 /* LoginViewController.swift */,
 				990D7FED21022D4700549C6B /* CreateNewAccountViewController.swift */,
 				99AB732F20E42E6C00E00A2A /* Main.storyboard */,
-				99F81EAD2118DCC8009821DE /* Tutorial.storyboard */,
-				99F81EB12118E073009821DE /* LeaderboardTutorialViewController.swift */,
-				99F81EAF2118DE2E009821DE /* TutorialPageViewController.swift */,
 				83BEBE8F20EA8E410055BE16 /* TabBarView.storyboard */,
 				83ADA39D20E1547900CD5F30 /* Assets.xcassets */,
 				83ADA39F20E1547900CD5F30 /* LaunchScreen.storyboard */,
@@ -323,6 +321,16 @@
 				99AB732520E4269E00E00A2A /* InitiativeCreateViewController.swift */,
 			);
 			path = DetailInitiatives;
+			sourceTree = "<group>";
+		};
+		99F81EB32119E8B4009821DE /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				99F81EAD2118DCC8009821DE /* Tutorial.storyboard */,
+				99F81EB12118E073009821DE /* LeaderboardTutorialViewController.swift */,
+				99F81EAF2118DE2E009821DE /* TutorialPageViewController.swift */,
+			);
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 		BE023412823A0EED87086F9F /* Frameworks */ = {

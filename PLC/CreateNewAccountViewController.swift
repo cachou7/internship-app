@@ -199,7 +199,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate, UII
     }
     
     @IBAction func unwindToCreateNewAccount(segue:UIStoryboardSegue){
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
     
 }
