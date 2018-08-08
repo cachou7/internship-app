@@ -449,6 +449,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.reloadData()
     }
     
+    
     private func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }
         let myCalendar = Calendar(identifier: .gregorian)
