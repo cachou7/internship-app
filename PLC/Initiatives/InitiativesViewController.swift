@@ -9,6 +9,7 @@
 import UIKit
 
 class InitiativesViewController: UIPageViewController {
+    //MARK: Properties
     var initiativesPageViewController: InitiativesPageViewController? {
         didSet {
             initiativesPageViewController?.initiativesDelegate = self as? InitiativesPageViewControllerDelegate
@@ -23,6 +24,7 @@ class InitiativesViewController: UIPageViewController {
         super.didReceiveMemoryWarning()
     }
     
+    //MARK: Segue Functions
     func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let initiativesPageViewController = segue.destination as? InitiativesPageViewController {
             self.initiativesPageViewController = initiativesPageViewController

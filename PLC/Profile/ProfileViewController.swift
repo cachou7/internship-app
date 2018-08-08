@@ -311,7 +311,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     //MARK: TableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        //Loads number of sections, if section count is 0, tableview displays "No eggs available"
+        //Loads number of sections. If section count is 0, tableview displays "No eggs available"
         var numOfSections: Int = 0
         if self.sections.count > 0
         {
@@ -428,9 +428,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
             destinationVC.taskIndex = myIndex
+            //This is for the unwind segue after a detail task is deleted
             destinationVC.segueFromController = "ProfileViewController"
         }
         else if segue.identifier == "toTutorial",
+        
+        //Sets the segueFromController variable for the TutorialPageViewController so it can be passed to the LeaderboardTutorialViewController
+        //This is so when the tutorial is done and the 'Done' button is hit, it unwinds to the parent view
         let destinationVC = segue.destination as? TutorialPageViewController{
             destinationVC.segueFromController = "ProfileViewController"
         }

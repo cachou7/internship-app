@@ -22,6 +22,7 @@ class FavTasksViewController: UIViewController {
         topStackView.axis = axisForSize(view.bounds.size)
     }
     
+    //MARK: Segue Functions
     // Set destination view controllers
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination

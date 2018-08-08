@@ -9,27 +9,26 @@
 import UIKit
 
 class LeaderboardTutorialViewController: UIViewController {
+    //MARK: Properties
     var segueFromController: String?
-    
-    @IBAction func doneButton(_ sender: UIButton) {
-        if segueFromController == "ProfileViewController"{
-             self.performSegue(withIdentifier: "unwindToProfile", sender: self)
-        }
-        else {
-             self.performSegue(withIdentifier: "unwindToCreateNewAccount", sender: self)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //MARK: Actions
+    @IBAction func doneButton(_ sender: UIButton) {
+        //Unwind segue to its parent view
+        if segueFromController == "ProfileViewController"{
+            self.performSegue(withIdentifier: "unwindToProfile", sender: self)
+        }
+        else {
+            self.performSegue(withIdentifier: "unwindToCreateNewAccount", sender: self)
+        }
+    }
 
 }

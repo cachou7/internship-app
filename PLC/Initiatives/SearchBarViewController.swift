@@ -10,6 +10,8 @@ import UIKit
 import YNSearch
 
 class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
+    
+    //MARK: Properties
     var overallItems: [Task]?
     var database: [String] = []
     var ynSearch = YNSearch()
@@ -19,11 +21,15 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         
         configureDatabase()
         
+        //Search default categories
         let categories = ["Fun & Games", "Philanthropy", "Shared Interests", "Skill Building", "Other"]
+        //Search default filters
         let filters = ["Fresh", "Most Popular", "Upcoming", "Lead", "Participate"]
+        //Add to database to become searchable
         database.append(contentsOf: categories)
         database.append(contentsOf: filters)
         
+        //YNSearch configuration
         ynSearch.setCategories(value: categories)
         ynSearch.setFilters(value: filters)
         ynSearch.setSearchHistories(value: categories)
@@ -37,23 +43,26 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
         self.setYNCategoryButtonType(type: .colorful)
         self.setYNFilterButtonType(type: .colorful)
     }
-    
-    func configureDatabase(){
-        for task in overallItems!{
-            if !database.contains(task.location){
-                database.append(task.location)
-            }
-
-            if !database.contains(task.title){
-                database.append(task.title)
-            }
-        }
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    //MARK: Helper Functions
+    private func configureDatabase(){
+        //Configures all locations and titles that would be searchable
+        for task in overallItems!{
+            if !database.contains(task.location){
+                database.append(task.location)
+            }
+            
+            if !database.contains(task.title){
+                database.append(task.title)
+            }
+        }
+    }
+    
+    //MARK: YNSearchDelegate
     func ynSearchListViewDidScroll() {
         self.ynSearchTextfieldView.ynSearchTextField.endEditing(true)
     }
@@ -61,30 +70,22 @@ class SearchBarViewController: YNSearchViewController, YNSearchDelegate {
     
     func ynSearchHistoryButtonClicked(text: String) {
         self.pushViewController(text: text)
-        print(text)
     }
     
     func ynCategoryButtonClicked(text: String) {
         self.ynSearchView.ynSearchListView.ynSearch.appendSearchHistories(value: text)
         self.pushViewController(text: text)
-        print(text)
     }
     
     func ynFilterButtonClicked(text: String) {
         self.ynSearchView.ynSearchListView.ynSearch.appendSearchHistories(value: text)
         self.pushViewController(text: text)
-        print(text)
     }
     
     func ynSearchListViewClicked(key: String) {
         self.pushViewController(text: key)
-        print(key)
     }
-    
-    func ynSearchListViewClicked(object: Any) {
-        print(object)
-    }
-    
+
     func ynSearchListView(_ ynSearchListView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.ynSearchView.ynSearchListView.dequeueReusableCell(withIdentifier: YNSearchListViewCell.ID) as! YNSearchListViewCell
         if let ynmodel = self.ynSearchView.ynSearchListView.searchResultDatabase[indexPath.row] as? String {
