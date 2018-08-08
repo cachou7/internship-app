@@ -44,7 +44,7 @@
 		99AB732E20E42E4A00E00A2A /* InitiativeCreate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */; };
 		99AB733020E42E6C00E00A2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB732F20E42E6C00E00A2A /* Main.storyboard */; };
 		99AB733220E42E8E00E00A2A /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99AB733120E42E8E00E00A2A /* Profile.storyboard */; };
-		99AB733820E54FEB00E00A2A /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB733720E54FEB00E00A2A /* Task.swift */; };
+		99AB733820E54FEB00E00A2A /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AB733720E54FEB00E00A2A /* TaskModel.swift */; };
 		99B367D720E668BE008EBF6F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B367D620E668BE008EBF6F /* Constants.swift */; };
 		99C9148920FD664300B8EEE5 /* RSVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C9148820FD664300B8EEE5 /* RSVPViewController.swift */; };
 		99DFD1F420F64F4100129EEA /* EditInitiative.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */; };
@@ -130,7 +130,7 @@
 		99AB732D20E42E4A00E00A2A /* InitiativeCreate.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InitiativeCreate.storyboard; sourceTree = "<group>"; };
 		99AB732F20E42E6C00E00A2A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		99AB733120E42E8E00E00A2A /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
-		99AB733720E54FEB00E00A2A /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		99AB733720E54FEB00E00A2A /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
 		99B367D620E668BE008EBF6F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		99C9148820FD664300B8EEE5 /* RSVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPViewController.swift; sourceTree = "<group>"; };
 		99DFD1F320F64F4100129EEA /* EditInitiative.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditInitiative.storyboard; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 				99F81EA5210A5C3E009821DE /* Profile */,
 				99F81EB32119E8B4009821DE /* Tutorial */,
 				83ADA39420E1547400CD5F30 /* AppDelegate.swift */,
-				99AB733720E54FEB00E00A2A /* Task.swift */,
+				99AB733720E54FEB00E00A2A /* TaskModel.swift */,
 				99F81EA7210A5DD4009821DE /* PointsStructure.swift */,
 				99B367D620E668BE008EBF6F /* Constants.swift */,
 				8365F91520E6B9C90018BB43 /* UserModel.swift */,
@@ -597,7 +597,7 @@
 				83ADA3C520E165D000CD5F30 /* ProfileViewController.swift in Sources */,
 				990D7FF021060ACB00549C6B /* DepartmentLeaderboardTableViewCell.swift in Sources */,
 				83DC45C620EC22780080B6A1 /* FavTasksViewController.swift in Sources */,
-				99AB733820E54FEB00E00A2A /* Task.swift in Sources */,
+				99AB733820E54FEB00E00A2A /* TaskModel.swift in Sources */,
 				99008FB62100DA4500F05899 /* InvolvementViewController.swift in Sources */,
 				8387316D20E55532001E1628 /* DetailTaskViewController.swift in Sources */,
 				99F81E9C210A168F009821DE /* SearchBarViewController.swift in Sources */,
