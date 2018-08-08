@@ -27,9 +27,11 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Sign-up appearance
         presenter.roundCorners = true
         presenter.cornerRadius = 20
         
+        // Text fields appearance
         textFieldLoginEmail.borderStyle = UITextBorderStyle.none
         textFieldLoginPassword.borderStyle = UITextBorderStyle.none
         textFieldLoginEmail.layer.borderWidth = 0
@@ -39,6 +41,7 @@ class LoginViewController: UIViewController {
         textFieldLoginPassword.layer.cornerRadius = 15.0
         textFieldLoginPassword.layer.borderWidth = 2.0
         
+        // Email and password icons and appearance
         let iconWidth = 25
         let iconHeight = 25
         
@@ -54,13 +57,13 @@ class LoginViewController: UIViewController {
         let imageViewPassword = UIImageView();
         let imagePassword = UIImage(named: "iconLock");
         
-        // set frame on image before adding it to the uitextfield
+        // Set frame on image before adding it to the UITextField
         imageViewPassword.image = imagePassword;
         imageViewPassword.frame = CGRect(x: 10, y: 9, width: iconWidth, height: iconHeight)
         textFieldLoginPassword.leftViewMode = UITextFieldViewMode.always
         textFieldLoginPassword.addSubview(imageViewPassword)
         
-        //set Padding
+        // Set Padding
         let paddingView = UIView(frame: CGRect(x: 5, y: 5, width: 45, height: 45))
         textFieldLoginEmail.leftView = paddingView
         
@@ -72,14 +75,16 @@ class LoginViewController: UIViewController {
         Auth.auth().addStateDidChangeListener { auth, user in
             if user != nil {
                 // Clear text field text
-                //self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
                 self.textFieldLoginEmail.text = nil
                 self.textFieldLoginPassword.text = nil
             }
         }
     }
-
+    
+    // If user clicks on Login button
     @IBAction func loginDidTouch(_ sender: Any) {
+        
+        // Guard
         guard
             let email = textFieldLoginEmail.text,
             let password = textFieldLoginPassword.text,
@@ -87,20 +92,24 @@ class LoginViewController: UIViewController {
             password.count > 0
             else { return }
         
+        // Sign in with Firebase
         Auth.auth().signIn(withEmail: email, password: password) { user, error in
-            print(user == nil)
+            
+            // Sign in failed
             if let error = error, user == nil {
                 let alert = UIAlertController(title: "Sign In Failed", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 
                 self.present(alert, animated: true, completion: nil)
             }
-            else{
+            
+            // Sign in successful
+            else {
+                // Guard
                 guard let user = Auth.auth().currentUser else { return }
+                // Get user info from database
                 Constants.refs.databaseUsers.observe(.value, with: { snapshot in
                     if snapshot.hasChild(user.uid) {
-                        print("User already in database")
-                        print(user.uid)
                         let uidSnapshot = snapshot.childSnapshot(forPath: user.uid)
                         
                         currentUser = User(authData: user, firstName:
@@ -109,6 +118,7 @@ class LoginViewController: UIViewController {
                     }
                 })
                 
+                // Async load after login
                 let deadlineTime = DispatchTime.now() + .seconds(2)
                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                     self.performSegue(withIdentifier: self.loginToTasks, sender: nil)
@@ -119,6 +129,7 @@ class LoginViewController: UIViewController {
         }
     }
     
+    // User clicks sign up button
     @IBAction func signUpDidTouch(_ sender: Any) {
         CreateNewAccountController = (storyboard?.instantiateViewController(withIdentifier: "CreateNewAccountViewController") as! CreateNewAccountViewController)
         customPresentViewController(presenter, viewController: CreateNewAccountController!, animated: true, completion: nil)
@@ -126,14 +137,15 @@ class LoginViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    // Logout
     @IBAction func unwindToLogin(segue:UIStoryboardSegue){
         currentUser = nil
     }
 }
 
+// Set up UITextField responders
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

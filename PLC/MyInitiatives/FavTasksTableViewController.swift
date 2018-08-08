@@ -10,20 +10,25 @@ import Firebase
 
 class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDelegate {
     
+    // MM-dd-yyy formatter
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         return formatter
     }()
     
+    // yyyy-MM-dd formatter
     fileprivate lazy var dateFormatter2: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
     
+    // Initialize current user
     let user = Auth.auth().currentUser!
+    // Stores key: Date and value: [Task] an array of tasks scheduled for that date
     var dateInfo: [String:[Task]] = [:]
+    // Stores a list of all dates that have an event
     var datesList: [String] = []
     
     override func viewDidLoad() {
@@ -31,6 +36,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         
         // Set up listener to get liked tasks and detect when tasks are liked
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childAdded, with: { taskId in
+            // Get info for each task
             Constants.refs.databaseTasks.child(taskId.key).observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists(){
                     let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
@@ -41,19 +47,21 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                     if tasksInfo["leaderAmount"]! as! Int != 0{
                         amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                     }
+                    
+                    // Initialize task with info
                     let likedTask = Task(title: tasksInfo["taskTitle"]! as! String, description: tasksInfo["taskDescription"]! as! String, tag: tasksInfo["taskTag"]! as! String, startTime: tasksInfo["taskTime"]! as! String, endTime: tasksInfo["taskEndTime"]! as! String, location: tasksInfo["taskLocation"]! as! String, timestamp: tasksInfo["timestamp"]! as! TimeInterval, id: tasksInfo["taskId"]! as! String, createdBy: tasksInfo["createdBy"]! as! String, ranking: tasksInfo["ranking"]! as! Int, timeMilliseconds: tasksInfo["taskTimeMilliseconds"]! as! TimeInterval, endTimeMilliseconds: tasksInfo["taskEndTimeMilliseconds"]! as! TimeInterval, amounts: amounts, usersLikedAmount: tasksInfo["usersLikedAmount"]! as! Int, category: tasksInfo["category"] as! String)
                     
-                    //self.likedItems.append(likedTask!)
-                    print("Added task named: " + (tasksInfo["taskTitle"]! as! String))
-                    //self.likedItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
                     self.tableView.rowHeight = 90.0
                     
+                    // Sort tasks by individual dates
                     let date = NSDate(timeIntervalSince1970: tasksInfo["taskTimeMilliseconds"] as! TimeInterval)
                     let dateString = self.dateFormatter.string(from: date as Date)
                     let keyExists = self.dateInfo[dateString] != nil
+                    // If date is not in dictionary, then add key:date and value:Task to dict
                     if !keyExists {
                         self.dateInfo[dateString] = ([likedTask] as! [Task])
                     }
+                    // If date exists, then append task to end of tasks list for that date
                     else {
                         var currTasks = self.dateInfo[dateString] as! [Task]
                         currTasks.append(likedTask!)
@@ -61,6 +69,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                         self.dateInfo[dateString] = currTasks
                     }
                     
+                    // If date does not exist in list of dates with events, then add it
                     for key in self.dateInfo.keys {
                         if !self.datesList.contains(key) {
                             self.datesList.append(key)
@@ -72,17 +81,11 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                 }
             })
             
-            Constants.refs.databaseTasks.child(taskId.key).observe(.childChanged, with: { snapshot in
-                let tasksInfo = snapshot.value as? Any
-            })
-            
             self.tableView.reloadData()
         })
         
-        // Set up listener to detect when tasks are unliked from main Initiatives view and delete from likeItems
+        // Set up listener to detect when tasks are unliked from main Initiatives view and delete from dateInfo
         Constants.refs.databaseUsers.child(user.uid + "/tasks_liked").observe(.childRemoved, with: { taskId in
-            print("Deleting item from fav tasks...")
-            //if self.likedItems.count > 0 {
             var newArr = self.datesList
             for date in self.datesList {
                 for i in 0..<self.dateInfo[date]!.count {
@@ -99,11 +102,11 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                     }
                 }
             }
-            //}
             self.datesList = newArr
             self.tableView.reloadData()
         })
         
+        // Set up async scroll to user selected date
         let deadlineTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
             Constants.refs.databaseUserSelectedDate.child(self.user.uid).observe(.value, with : { snapshot in
@@ -114,6 +117,9 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                     var index = 0
                     var found = false
                     
+                    // Scroll to event on selected date if found
+                    // Else, scroll to event on closest date after selected date
+                    // Else, scroll to event on closest date before selected date
                     if self.datesList.count != 0 {
                         for i in 0..<self.datesList.count {
                             if self.datesList[i] == selectedDate && !found {
@@ -140,6 +146,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
                         }
                         let indexPath = IndexPath(row: row, section: index)
                         
+                        // Async scroll to date
                         let deadlineTime = DispatchTime.now() + .milliseconds(300)
                         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                             self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -152,19 +159,18 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    // Return number of different event dates
     override func numberOfSections(in tableView: UITableView) -> Int {
         var numOfSections: Int = 0
-        if datesList.count > 0
-        {
+        if datesList.count > 0 {
             tableView.separatorStyle = .singleLine
             numOfSections = datesList.count
             tableView.backgroundView = nil
         }
-        else
-        {
+        // Currently no favorite tasks
+        else {
             let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text = "No favorites"
             noDataLabel.textColor = UIColor.black
@@ -175,6 +181,8 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         return numOfSections
     }
     
+    // Return day of week, month, and day of each favorited event
+    // If date is today, then return today
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         var date = ""
         let todaysDate = Date()
@@ -195,11 +203,13 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         return dayOfWeek! + " " + monthDay[0] + " " + monthDay[1]
     }
     
+    // Return number of events for the date in section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return self.dateInfo[datesList[section]]!.count
     }
     
+    // Populate each cell with task info
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "favTaskCell", for: indexPath) as! FavTaskTableViewCell
         let likedIcon = UIImage(named: "redHeart")
@@ -207,16 +217,23 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         for i in 0..<self.datesList.count {
             if (indexPath.section == i) {
                 let myTask = self.dateInfo[datesList[i]]![indexPath.row]
+                
+                // Cell appearance
                 cell.layer.borderColor = UIColor.white.cgColor
                 cell.layer.borderWidth = 5
                 cell.layer.cornerRadius = 20
+                
                 cell.taskTitle.text = myTask.title
                 cell.taskLocation.text = myTask.location
+                cell.taskLiked.setImage(likedIcon, for: .normal)
+                
+                // Get start and end times for event
                 var startTime = myTask.startTime.split(separator: " ")
                 var endTime = myTask.endTime.split(separator: " ")
                 cell.startTime.text = String(startTime[4]) + " " + String(startTime[5])
                 cell.endTime.text = String(endTime[4]) + " " + String(endTime[5])
-                cell.taskLiked.setImage(likedIcon, for: .normal)
+                
+                // Get task category and set image
                 if myTask.category == "Fun & Games" {
                     cell.taskCategoryIcon.image = UIImage(named: "iconParty")
                     cell.taskCategory.text = "Fun & Games"
@@ -250,24 +267,26 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         let currentTasks = Constants.refs.databaseUsers.child(user.uid + "/tasks_liked")
         let unlikedIcon = UIImage(named: "heartIcon")
         sender.taskLiked.setImage(unlikedIcon, for: .normal)
+        
+        // Update task rankings under task in database
         Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("ranking").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].ranking - 1)
         
-        if (self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1) > 0{
+        // Update users_liked amount under task in database
+        if (self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1) > 0 {
             Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("usersLikedAmount").setValue(0)
         }
-        else{
+        else {
             Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].usersLikedAmount - 1)
         }
+        
+        // Remove task key from users_liked under task in database
         Constants.refs.databaseTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).child("users_liked").child(user.uid).removeValue()
         currentTasks.child(self.dateInfo[datesList[tappedIndexPath.section]]![tappedIndexPath.row].id).removeValue()
         
-        
-        //self.likedItems.remove(at: tappedIndexPath.row)
-        
         tableView.reloadData()
-        //}
     }
     
+    // Segue to detail task view
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFavTaskDetails", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow {
             destinationVC.task_in = self.dateInfo[datesList[myIndex.section]]![myIndex.row]
@@ -275,6 +294,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         }
     }
     
+    // Returns day of the week from date
     func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }
         let myCalendar = Calendar(identifier: .gregorian)
@@ -300,7 +320,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
         }
     }
 
-
+    // Delete event from favorites task table
     @IBAction func unwindToFavInitiatives(segue:UIStoryboardSegue) {
         if segue.identifier == "unwindToFavInitiatives" {
             let selectedIndex = tableView.indexPathForSelectedRow?.row
@@ -321,6 +341,7 @@ class FavTasksTableViewController: UITableViewController, FavTaskTableViewCellDe
  
 }
 
+// String splitter helper function
 extension String {
     var words: [String] {
         return components(separatedBy: .punctuationCharacters)

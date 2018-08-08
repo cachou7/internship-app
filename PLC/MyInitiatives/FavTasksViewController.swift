@@ -10,6 +10,7 @@ import UIKit
 
 class FavTasksViewController: UIViewController {
     
+    // MARK: Properties
     @IBOutlet weak var topStackView: UIStackView!
     fileprivate var calendarViewController: CalendarViewController?
     fileprivate var favTasksTableViewController: FavTasksTableViewController?
@@ -21,6 +22,7 @@ class FavTasksViewController: UIViewController {
         topStackView.axis = axisForSize(view.bounds.size)
     }
     
+    // Set destination view controllers
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination
         if let calendarController = destination as? CalendarViewController {
@@ -32,11 +34,13 @@ class FavTasksViewController: UIViewController {
         }
     }
     
+    // Set up transition view size
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         topStackView.axis = axisForSize(size)
     }
     
+    // Set size for axis
     private func axisForSize(_ size: CGSize) -> UILayoutConstraintAxis {
         return size.width > size.height ? .horizontal : .vertical
     }
