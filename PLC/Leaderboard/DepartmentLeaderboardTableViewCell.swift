@@ -10,6 +10,7 @@ import UIKit
 
 class DepartmentLeaderboardTableViewCell: UITableViewCell {
     
+    //MARK:Properties
     @IBOutlet weak var userProfilePhoto: UIImageView!
     @IBOutlet weak var userProfileLink: UILabel!
     @IBOutlet weak var userPoints: UILabel!

@@ -11,6 +11,7 @@ import Firebase
 
 class TaskTableViewCell: UITableViewCell {
     
+    //MARK: Properties
     let key = currentUser.uid
     weak var delegate: TaskTableViewCellDelegate?
     
@@ -27,14 +28,15 @@ class TaskTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
 
+    //MARK: Actions
     @IBAction func heartButton(_ sender: UIButton) {
-        
         delegate?.taskTableViewCellDidTapHeart(self)
     }
     
     @IBAction func categoryButton(_ sender: UIButton) {
         delegate?.taskTableViewCellCategoryButtonClicked(self)
     }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }

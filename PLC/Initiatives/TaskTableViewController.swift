@@ -14,7 +14,7 @@ import SDWebImage
 
 class TaskTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TaskTableViewCellDelegate {
     
-    //MARK: Variables
+    //MARK: Properties
     var pendingTasks: [String] = []
     var searchController: UISearchController!
     var myIndex = 0
@@ -26,6 +26,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
     //Presentr for Initiative Create form to be presented as a popover when the compose button is clicked
     var presenter = Presentr(presentationType: .custom(width: .default, height: .custom(size:600), center: .center))
     var dataIsAvailable = false
+    // Date Formatting for date label for task
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,13 +49,11 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             if let snapshot = child as? DataSnapshot{
                 let tasksInfo = snapshot.value as? [String : Any ] ?? [:]
                 var amounts = Dictionary<String, Int>()
-                /*Parses amount of participants needed and puts it in a dictionary if the amount needed
-                    is greater than 0*/
+                //Parses amount of participants needed and puts it in a dictionary if the amount needed is greater than 0
                 if tasksInfo["participantAmount"]! as! Int != 0{
                     amounts["participants"] = (tasksInfo["participantAmount"]! as! Int)
                 }
-                /*Parses amount of leaders needed and puts it in a dictionary if the amount needed
-                 is greater than 0*/
+                //Parses amount of leaders needed and puts it in a dictionary if the amount needed is greater than 0
                 if tasksInfo["leaderAmount"]! as! Int != 0{
                     amounts["leaders"] = (tasksInfo["leaderAmount"]! as! Int)
                 }
@@ -88,6 +92,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
             }})
         
         
+        //Removes past tasks from the overallItems that are displayed on feed, but not from everyItemCreated
         Constants.refs.databasePastTasks.observe(.value, with: {(snapshot) in
             for child in snapshot.children {
                 if let snap = child as? DataSnapshot{
@@ -122,19 +127,20 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
 
     
     //MARK: Actions
-    //COMPOSE BUTTON
+    
+    //Compose Button
     @IBAction func composeButton(_ sender: UIBarButtonItem) {
-        // get a reference to the view controller for the popover
+        //get a reference to the view controller for the popover
         let popController = UIStoryboard(name: "InitiativeCreate", bundle: nil).instantiateViewController(withIdentifier: "InitiativeCreateViewController")
         
         customPresentViewController(presenter, viewController: popController, animated: true, completion: nil)
         
         self.tableView.reloadData()
     }
-    //END COMPOSE BUTTON
     
-    //TABLEVIEW DELEGATES
+    //MARK: TableViewDataSource
     override func numberOfSections(in tableView: UITableView) -> Int {
+        //Loads number of sections. If section count is 0, tableview displays "No initiatives available"
         var numOfSections: Int = 0
         if overallItems.count > 0
         {
@@ -158,13 +164,20 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         return self.overallItems.count
     }
     
+    // Set myIndex for detailed view
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        myIndex = indexPath.row
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Table view cells are reused and should be dequeued using a cell identifier.
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        //let pendingTasks = Constants.refs.databasePendingTasks
+
         let thisTask: Task! = self.overallItems[indexPath.row]
         
+        //Cell formatting
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
@@ -176,16 +189,19 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         let taskLocation = thisTask!.location
         var taskTimeInfo = ""
         let currentTime = Date().timeIntervalSince1970
+        //If the task is a currentTask, then it will display 'Happening Now'
         if currentTime > thisTask.timeMilliseconds && currentTime < thisTask.endTimeMilliseconds {
             taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
             taskTimeInfo += " · Happening Now · " + taskLocation
         }
+        //If task is an upcoming task, then it will display the start time and date
         else {
             taskTimeInfo = dayOfWeek + ", " + String(startTime[0]) + " " + String(startTime[1]).dropLast()
             taskTimeInfo += " · " + String(startTime[4]) + " "
             taskTimeInfo += String(startTime[5]) + " · " + taskLocation
         }
         cell.taskTime.text = String(taskTimeInfo)
+        
         //Check if user has liked the task and display correct heart
         currentTasks.observeSingleEvent(of: .value, with: { snapshot in
             if !snapshot.hasChild(thisTask!.id) {
@@ -206,12 +222,10 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 cell.taskImage.image = #imageLiteral(resourceName: "psheader")
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             else{
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             
         }
@@ -220,6 +234,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         var createdByUser = false
         var pendingTask = false
         
+        //Displays icons for creation and pending
         if thisTask.createdBy == Auth.auth().currentUser!.uid {
             createdByUser = true
         }
@@ -249,8 +264,7 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         return cell
     }
     
-    //END TABLEVIEW DELEGATES
-
+    //MARK: TaskTableViewCell Delegates
     func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
         let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
@@ -259,17 +273,13 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         
         self.present(vc, animated: true, completion: nil)
     }
-    
-    //LIKING TASKS
+
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        //print("Heart", sender, tappedIndexPath.row)
         sender.isSelected = !sender.isSelected
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
         
-        
-
         currentTasks.observeSingleEvent(of: .value, with: { (snapshot) in
             
             //HEART TAPPED
@@ -283,7 +293,6 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                 
                 Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems[tappedIndexPath.row].usersLikedAmount + 1)
             }
-            //END HEART TAPPED
                 
             //HEART UNTAPPED
             else {
@@ -301,36 +310,28 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
                         Constants.refs.databaseTasks.child(self.overallItems[tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems[tappedIndexPath.row].usersLikedAmount - 1)
                 }
              }
-            //END HEART UNTAPPED
+            
         })
 
     }
-    //END LIKING TASKS
-
-    // Set myIndex for detailed view
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        myIndex = indexPath.row
-    }
     
+    //MARK: Segue Functions
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailTask", let destinationVC = segue.destination as? DetailTaskViewController, let myIndex = tableView.indexPathForSelectedRow?.row {
             
             destinationVC.task_in = self.overallItems[myIndex]
             destinationVC.taskIndex = myIndex
+            //This is for the unwind segue after a detail taks is deleted
             destinationVC.segueFromController = "TaskTableViewController"
         }
         if segue.identifier == "toSearch",
             let destinationVC = segue.destination as? SearchViewController{
+            //Passes list of all tasks to the search function
             destinationVC.overallItems = self.everyItemCreated
         }
     }
     
-    // Sorts tasks based on which tab bar and menu dropdown bar is selected, then reload view
-    func sortTasks() -> Void {
-        self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
-        self.tableView.reloadData()
-    }
-    
+    //Unwind Segue
     @IBAction func unwindToInitiatives(segue:UIStoryboardSegue) {
         if segue.identifier == "unwindToInitiatives" {
             let selectedIndex = tableView.indexPathForSelectedRow?.row
@@ -343,12 +344,12 @@ class TaskTableViewController: UITableViewController, UIPopoverPresentationContr
         }
     }
     
-    // Date Formatting for date label for task
-    fileprivate lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        return formatter
-    }()
+    //MARK: Helper Functions
+    // Sorts tasks based on creation timestamp
+    func sortTasks() -> Void {
+        self.overallItems.sort(by: {$0.timestamp > $1.timestamp})
+        self.tableView.reloadData()
+    }
     
     private func getDayOfWeek(_ today:String) -> String? {
         guard let todayDate = dateFormatter.date(from: today) else { return nil }

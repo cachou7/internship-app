@@ -10,10 +10,12 @@ import UIKit
 
 class TutorialPageViewController: UIPageViewController, TutorialPageViewControllerDelegate {
     
+    //MARK: Properties
     var tutorialDelegate: TutorialPageViewControllerDelegate?
     var pageControl = UIPageControl()
     var segueFromController: String?
     
+    //Initializes orderedViewControllers with TutorialViewControllers to populate page view
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         return [self.newTutorialViewController(tutorialType: "Roles"),
                 self.newTutorialViewController(tutorialType: "FreshEggs"),
@@ -21,6 +23,7 @@ class TutorialPageViewController: UIPageViewController, TutorialPageViewControll
                 self.newTutorialViewController(tutorialType: "Leaderboard")]
     }()
     
+    //Instantiates TutorialViewControllers
     private func newTutorialViewController(tutorialType: String) -> UIViewController {
         return (storyboard?.instantiateViewController(withIdentifier: "\(tutorialType)TutorialViewController"))!
     }
@@ -28,11 +31,13 @@ class TutorialPageViewController: UIPageViewController, TutorialPageViewControll
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Sets the segueFromController in the LeaderboardTutorialViewController so when the 'Done' button is clicked, the pages segues to it's previous view
         (orderedViewControllers[3] as? LeaderboardTutorialViewController)?.segueFromController = self.segueFromController
         
-        // Do any additional setup after loading the view.
         dataSource = self
         delegate = self
+        
+        //Sets initial view to the first view controller in orderedViewControllers
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
                                direction: .forward,
@@ -43,8 +48,13 @@ class TutorialPageViewController: UIPageViewController, TutorialPageViewControll
         
     }
     
-    func configurePageControl() {
-        // The total number of pages that are available is based on how many available colors we have.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    //MARK: Helper Function
+    private func configurePageControl() {
+        // The total number of pages that are available is based on how many available view controllers we have.
         pageControl = UIPageControl(frame: CGRect(x: 0,y: self.view.frame.minY + 650,width: self.view.frame.width,height: 50))
         self.pageControl.numberOfPages = orderedViewControllers.count
         self.pageControl.currentPage = 0
@@ -53,14 +63,9 @@ class TutorialPageViewController: UIPageViewController, TutorialPageViewControll
         self.pageControl.currentPageIndicatorTintColor = UIColor.black
         self.view.addSubview(pageControl)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
 }
 
+//MARK: TutorialPageViewController delegate
 protocol TutorialPageViewControllerDelegate: class {
     func pageViewController(_ pageViewController: UIPageViewController,
                             didUpdatePageIndex index: Int)
@@ -84,7 +89,6 @@ extension TutorialPageViewController: UIPageViewControllerDelegate {
 }
 
 // MARK: UIPageViewControllerDataSource
-
 extension TutorialPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController,
@@ -95,8 +99,7 @@ extension TutorialPageViewController: UIPageViewControllerDataSource {
         
         let previousIndex = viewControllerIndex + 1
         
-        // User is on the first view controller and swiped left to loop to
-        // the last view controller.
+        // User is on the first view controller and swiped left 
         guard previousIndex >= 0 else {
             return orderedViewControllers.last
         }
@@ -117,8 +120,7 @@ extension TutorialPageViewController: UIPageViewControllerDataSource {
         let nextIndex = viewControllerIndex - 1
         let orderedViewControllersCount = orderedViewControllers.count
         
-        // User is on the last view controller and swiped right to loop to
-        // the first view controller.
+        // User is on the last view controller and swiped right
         guard orderedViewControllersCount != nextIndex else {
             return nil
         }

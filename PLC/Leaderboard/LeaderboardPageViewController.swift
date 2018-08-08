@@ -10,14 +10,17 @@ import UIKit
 
 class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewControllerDelegate {
     
+    //MARK: Properties
     var leaderboardDelegate: LeaderboardPageViewControllerDelegate?
     var pageControl = UIPageControl()
     
+    //Initializes orderedViewControllers with LeaderboardNavigationControllers to populate page view
     private(set) lazy var orderedViewControllers: [UINavigationController] = {
         return [self.newLeaderboardViewController(leaderboardType: "Office"),
                 self.newLeaderboardViewController(leaderboardType: "Department")]
     }()
     
+    //Instantiates LeaderboardNavigationControllers
     private func newLeaderboardViewController(leaderboardType: String) -> UINavigationController {
         return (storyboard?.instantiateViewController(withIdentifier: "\(leaderboardType)LeaderboardNavigationController"))! as! UINavigationController
     }
@@ -25,9 +28,10 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         dataSource = self as UIPageViewControllerDataSource
         delegate = self
+        
+        //Sets initial view to the first navigation controller in orderedViewControllers
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
                                direction: .forward,
@@ -38,8 +42,13 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
         
     }
     
-    func configurePageControl() {
-        // The total number of pages that are available is based on how many available colors we have.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+    //MARK: Helper Function
+    private func configurePageControl() {
+        // The total number of pages that are available is based on how many available navigation controllers we have.
         pageControl = UIPageControl(frame: CGRect(x: 0,y: self.view.frame.minY + 650,width: self.view.frame.width,height: 50))
         self.pageControl.numberOfPages = orderedViewControllers.count
         self.pageControl.currentPage = 0
@@ -48,14 +57,10 @@ class LeaderboardPageViewController: UIPageViewController, LeaderboardPageViewCo
         self.pageControl.currentPageIndicatorTintColor = UIColor.black
         self.view.addSubview(pageControl)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
-
 }
 
+//MARK: LeaderboardPageViewController delegate
 protocol LeaderboardPageViewControllerDelegate: class {
     func pageViewController(_ pageViewController: UIPageViewController,
                                     didUpdatePageIndex index: Int)

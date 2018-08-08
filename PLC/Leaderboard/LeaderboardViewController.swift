@@ -9,6 +9,8 @@
 import UIKit
 
 class LeaderboardViewController: UIViewController {
+    
+    //MARK:Properties
     var leaderboardPageViewController: LeaderboardPageViewController? {
         didSet {
             leaderboardPageViewController?.leaderboardDelegate = self as? LeaderboardPageViewControllerDelegate
@@ -23,7 +25,8 @@ class LeaderboardViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-   func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    //MARK: Segue Functions
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let leaderboardPageViewController = segue.destination as? LeaderboardPageViewController {
             self.leaderboardPageViewController = leaderboardPageViewController
         }

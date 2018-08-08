@@ -12,6 +12,7 @@ import SDWebImage
 
 class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    //MARK: Properties
     @IBOutlet weak var tableView: UITableView!
     var users: [User] = []
     
@@ -20,21 +21,21 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
         
         //Users Loaded From DB
         Constants.refs.databaseUsers.observe(.value, with: { snapshot in
-            print(snapshot)
             
             for child in snapshot.children {
-                print(child)
                 if let snapshot = child as? DataSnapshot{
                     let userSnap = snapshot.value as? [String : Any ] ?? [:]
                     let user = User(uid: userSnap["uid"] as! String, firstName: userSnap["firstName"] as! String, lastName: userSnap["lastName"] as! String, jobTitle: userSnap["jobTitle"] as! String, department: userSnap["department"] as! String, funFact: userSnap["funFact"] as! String, points: userSnap["points"] as! Int, email: userSnap["email"] as! String)
-                    print("User added to newUsers " + (user?.uid)!)
                     let containsUser = self.users.contains { (person) -> Bool in
                         return person.uid == user!.uid
                         }
+                    //Adds new user to list of users for leaderboard if not already there
                     if !containsUser{
                         self.users.append(user!)
                         self.sortUsers()
                     }
+                    //If user is already in the list, it removes and reappends that user
+                    //This is needed if the value of the user gets updated/changes at all
                     else if containsUser{
                         let index = self.users.index(where:{ $0.uid == user?.uid })
                         self.users.remove(at: index!)
@@ -49,18 +50,15 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
     override func viewDidAppear(_ animated: Bool) {
         tableView.delegate = self
         tableView.dataSource = self
-        
-        for user in users{
-            print(user.uid)
-        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //MARK: TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfSections section: Int) -> Int{
+        //Loads number of sections. If section count is 0, tableview displays "No users"
         var numOfSections: Int = 0
         if users.count > 0
         {
@@ -85,14 +83,13 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Table view cells are reused and should be dequeued using a cell identifier.
         let cell = tableView.dequeueReusableCell(withIdentifier: "officeCell", for: indexPath) as! OfficeLeaderboardTableViewCell
         
         let thisUser = self.users[indexPath.row]
 
-       // cell.layer.borderWidth = 0.1
-        cell.layer.borderColor = UIColor.lightGray.cgColor
+        //Cell formatting
         cell.layer.cornerRadius = 20
-        //Cell ImageView Formatting
         cell.userProfilePhoto.layer.cornerRadius = cell.userProfilePhoto.frame.size.width/2
         cell.userProfilePhoto.layer.borderWidth = 0.1
         cell.userProfilePhoto.layer.borderColor = UIColor.black.cgColor
@@ -115,17 +112,19 @@ class OfficeLeaderboardViewController: UIViewController, UITableViewDelegate, UI
     
     // Sorts users based on points, then reload view
     func sortUsers() -> Void {
-        //OVERALL
         self.users.sort(by: {$0.points > $1.points})
-        //END OVERALL
+
         self.tableView.reloadData()
     }
     
+    //MARK: Segue Functions
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toProfile"{
             let vc = segue.destination as! UINavigationController
             vc.navigationBar.barTintColor = UIColor(red: 189.0/255.0, green: 229.0/255.0, blue: 239.0/255.0, alpha: 1.0)
             let destinationVC = vc.childViewControllers[0] as! ProfileViewController
+            
+            //If profile is not accessed from tab bar, the tutorial and sign out buttons do not appear
             destinationVC.signOutButton.isEnabled = false
             destinationVC.signOutButton.tintColor = UIColor.clear
             destinationVC.tutorialButton.isEnabled = false
