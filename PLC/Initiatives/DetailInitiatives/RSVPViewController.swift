@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+//Protocol for RSVPViewControllerDelegate
 protocol RSVPViewControllerDelegate
 {
     func setRSVPCurrentTask()
@@ -16,6 +17,8 @@ protocol RSVPViewControllerDelegate
 }
 
 class RSVPViewController: UIViewController {
+    
+    //MARK: Properties
     var delegate: RSVPViewControllerDelegate?
     var task: Task?
     var leadersRSVP: [String] = []
@@ -32,45 +35,6 @@ class RSVPViewController: UIViewController {
     @IBOutlet weak var undoSignUpButton: UIButton!
     @IBOutlet weak var undoGoingButton: UIButton!
     
-    @IBAction func goingParticipantButton(_ sender: UIButton) {
-    Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
-        
-        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
-    }
-    @IBAction func undoGoingButton(_ sender: UIButton) {
-    Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).removeValue()
-        
-        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
-        
-        participantsRSVP.remove(at: participantsRSVP.index(of: currentUser.uid)!)
-        self.viewDidLoad()
-    }
-    @IBAction func signUpLeaderButton(_ sender: UIButton) {
-        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).child("userID").setValue(currentUser.uid)
-        
-        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking + 2)
-        
-            Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).setValue(true)
-        
-        let point = Points.init()
-
-        let addedPoints = point.getPoints(type: "Lead", thisTask: task!)
-        
-        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
-        
-    }
-    
-    @IBAction func undoSignUpButton(_ sender: UIButton) {
-        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).removeValue()
-        //Constants.refs.databaseTasks.child(task!.id).child("ranking").setValue(task!.ranking - 2)
-        Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).removeValue()
-        let point = Points.init()
-        let subtractedPoints = point.getPoints(type: "Lead", thisTask: task!)
-        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points - subtractedPoints)
-        
-        leadersRSVP.remove(at: leadersRSVP.index(of: currentUser.uid)!)
-        self.viewDidLoad()
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         alreadyInvolvedLabel.isHidden = true
@@ -87,6 +51,50 @@ class RSVPViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    //MARK: Actions
+    @IBAction func goingParticipantButton(_ sender: UIButton) {
+        //Adds userID to the category taskRSVP under participants on the task object in the database
+        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).child("userID").setValue(currentUser.uid)
+    }
+    @IBAction func undoGoingButton(_ sender: UIButton) {
+        //Removes userID to the category taskRSVP under participants on the task object in the database
+        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("participants").child(currentUser.uid).removeValue()
+        
+        participantsRSVP.remove(at: participantsRSVP.index(of: currentUser.uid)!)
+        self.viewDidLoad()
+    }
+    @IBAction func signUpLeaderButton(_ sender: UIButton) {
+        //Adds userID to the category taskRSVP under leaders on the task object in the database
+        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).child("userID").setValue(currentUser.uid)
+        //Adds taskID to the category tasks_lead on the user object in the database
+        Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).setValue(true)
+        
+        //Gives user lead points for checking in and updates in database
+        let point = Points.init()
+        
+        let addedPoints = point.getPoints(type: "Lead", thisTask: task!)
+        
+        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points + addedPoints)
+        
+    }
+    
+    @IBAction func undoSignUpButton(_ sender: UIButton) {
+        //Removes userID to the category taskRSVP under leaders on the task object in the database
+        Constants.refs.databaseTasks.child((task?.id)!).child("taskRSVP").child("leaders").child(currentUser.uid).removeValue()
+        //Removes taskID to the category tasks_lead on the user object in the database
+        Constants.refs.databaseUsers.child(currentUser.uid).child("tasks_lead").child(task!.id).removeValue()
+        
+        //Takes away user lead points for checking in and updates in database
+        let point = Points.init()
+        let subtractedPoints = point.getPoints(type: "Lead", thisTask: task!)
+        Constants.refs.databaseUsers.child(currentUser.uid).child("points").setValue(currentUser.points - subtractedPoints)
+        
+        leadersRSVP.remove(at: leadersRSVP.index(of: currentUser.uid)!)
+        self.viewDidLoad()
+    }
+    
+    //MARK: Helper Functions
+    //Checks to see if the user is already signed up to lead
     private func userAlreadySignedUp(){
         signUpLeaderButton.isEnabled = false
         goingParticipantButton.isEnabled = false
@@ -95,6 +103,7 @@ class RSVPViewController: UIViewController {
         return
     }
     
+    //Checks to see if the user is already signed up to participate
     private func userAlreadyGoing(){
         signUpLeaderButton.isEnabled = false
         goingParticipantButton.isEnabled = false

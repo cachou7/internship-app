@@ -123,8 +123,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         //Waits for all tasks to be stored in everyItemCreated
         let deadlineTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-        
-            //
             Constants.refs.databaseUsers.child((self.user?.uid)!).child("tasks_lead").observe(.childAdded, with: { snapshot in
                 if (snapshot.exists()){
                     let task = self.everyItemCreated[self.everyItemCreated.index(where: {$0.id == snapshot.key})!]

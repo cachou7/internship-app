@@ -11,6 +11,8 @@ import Firebase
 import SDWebImage
 
 class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    //MARK: Properties
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
@@ -27,7 +29,6 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var categoryTextField: UITextField!
     
-    //MARK: Variables
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
     let categoryPickerView = UIPickerView()
@@ -52,6 +53,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         super.viewDidLoad()
         configureTask()
         
+        //Initial Setup For Edit Page
         validationCheckBoxLabel.text = ""
         taskImageView.isHidden = true
         
@@ -65,71 +67,21 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         endTimeTextField.inputView = endDatePicker
         startDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(datePickerChanged), for:UIControlEvents.valueChanged)
-
-        // Do any additional setup after loading the view.
-    }
-    
-    private func configureTask(){
-        titleTextField.text = task_in.title
-        descriptionTextField.text = task_in.description
-        timeTextField.text = task_in.startTime
-        endTimeTextField.text = task_in.endTime
-        locationTextField.text = task_in.location
-        categoryTextField.text = task_in.category
-        addImageButton.isHidden = true
-        removeImageButton.isHidden = true
-        
-        let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
-        // Load the image using SDWebImage
-        self.taskImageView.isHidden = false
-        taskImageView.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
-            if error != nil {
-                self.taskImageView.isHidden = true
-                self.addImageButton.isHidden = false
-                self.addImageLabel.text = "Add Image"
-            }
-            else{
-                self.taskImageView.isHidden = false
-                self.removeImageButton.isHidden = false
-                self.addImageLabel.text = "\(self.task_in.id).png"
-            }
-            
-        }
-        
-        //TAGS
-        leadCheckBox.isSelected = false
-        leadAmountTextField.isEnabled = false
-        participateCheckBox.isSelected = false
-        participateAmountTextField.isEnabled = false
-        let tags = task_in.tag
-        let tagArray = tags.components(separatedBy: " ")
-        for tag in tagArray{
-            if tag == "#lead"{
-                leadCheckBox.isSelected = true
-                leadAmountTextField.isEnabled = true
-                
-                leadAmountTextField.text = String(task_in.amounts["leaders"]!)
-            }
-            if tag == "#participate"{
-                participateCheckBox.isSelected = true
-                participateAmountTextField.isEnabled = true
-                participateAmountTextField.text = String(task_in.amounts["participants"]!)
-            }
-        }
-        //END TAGS
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
     // MARK: Actions
     @IBAction func createButton(_ sender: UIButton) {
+        //Checks to make sure all fields are still all filled out correctly
         if validate(){
             self.performSegue(withIdentifier: "unwindToDetail", sender: self)
         }
     }
+    
+    //Checks to see if image is added
     @IBAction func addImageButton(_ sender: UIButton) {
         photoChanged = true
         let imagePicker = UIImagePickerController()
@@ -139,6 +91,8 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         
         present(imagePicker, animated: true)
     }
+    
+    //Checks to see if image removed
     @IBAction func removeImageButton(_ sender: UIButton) {
         photoRemoved = true
         taskImageView.isHidden = true
@@ -149,7 +103,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     
     @IBAction func leadCheckBox(_ sender: UIButton) {
         tagsChanged = true
+        //Unchecks and checks box
         sender.isSelected = !sender.isSelected
+        //If checked, the amount textfield is enabled
         if (sender.isSelected){
             leadAmountTextField.isEnabled = true
         }
@@ -159,7 +115,9 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
     }
     @IBAction func participateCheckBox(_ sender: UIButton) {
         tagsChanged = true
+        //Unchecks and checks box
         sender.isSelected = !sender.isSelected
+        //If checked, the amount textfield is enabled
         if (sender.isSelected){
             participateAmountTextField.isEnabled = true
         }
@@ -167,18 +125,27 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
             participateAmountTextField.isEnabled = false
         }
     }
+    
+    //Checks to see if title changes
     @IBAction func titleChanged(_ sender: UITextField) {
         titleChanged = true
     }
+    
+    //Checks to see if description changes
     @IBAction func descriptionChanged(_ sender: UITextField) {
         descriptionChanged = true
     }
+    
+    //Checks to see if location changes
     @IBAction func locationChanged(_ sender: UITextField) {
         locationChanged = true
     }
+    
+    //Checks to see if category changes
     @IBAction func categoryChanged(_ sender: UITextField) {
         categoryChanged = true
     }
+    
     @IBAction func cancelButton(_ sender: UIButton) {
         dismiss()
     }
@@ -212,39 +179,98 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         return true
     }
     
+    //MARK: Segue Functions
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToDetail"{
+            handleTaskChange()
+        }
+    }
+    
+    //MARK: Helper Functions
     private func dismiss(){
         self.dismiss(animated: true, completion: nil)
     }
     
+    private func configureTask(){
+        titleTextField.text = task_in.title
+        descriptionTextField.text = task_in.description
+        timeTextField.text = task_in.startTime
+        endTimeTextField.text = task_in.endTime
+        locationTextField.text = task_in.location
+        categoryTextField.text = task_in.category
+        addImageButton.isHidden = true
+        removeImageButton.isHidden = true
+        
+        let storageRef = Constants.refs.storage.child("taskPhotos/\(task_in.id).png")
+        // Load the image using SDWebImage
+        self.taskImageView.isHidden = false
+        taskImageView.sd_setImage(with: storageRef, placeholderImage: nil) { (image, error, cacheType, storageRef) in
+            if error != nil {
+                self.taskImageView.isHidden = true
+                self.addImageButton.isHidden = false
+                self.addImageLabel.text = "Add Image"
+            }
+            else{
+                self.taskImageView.isHidden = false
+                self.removeImageButton.isHidden = false
+                self.addImageLabel.text = "\(self.task_in.id).png"
+            }
+            
+        }
+        
+        leadCheckBox.isSelected = false
+        leadAmountTextField.isEnabled = false
+        participateCheckBox.isSelected = false
+        participateAmountTextField.isEnabled = false
+        let tags = task_in.tag
+        let tagArray = tags.components(separatedBy: " ")
+        for tag in tagArray{
+            //Parses amount of leaders needed and puts it in a dictionary if the amount needed is greater than 0
+            if tag == "#lead"{
+                leadCheckBox.isSelected = true
+                leadAmountTextField.isEnabled = true
+                
+                leadAmountTextField.text = String(task_in.amounts["leaders"]!)
+            }
+            //Parses amount of participants needed and puts it in a dictionary if the amount needed is greater than 0
+            if tag == "#participate"{
+                participateCheckBox.isSelected = true
+                participateAmountTextField.isEnabled = true
+                participateAmountTextField.text = String(task_in.amounts["participants"]!)
+            }
+        }
+        
+    }
+
     private func validate() -> Bool{
         var valid:Bool = true
         if (titleTextField.text?.isEmpty)! {
-            //Change the placeholder color to red for textfield email if
+            //Change the placeholder color to P.S. red
             titleTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Title", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (descriptionTextField.text?.isEmpty)!{
-            // Change the placeholder color to red for textfield userName
+            //Change the placeholder color to P.S. red
             descriptionTextField.attributedPlaceholder = NSAttributedString(string: "Please enter Task Description", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (timeTextField.text?.isEmpty)!{
-            // Change the placeholder color to red for textfield passWord
+            //Change the placeholder color to P.S. red
             timeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Start Time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (endTimeTextField.text?.isEmpty)!{
-            // Change the placeholder color to red for textfield passWord
+            //Change the placeholder color to P.S. red
             endTimeTextField.attributedPlaceholder = NSAttributedString(string: "Please enter an End Time", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (locationTextField.text?.isEmpty)!{
-            // Change the placeholder color to red for textfield passWord
+            //Change the placeholder color to P.S. red
             locationTextField.attributedPlaceholder = NSAttributedString(string: "Please enter a Location", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
         if (categoryTextField.text?.isEmpty)!{
-            // Change the placeholder color to red for textfield passWord
+            //Change the placeholder color to P.S. red
             categoryTextField.attributedPlaceholder = NSAttributedString(string: "Please select a Category", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 218.0/255.0, green: 73.0/255.0, blue: 82.0/255.0, alpha: 1.0)])
             valid = false
         }
@@ -266,15 +292,8 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
         return valid
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "unwindToDetail"{
-            handleTaskChange()
-        }
-    }
-    
     private func handleTaskChange(){
-            
-            
+        //Edits task in database if there are any changes
             if (titleChanged || descriptionChanged || timeChanged || endTimeChanged || locationChanged || tagsChanged || photoChanged || photoRemoved || categoryChanged){
                 let currentTask = Constants.refs.databaseTasks.child(task_in.id)
                 if (titleChanged){
@@ -369,6 +388,7 @@ class EditInitiativeViewController: UIViewController, UITextFieldDelegate, UINav
                 }
         }
     }
+    
     // MARK: - UIImagePickerControllerDelegate Methods
     
     func imagePickerController(_ _picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {

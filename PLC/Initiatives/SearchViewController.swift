@@ -10,20 +10,18 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    //MARK: Properties
     var overallItems: [Task]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
+    //MARK: Segue Functions
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as? SearchBarViewController
         destinationVC?.overallItems = overallItems

@@ -11,13 +11,21 @@ import Firebase
 import SDWebImage
 
 class DetailSearchTableViewController: UITableViewController, TaskTableViewCellDelegate {
+    
+    //MARK: Properties
     var overallItems: [Task]?
     var filteredItems: [Task] = []
     var myIndex = 0
     var currentDB: String = ""
+    fileprivate lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Filter pages
         if self.navigationItem.title! == "Most Popular" || self.navigationItem.title! == "Upcoming" || self.navigationItem.title! == "Fresh"{
             self.navigationItem.title = self.navigationItem.title! + " Eggs"
             filteredItems = overallItems!
@@ -42,46 +50,19 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         }
     }
     
-    func sortTasks() -> Void {
-        print(self.navigationItem.title!)
-        if self.navigationItem.title! == "Most Popular Eggs"{
-            self.filteredItems.sort(by: {$0.ranking > $1.ranking})
-         }
-         else if self.navigationItem.title! == "Upcoming Eggs"{
-            self.filteredItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
-         }
-        else{
-            self.filteredItems.sort(by: {$0.timestamp > $1.timestamp})
-        }
-        self.tableView.reloadData()
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    //MARK: Actions
     @IBAction func doneButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     
-    private func updateSearchResults() {
-        let searchString = self.navigationItem.title!
-        
-        // Filter the data array and get only those countries that match the search text.
-        filteredItems = (overallItems?.filter({ (task) -> Bool in
-            let taskTitle: NSString = task.title as NSString
-            let taskTag: NSString = task.tag as NSString
-            let taskLocation: NSString = task.location as NSString
-            let taskCategory: NSString = task.category as NSString
-            
-            
-            return ((taskTitle.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskTag.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskLocation.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskCategory.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound)
-        }))!
-        return
-    }
-    
-    //TABLEVIEW DELEGATES
+    //MARK: TableViewDataSource
     override func numberOfSections(in tableView: UITableView) -> Int {
+        //Loads number of sections. If section count is 0, tableview displays "No eggs available"
         var numOfSections: Int = 0
         if filteredItems.count > 0
         {
@@ -92,7 +73,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         else
         {
             let noDataLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
-            noDataLabel.text = "No initiatives available"
+            noDataLabel.text = "No eggs available"
             noDataLabel.textColor = UIColor.black
             noDataLabel.textAlignment = .center
             tableView.backgroundView = noDataLabel
@@ -106,6 +87,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Table view cells are reused and should be dequeued using a cell identifier.
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskTableViewCell
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
@@ -113,15 +95,12 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         
         thisTask = self.filteredItems[indexPath.row]
         
-        
+        //Configures cell
         cell.taskTitle.numberOfLines = 1
         cell.taskTitle.adjustsFontSizeToFitWidth = true
         cell.taskTitle.text = thisTask!.title
         cell.taskNumberOfLikes.text = String(thisTask!.usersLikedAmount)
         var startTime = thisTask.startTime.split(separator: " ")
-        //cell.taskMonth.text = String(startTime[0]).uppercased()
-        //let taskDay = String(startTime[1]).split(separator: ",")
-        //cell.taskDay.text = String(taskDay[0])
         let checkdate = NSDate(timeIntervalSince1970: thisTask.timeMilliseconds)
         let dateString = self.dateFormatter.string(from: checkdate as Date)
         let dayOfWeek = getDayOfWeek(dateString)!
@@ -151,12 +130,10 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
                 cell.taskImage.image = #imageLiteral(resourceName: "psheader")
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             else{
                 cell.taskImage.contentMode = UIViewContentMode.scaleAspectFill
                 cell.taskImage.clipsToBounds = true
-                //cell.taskImage.layer.cornerRadius = cell.taskImage.frame.size.width/2
             }
             
         }
@@ -165,8 +142,8 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
         cell.delegate = self
         return cell
     }
-    //END TABLEVIEW DELEGATES
     
+    //MARK: TableViewCell Delegates
     func taskTableViewCellCategoryButtonClicked(_ sender: TaskTableViewCell){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DetailSearchNavigationController") as! UINavigationController
         let childVC = vc.viewControllers[0] as! DetailSearchTableViewController
@@ -178,12 +155,9 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
     //LIKING TASKS
     func taskTableViewCellDidTapHeart(_ sender: TaskTableViewCell) {
         guard let tappedIndexPath = tableView.indexPath(for: sender) else { return }
-        //print("Heart", sender, tappedIndexPath.row)
         sender.isSelected = !sender.isSelected
         
         let currentTasks = Constants.refs.databaseUsers.child(currentUser.uid + "/tasks_liked")
-        
-        
         
         currentTasks.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -198,9 +172,7 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
                 
                 Constants.refs.databaseTasks.child(self.overallItems![tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems![tappedIndexPath.row].usersLikedAmount + 1)
             }
-                //END HEART TAPPED
-                
-                //HEART UNTAPPED
+            //HEART UNTAPPED
             else {
                 let unlikedIcon = UIImage(named: "heartIcon")
                 sender.taskLiked.setImage(unlikedIcon, for: .normal)
@@ -214,17 +186,16 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
                     Constants.refs.databaseTasks.child(self.overallItems![tappedIndexPath.row].id).child("usersLikedAmount").setValue(self.overallItems![tappedIndexPath.row].usersLikedAmount - 1)
                 }
             }
-            //END HEART UNTAPPED
         })
         
     }
-    //END LIKING TASKS
     
     // Set myIndex for detailed view
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = indexPath.row
     }
     
+    //MARK: Segue Functions
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toSearch", let destinationVC = segue.destination as? SearchBarViewController{
             destinationVC.overallItems = self.overallItems
@@ -233,38 +204,8 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
             
             destinationVC.task_in = self.filteredItems[myIndex]
             destinationVC.taskIndex = myIndex
+            //This is for the unwind segue after a detail task is deleted
             destinationVC.segueFromController = "DetailSearchTableViewController"
-        }
-    }
-    
-    fileprivate lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        return formatter
-    }()
-    
-    private func getDayOfWeek(_ today:String) -> String? {
-        guard let todayDate = dateFormatter.date(from: today) else { return nil }
-        let myCalendar = Calendar(identifier: .gregorian)
-        let weekDay = myCalendar.component(.weekday, from: todayDate)
-        
-        switch weekDay {
-        case 1:
-            return "Sun"
-        case 2:
-            return "Mon"
-        case 3:
-            return "Tue"
-        case 4:
-            return "Wed"
-        case 5:
-            return "Thu"
-        case 6:
-            return "Fri"
-        case 7:
-            return "Sat"
-        default:
-            return "Yikes"
         }
     }
     
@@ -279,6 +220,39 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
             tableView.deleteRows(at: tableView.indexPathsForSelectedRows!, with: .automatic)
             self.tableView.reloadData()
         }
+    }
+    
+    //MARK: Helper Functions
+    private func updateSearchResults() {
+        let searchString = self.navigationItem.title!
+        
+        // Filter the data array and get only those countries that match the search text.
+        filteredItems = (overallItems?.filter({ (task) -> Bool in
+            let taskTitle: NSString = task.title as NSString
+            let taskTag: NSString = task.tag as NSString
+            let taskLocation: NSString = task.location as NSString
+            let taskCategory: NSString = task.category as NSString
+            
+            
+            return ((taskTitle.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskTag.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskLocation.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound || (taskCategory.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound)
+        }))!
+        return
+    }
+    
+    func sortTasks() -> Void {
+        //Sorts by ranking
+        if self.navigationItem.title! == "Most Popular Eggs"{
+            self.filteredItems.sort(by: {$0.ranking > $1.ranking})
+        }
+            //Sorts by start timestamp of event
+        else if self.navigationItem.title! == "Upcoming Eggs"{
+            self.filteredItems.sort(by: {$0.timeMilliseconds < $1.timeMilliseconds})
+        }
+            //Sorts by creation timestamp
+        else{
+            self.filteredItems.sort(by: {$0.timestamp > $1.timestamp})
+        }
+        self.tableView.reloadData()
     }
     
     private func deleteFromEveryItemCreated(array: [Task], left: Int, right: Int, taskToRemove: Task)->Int{
@@ -304,6 +278,31 @@ class DetailSearchTableViewController: UITableViewController, TaskTableViewCellD
             return deleteFromEveryItemCreated(array: array, left: mid+1, right: right, taskToRemove: taskToRemove)
         }
         return -1
+    }
+    
+    private func getDayOfWeek(_ today:String) -> String? {
+        guard let todayDate = dateFormatter.date(from: today) else { return nil }
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        
+        switch weekDay {
+        case 1:
+            return "Sun"
+        case 2:
+            return "Mon"
+        case 3:
+            return "Tue"
+        case 4:
+            return "Wed"
+        case 5:
+            return "Thu"
+        case 6:
+            return "Fri"
+        case 7:
+            return "Sat"
+        default:
+            return "Yikes"
+        }
     }
     
 
